@@ -4,7 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { 
     Search, 
-    PlusCircle, 
+    Plus, 
     Repeat, 
     Clock, 
     CheckCircle2, 
@@ -13,7 +13,8 @@ import {
     Eye, 
     Calendar,
     User,
-    ChevronRight
+    ChevronRight,
+    RotateCcw
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -60,170 +61,185 @@ const getStatusBadge = (st) => {
 </script>
 
 <template>
-    <Head title="Peminjaman & Pengembalian Aset" />
+    <Head title="Peminjaman & Fasilitas - SIM-SARPRAS" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Peminjaman & Pengembalian Aset</h1>
-                    <p class="text-sm text-slate-500 mt-0.5">Pengajuan digital, verifikasi serah terima, dan pemantauan pengembalian inventaris.</p>
+        <div class="space-y-6">
+            <!-- Header Card -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200/70 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="h-11 w-11 rounded-xl bg-emerald-50 text-[#168a42] flex items-center justify-center shrink-0 border border-emerald-100">
+                        <Repeat class="w-6 h-6 stroke-[2.2]" />
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                                Layanan Peminjaman Aset
+                            </span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-0.5">
+                            Peminjaman Sarana & Fasilitas
+                        </h1>
+                        <p class="text-xs text-slate-500">
+                            Pengajuan digital pemanfaatan laboratorium, perangkat audio visual, dan verifikasi serah terima fisik.
+                        </p>
+                    </div>
                 </div>
+
                 <div>
                     <Link
                         :href="route('loans.create')"
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-sm shadow-indigo-200 transition"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
                     >
-                        <PlusCircle class="w-4 h-4" />
-                        Ajukan Peminjaman
+                        <Plus class="w-4 h-4 stroke-[2.5]" />
+                        <span>Ajukan Peminjaman</span>
                     </Link>
                 </div>
             </div>
-        </template>
 
-        <!-- Search & Status Filter Tabs -->
-        <div class="space-y-4 mb-6">
-            <!-- Filter Pills -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-                <button
-                    @click="applyFilters('')"
-                    :class="[
-                        'px-3.5 py-1.5 rounded-lg font-semibold transition shrink-0',
-                        !selectedStatus ? 'bg-indigo-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-                    ]"
-                >
-                    Semua Transaksi
-                </button>
-                <button
-                    v-for="st in statuses"
-                    :key="st.value"
-                    @click="applyFilters(st.value)"
-                    :class="[
-                        'px-3.5 py-1.5 rounded-lg font-semibold transition shrink-0',
-                        selectedStatus === st.value ? 'bg-indigo-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
-                    ]"
-                >
-                    {{ st.label }}
-                </button>
-            </div>
-
-            <!-- Search Input -->
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3">
-                <div class="relative">
-                    <Search class="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-                    <input
-                        v-model="search"
-                        @keyup.enter="applyFilters(selectedStatus)"
-                        type="text"
-                        placeholder="Cari kode transaksi, nama peminjam, atau keperluan kegiatan..."
-                        class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                </div>
-            </div>
-        </div>
-
-        <!-- Loans Table -->
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-sm">
-                    <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-200">
-                        <tr>
-                            <th class="px-5 py-3.5">Kode Transaksi</th>
-                            <th class="px-5 py-3.5">Peminjam</th>
-                            <th class="px-5 py-3.5">Tanggal Peminjaman</th>
-                            <th class="px-5 py-3.5">Tenggat Pengembalian</th>
-                            <th class="px-5 py-3.5">Barang Dipinjam</th>
-                            <th class="px-5 py-3.5">Status</th>
-                            <th class="px-5 py-3.5 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr v-for="loan in loans.data" :key="loan.id" class="hover:bg-slate-50/80 transition">
-                            <!-- Code -->
-                            <td class="px-5 py-3.5">
-                                <span class="font-mono text-xs font-bold text-indigo-600 block">{{ loan.transaction_code }}</span>
-                                <span class="text-[11px] text-slate-400 block line-clamp-1 max-w-[150px]">{{ loan.purpose }}</span>
-                            </td>
-
-                            <!-- Borrower -->
-                            <td class="px-5 py-3.5">
-                                <div class="font-semibold text-slate-900">{{ loan.borrower?.name }}</div>
-                                <div class="text-xs text-slate-500">
-                                    {{ loan.borrower?.nip_nim ? `NIM/NIP: ${loan.borrower.nip_nim}` : loan.borrower?.department }}
-                                </div>
-                            </td>
-
-                            <!-- Loan Date -->
-                            <td class="px-5 py-3.5 text-xs text-slate-700">
-                                <div class="flex items-center gap-1.5">
-                                    <Calendar class="w-3.5 h-3.5 text-slate-400" />
-                                    <span>{{ loan.loan_date }}</span>
-                                </div>
-                            </td>
-
-                            <!-- Return Date -->
-                            <td class="px-5 py-3.5 text-xs">
-                                <div class="font-medium text-slate-800">{{ loan.expected_return_date }}</div>
-                                <div v-if="loan.actual_return_date" class="text-[11px] text-emerald-600 mt-0.5">
-                                    Kembali: {{ loan.actual_return_date }}
-                                </div>
-                            </td>
-
-                            <!-- Items -->
-                            <td class="px-5 py-3.5">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
-                                    {{ loan.loan_items?.length || 0 }} Unit
-                                </span>
-                            </td>
-
-                            <!-- Status -->
-                            <td class="px-5 py-3.5">
-                                <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border', getStatusBadge(loan.status).class]">
-                                    {{ getStatusBadge(loan.status).label }}
-                                </span>
-                            </td>
-
-                            <!-- Actions -->
-                            <td class="px-5 py-3.5 text-right">
-                                <Link
-                                    :href="route('loans.show', loan.id)"
-                                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-indigo-600 hover:bg-indigo-50 border border-indigo-200 transition"
-                                >
-                                    <Eye class="w-3.5 h-3.5" />
-                                    Kelola
-                                </Link>
-                            </td>
-                        </tr>
-
-                        <tr v-if="!loans.data?.length">
-                            <td colspan="7" class="px-5 py-12 text-center text-sm text-slate-400">
-                                Belum ada riwayat peminjaman yang sesuai dengan filter.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination Bar -->
-            <div v-if="loans.links?.length > 3" class="px-5 py-4 border-t border-slate-200 flex items-center justify-between">
-                <div class="text-xs text-slate-500">
-                    Menampilkan <span class="font-semibold">{{ loans.from || 0 }}</span> - <span class="font-semibold">{{ loans.to || 0 }}</span> dari <span class="font-semibold">{{ loans.total }}</span> transaksi
-                </div>
-                <div class="flex items-center gap-1">
-                    <Link
-                        v-for="(link, idx) in loans.links"
-                        :key="idx"
-                        :href="link.url || '#'"
-                        v-html="link.label"
+            <!-- Status Tabs & Search Bar -->
+            <div class="space-y-3">
+                <!-- Pills Row -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+                    <button
+                        @click="applyFilters('')"
                         :class="[
-                            'px-3 py-1.5 rounded-lg text-xs font-medium transition',
-                            link.active ? 'bg-indigo-600 text-white font-bold' : 'text-slate-600 hover:bg-slate-100',
-                            !link.url ? 'opacity-40 pointer-events-none' : ''
+                            'px-4 py-2 rounded-xl font-bold transition shrink-0',
+                            !selectedStatus ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                         ]"
-                    />
+                    >
+                        Semua Transaksi
+                    </button>
+                    <button
+                        v-for="st in statuses"
+                        :key="st.value"
+                        @click="applyFilters(st.value)"
+                        :class="[
+                            'px-4 py-2 rounded-xl font-bold transition shrink-0',
+                            selectedStatus === st.value ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                        ]"
+                    >
+                        {{ st.label }}
+                    </button>
+                </div>
+
+                <!-- Search Input Box -->
+                <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-3">
+                    <div class="relative">
+                        <Search class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                        <input
+                            v-model="search"
+                            @keyup.enter="applyFilters(selectedStatus)"
+                            type="text"
+                            placeholder="Cari nomor voucher transaksi, nama peminjam, atau keperluan kegiatan..."
+                            class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loans Table -->
+            <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead class="bg-slate-50/80 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
+                            <tr>
+                                <th class="px-6 py-3.5">Kode Voucher</th>
+                                <th class="px-6 py-3.5">Peminjam</th>
+                                <th class="px-4 py-3.5">Tanggal Pinjam</th>
+                                <th class="px-4 py-3.5">Tenggat Kembali</th>
+                                <th class="px-4 py-3.5">Unit Barang</th>
+                                <th class="px-4 py-3.5">Status</th>
+                                <th class="px-6 py-3.5 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr v-for="loan in loans.data" :key="loan.id" class="hover:bg-slate-50/70 transition">
+                                <!-- Voucher Code -->
+                                <td class="px-6 py-4">
+                                    <span class="font-mono text-xs font-bold text-[#168a42] block">{{ loan.transaction_code }}</span>
+                                    <span class="text-[11px] text-slate-400 block line-clamp-1 max-w-[160px] mt-0.5">{{ loan.purpose }}</span>
+                                </td>
+
+                                <!-- Borrower -->
+                                <td class="px-6 py-4">
+                                    <div class="font-bold text-slate-900 text-sm leading-tight">{{ loan.borrower?.name }}</div>
+                                    <div class="text-[11px] text-slate-500 mt-0.5">
+                                        {{ loan.borrower?.nip_nim ? `NIM/NIP: ${loan.borrower.nip_nim}` : '' }} • {{ loan.borrower?.department }}
+                                    </div>
+                                </td>
+
+                                <!-- Loan Date -->
+                                <td class="px-4 py-4 text-slate-700">
+                                    <div class="flex items-center gap-1.5 font-medium">
+                                        <Calendar class="w-3.5 h-3.5 text-slate-400" />
+                                        <span>{{ loan.loan_date }}</span>
+                                    </div>
+                                </td>
+
+                                <!-- Expected Return Date -->
+                                <td class="px-4 py-4">
+                                    <div class="font-bold text-slate-800">{{ loan.expected_return_date }}</div>
+                                    <div v-if="loan.actual_return_date" class="text-[10px] text-emerald-600 font-bold mt-0.5">
+                                        Kembali: {{ loan.actual_return_date }}
+                                    </div>
+                                </td>
+
+                                <!-- Items Count -->
+                                <td class="px-4 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700">
+                                        {{ loan.loan_items?.length || 0 }} Unit
+                                    </span>
+                                </td>
+
+                                <!-- Status Badge -->
+                                <td class="px-4 py-4">
+                                    <span :class="['inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border', getStatusBadge(loan.status).class]">
+                                        {{ getStatusBadge(loan.status).label }}
+                                    </span>
+                                </td>
+
+                                <!-- Action Link -->
+                                <td class="px-6 py-4 text-right">
+                                    <Link
+                                        :href="route('loans.show', loan.id)"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#168a42] hover:bg-emerald-50 border border-emerald-200 transition"
+                                    >
+                                        <Eye class="w-3.5 h-3.5" />
+                                        Kelola
+                                    </Link>
+                                </td>
+                            </tr>
+
+                            <tr v-if="!loans.data?.length">
+                                <td colspan="7" class="px-6 py-12 text-center text-sm text-slate-400">
+                                    Belum ada transaksi peminjaman yang sesuai dengan filter.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div v-if="loans.links?.length > 3" class="px-6 py-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <div>
+                        Menampilkan <span class="font-bold text-slate-800">{{ loans.from || 0 }}</span> - <span class="font-bold text-slate-800">{{ loans.to || 0 }}</span> dari <span class="font-bold text-slate-800">{{ loans.total }}</span> permohonan
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <Link
+                            v-for="(link, idx) in loans.links"
+                            :key="idx"
+                            :href="link.url || '#'"
+                            v-html="link.label"
+                            :class="[
+                                'px-3 py-1.5 rounded-lg text-xs font-semibold transition',
+                                link.active ? 'bg-[#168a42] text-white' : 'text-slate-600 hover:bg-slate-100',
+                                !link.url ? 'opacity-30 pointer-events-none' : ''
+                            ]"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
-
