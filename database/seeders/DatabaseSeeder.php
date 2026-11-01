@@ -356,17 +356,53 @@ class DatabaseSeeder extends Seeder
             'notes' => 'Lensa, baterai 2 buah, dan tas kamera lengkap',
         ]);
 
-        // 7. Contoh Tiket Pemeliharaan (Proyektor Ruang Rapat)
+        // 7. Tiket Pemeliharaan Mendesak (Sesuai Referensi SIM-SARPRAS Enterprise)
         MaintenanceTicket::create([
             'ticket_code' => 'TCK/202611/0001',
+            'asset_id' => $asset1->id,
+            'reporter_id' => $laboran->id,
+            'technician_id' => $teknisi->id,
+            'issue_description' => 'AC Lab Jaringan Gedung C Mati Total. Kompresor tidak menyala dan kipas indoor mati mendadak.',
+            'priority' => MaintenancePriority::Critical,
+            'status' => MaintenanceStatus::InProgress,
+            'cost' => 850000,
+            'resolution_notes' => 'Teknisi: Pak Sugeng (Vendor Daikin) • Estimasi penanganan tuntas sore ini pukul 17:00 WIB.',
+        ]);
+
+        MaintenanceTicket::create([
+            'ticket_code' => 'TCK/202611/0002',
             'asset_id' => $asset4->id,
             'reporter_id' => $dosen->id,
             'technician_id' => $teknisi->id,
-            'issue_description' => 'Tampilan proyektor berkedip dan lampu indikator menyala merah peringatan penggantian lampu.',
+            'issue_description' => 'Proyektor R.302 Gd. Bersama Buram. Lampu proyektor aus dan tampilan berkedip merah.',
             'priority' => MaintenancePriority::High,
             'status' => MaintenanceStatus::WaitingParts,
             'cost' => 1250000,
-            'resolution_notes' => 'Suku cadang modul lampu orisinal Epson telah dipesan ke CV Cahaya Sarana Nusantara.',
+            'resolution_notes' => 'Lampu proyektor aus • Status: PO Sparepart BMN-204 telah diajukan ke rekanan.',
+        ]);
+
+        MaintenanceTicket::create([
+            'ticket_code' => 'TCK/202611/0003',
+            'asset_id' => $asset2->id,
+            'reporter_id' => $superAdmin->id,
+            'technician_id' => $teknisi->id,
+            'issue_description' => 'Lift Gedung Rektorat Pemeliharaan. Pemeriksaan getaran kabel seling dan sensor pintu lantai 3.',
+            'priority' => MaintenancePriority::Medium,
+            'status' => MaintenanceStatus::InProgress,
+            'cost' => 2400000,
+            'resolution_notes' => 'Selesai 80% • Pemeriksaan kabel seling berkala semesteran dan penggantian pelumas rel.',
+        ]);
+
+        MaintenanceTicket::create([
+            'ticket_code' => 'TCK/202611/0004',
+            'asset_id' => $asset1->id,
+            'reporter_id' => $mahasiswa->id,
+            'technician_id' => $teknisi->id,
+            'issue_description' => 'Pompa Air Asrama Mahasiswa Putra. Debit air berkurang drastis di blok asrama barat.',
+            'priority' => MaintenancePriority::High,
+            'status' => MaintenanceStatus::InProgress,
+            'cost' => 450000,
+            'resolution_notes' => 'Sedang Dikerjakan • Pipa distribusi blok B bocor dan sedang disambung ulang oleh Tim Internal Sarpras.',
         ]);
     }
 }

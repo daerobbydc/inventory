@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Asset extends Model
 {
@@ -57,6 +58,18 @@ class Asset extends Model
             'condition' => AssetCondition::class,
             'status' => AssetStatus::class,
         ];
+    }
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Asset $asset) {
+            if (empty($asset->qr_code_token)) {
+                $asset->qr_code_token = (string) Str::uuid();
+            }
+        });
     }
 
     /**

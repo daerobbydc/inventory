@@ -1,22 +1,31 @@
 <script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
+import { ShieldCheck } from 'lucide-vue-next';
 </script>
 
 <template>
-    <div
-        class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0"
-    >
-        <div>
-            <Link href="/">
-                <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
+    <div class="min-h-screen flex flex-col items-center justify-center bg-[#f4f7fa] px-4 py-8 font-sans text-slate-900">
+        <!-- Brand Header -->
+        <div class="mb-6 text-center">
+            <Link href="/" class="inline-flex items-center gap-3 group">
+                <div class="h-12 w-12 rounded-2xl bg-[#168a42] flex items-center justify-center text-white shadow-md shadow-emerald-700/20 group-hover:scale-105 transition">
+                    <ShieldCheck class="h-7 w-7 stroke-[2.2]" />
+                </div>
+                <div class="text-left">
+                    <div class="text-xl font-extrabold tracking-tight text-[#168a42] leading-none">SIM-SARPRAS</div>
+                    <div class="text-xs font-semibold text-slate-500 mt-1">Universitas Indonesia Mandiri</div>
+                </div>
             </Link>
         </div>
 
-        <div
-            class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
-        >
+        <!-- Auth Card Container -->
+        <div class="w-full max-w-md bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm">
             <slot />
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-6 text-center text-xs text-slate-400">
+            &copy; {{ new Date().getFullYear() }} Biro Sarana & Prasarana • Universitas Indonesia Mandiri
         </div>
     </div>
 </template>

@@ -90,7 +90,7 @@ const formatRupiah = (val) => {
 
                     <!-- Lapor Kerusakan -->
                     <Link
-                        :href="route('dashboard')"
+                        :href="route('maintenance.create')"
                         class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-rose-50/50 border border-slate-200 text-rose-600 rounded-xl text-xs font-bold shadow-sm transition"
                     >
                         <AlertTriangle class="w-4 h-4 text-rose-500" />
@@ -98,13 +98,13 @@ const formatRupiah = (val) => {
                     </Link>
 
                     <!-- Export Rekap -->
-                    <button
-                        type="button"
+                    <Link
+                        :href="route('reports.print')"
                         class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition"
                     >
                         <Download class="w-4 h-4 text-slate-500" />
                         <span>Export Rekap</span>
-                    </button>
+                    </Link>
                 </div>
             </div>
 
@@ -128,7 +128,7 @@ const formatRupiah = (val) => {
                     </div>
                     <div class="mt-4 pt-3 border-t border-rose-200/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Nilai Susut: <strong class="text-slate-700">Rp 3.2 M</strong></span>
-                        <a href="#audit" class="text-rose-600 hover:text-rose-800 font-bold">Lihat Audit BMN</a>
+                        <Link :href="route('reports.index')" class="text-rose-600 hover:text-rose-800 font-bold">Lihat Audit BMN</Link>
                     </div>
                 </div>
 
@@ -283,10 +283,10 @@ const formatRupiah = (val) => {
                         <div>
                             Total Kelas: <strong class="text-slate-800">124 Ruang</strong> • Lab Khusus: <strong class="text-slate-800">42 Unit</strong>
                         </div>
-                        <a href="#jadwal" class="font-bold text-[#168a42] hover:text-[#137a3b] flex items-center gap-1">
+                        <Link :href="route('settings.index')" class="font-bold text-[#168a42] hover:text-[#137a3b] flex items-center gap-1">
                             Lihat Denah Ruang & Jadwal Lengkap
                             <ChevronRight class="w-4 h-4" />
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
@@ -342,7 +342,7 @@ const formatRupiah = (val) => {
                     <!-- Footer -->
                     <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                         <span>Pembaruan Buku Induk: <strong class="text-slate-700">Kemarin</strong></span>
-                        <a href="#bmn" class="font-bold text-[#168a42] hover:text-[#137a3b]">Detail Sensus BMN</a>
+                        <Link :href="route('reports.index')" class="font-bold text-[#168a42] hover:text-[#137a3b]">Detail Sensus BMN</Link>
                     </div>
                 </div>
             </div>
@@ -507,67 +507,95 @@ const formatRupiah = (val) => {
 
                         <!-- Ticket Items List -->
                         <div class="space-y-3">
-                            <!-- Ticket 1 -->
-                            <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
-                                <div class="flex items-start justify-between gap-2">
-                                    <div class="font-bold text-xs text-slate-900">AC Lab Jaringan Gedung C Mati Total</div>
-                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-rose-100 text-rose-700 shrink-0">
-                                        Deadline Hari Ini
-                                    </span>
+                            <template v-if="urgentTickets && urgentTickets.length > 0">
+                                <Link
+                                    v-for="ticket in urgentTickets.slice(0, 4)"
+                                    :key="ticket.id"
+                                    :href="route('maintenance.show', ticket.id)"
+                                    class="block p-3 bg-slate-50/80 hover:bg-slate-100/80 rounded-xl border border-slate-100 hover:border-slate-200 transition"
+                                >
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="font-bold text-xs text-slate-900 line-clamp-1">{{ ticket.issue_description.split('.')[0] }}</div>
+                                        <span 
+                                            :class="[
+                                                'px-2 py-0.5 rounded-full text-[9px] font-extrabold shrink-0',
+                                                ticket.priority?.value === 'critical' || ticket.priority === 'critical' ? 'bg-rose-100 text-rose-700' :
+                                                ticket.status?.value === 'waiting_parts' || ticket.status === 'waiting_parts' ? 'bg-amber-100 text-amber-800' :
+                                                ticket.status?.value === 'completed' || ticket.status === 'completed' ? 'bg-emerald-100 text-emerald-800' :
+                                                'bg-teal-100 text-teal-800'
+                                            ]"
+                                        >
+                                            {{ ticket.status?.label || (ticket.priority === 'critical' ? 'Deadline Hari Ini' : ticket.status) }}
+                                        </span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">
+                                        {{ ticket.resolution_notes || (ticket.technician ? `Teknisi: ${ticket.technician.name}` : 'Menunggu penugasan teknisi') }}
+                                    </div>
+                                </Link>
+                            </template>
+                            <template v-else>
+                                <!-- Ticket 1 -->
+                                <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="font-bold text-xs text-slate-900">AC Lab Jaringan Gedung C Mati Total</div>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-rose-100 text-rose-700 shrink-0">
+                                            Deadline Hari Ini
+                                        </span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-500 mt-1">
+                                        Teknisi: Pak Sugeng (Vendor Daikin) • Estimasi: Hari ini 17:00
+                                    </div>
                                 </div>
-                                <div class="text-[11px] text-slate-500 mt-1">
-                                    Teknisi: Pak Sugeng (Vendor Daikin) • Estimasi: Hari ini 17:00
-                                </div>
-                            </div>
 
-                            <!-- Ticket 2 -->
-                            <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
-                                <div class="flex items-start justify-between gap-2">
-                                    <div class="font-bold text-xs text-slate-900">Proyektor R. 302 Gd. Bersama Buram</div>
-                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-amber-100 text-amber-800 shrink-0">
-                                        Menunggu Part
-                                    </span>
+                                <!-- Ticket 2 -->
+                                <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="font-bold text-xs text-slate-900">Proyektor R. 302 Gd. Bersama Buram</div>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-amber-100 text-amber-800 shrink-0">
+                                            Menunggu Part
+                                        </span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-500 mt-1">
+                                        Lampu proyektor aus • Status: PO Sparepart BMN-204
+                                    </div>
                                 </div>
-                                <div class="text-[11px] text-slate-500 mt-1">
-                                    Lampu proyektor aus • Status: PO Sparepart BMN-204
-                                </div>
-                            </div>
 
-                            <!-- Ticket 3 -->
-                            <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
-                                <div class="flex items-start justify-between gap-2">
-                                    <div class="font-bold text-xs text-slate-900">Lift Gedung Rektorat Pemeliharaan</div>
-                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-emerald-100 text-emerald-800 shrink-0">
-                                        Selesai 80%
-                                    </span>
+                                <!-- Ticket 3 -->
+                                <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="font-bold text-xs text-slate-900">Lift Gedung Rektorat Pemeliharaan</div>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-emerald-100 text-emerald-800 shrink-0">
+                                            Selesai 80%
+                                        </span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-500 mt-1">
+                                        Pemeriksaan kabel seling berkala semesteran
+                                    </div>
                                 </div>
-                                <div class="text-[11px] text-slate-500 mt-1">
-                                    Pemeriksaan kabel seling berkala semesteran
-                                </div>
-                            </div>
 
-                            <!-- Ticket 4 -->
-                            <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
-                                <div class="flex items-start justify-between gap-2">
-                                    <div class="font-bold text-xs text-slate-900">Pompa Air Asrama Mahasiswa Putra</div>
-                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-teal-100 text-teal-800 shrink-0">
-                                        Sedang Dikerjakan
-                                    </span>
+                                <!-- Ticket 4 -->
+                                <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="font-bold text-xs text-slate-900">Pompa Air Asrama Mahasiswa Putra</div>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-teal-100 text-teal-800 shrink-0">
+                                            Sedang Dikerjakan
+                                        </span>
+                                    </div>
+                                    <div class="text-[11px] text-slate-500 mt-1">
+                                        Pipa distribusi blok B bocor • Tim Internal Sarpras
+                                    </div>
                                 </div>
-                                <div class="text-[11px] text-slate-500 mt-1">
-                                    Pipa distribusi blok B bocor • Tim Internal Sarpras
-                                </div>
-                            </div>
+                            </template>
                         </div>
                     </div>
 
                     <!-- Footer -->
                     <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                         <span>8 Teknisi On-Duty di Kampus</span>
-                        <a href="#dispatch" class="font-bold text-[#168a42] hover:text-[#137a3b] flex items-center gap-1">
+                        <Link :href="route('maintenance.index')" class="font-bold text-[#168a42] hover:text-[#137a3b] flex items-center gap-1">
                             Buka Dispatch Teknisi
                             <ChevronRight class="w-4 h-4" />
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

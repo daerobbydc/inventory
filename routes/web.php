@@ -3,7 +3,10 @@
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\MaintenanceTicketController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +32,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('loans/{loan}/reject', [LoanController::class, 'reject'])->name('loans.reject');
     Route::post('loans/{loan}/handover', [LoanController::class, 'handover'])->name('loans.handover');
     Route::post('loans/{loan}/return', [LoanController::class, 'returnItems'])->name('loans.return');
+
+    // Pemeliharaan & Servis
+    Route::resource('maintenance', MaintenanceTicketController::class)->except(['destroy']);
+
+    // Laporan & Audit BMN
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
+
+    // Pengaturan Sistem & Master Data
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
 
     // Profil Pengguna
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

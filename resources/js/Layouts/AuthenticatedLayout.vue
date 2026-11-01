@@ -101,8 +101,13 @@ const dismissFlash = ref(false);
 
                     <!-- Pemeliharaan & Servis -->
                     <Link
-                        :href="route('dashboard')"
-                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition"
+                        :href="route('maintenance.index')"
+                        :class="[
+                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            route().current('maintenance.*') 
+                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        ]"
                     >
                         <Wrench class="w-4 h-4 shrink-0" />
                         <span>Pemeliharaan & Servis</span>
@@ -110,8 +115,13 @@ const dismissFlash = ref(false);
 
                     <!-- Laporan & Audit -->
                     <Link
-                        :href="route('dashboard')"
-                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition"
+                        :href="route('reports.index')"
+                        :class="[
+                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            route().current('reports.*') 
+                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        ]"
                     >
                         <FileText class="w-4 h-4 shrink-0" />
                         <span>Laporan & Audit</span>
@@ -119,8 +129,13 @@ const dismissFlash = ref(false);
 
                     <!-- Pengaturan Sistem -->
                     <Link
-                        :href="route('profile.edit')"
-                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition"
+                        :href="route('settings.index')"
+                        :class="[
+                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            route().current('settings.*') || route().current('profile.*')
+                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        ]"
                     >
                         <Settings class="w-4 h-4 shrink-0" />
                         <span>Pengaturan Sistem</span>
