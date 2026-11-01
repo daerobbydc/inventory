@@ -296,3 +296,4 @@ const printLabel = () => {
         </div>
     </AuthenticatedLayout>
 </template>
+

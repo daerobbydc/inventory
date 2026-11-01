@@ -60,6 +60,15 @@ const dismissFlash = ref(false);
                                 <Layers class="w-4 h-4" />
                                 Aset Tetap
                             </NavLink>
+
+                            <NavLink
+                                :href="route('loans.index')"
+                                :active="route().current('loans.*')"
+                                class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition"
+                            >
+                                <Repeat class="w-4 h-4" />
+                                Peminjaman
+                            </NavLink>
                         </div>
                     </div>
 
@@ -132,6 +141,9 @@ const dismissFlash = ref(false);
                     </ResponsiveNavLink>
                     <ResponsiveNavLink :href="route('assets.index')" :active="route().current('assets.*')">
                         Katalog Aset Tetap
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink :href="route('loans.index')" :active="route().current('loans.*')">
+                        Peminjaman & Pengembalian
                     </ResponsiveNavLink>
                 </div>
                 <div class="border-t border-slate-200 px-4 py-3">
