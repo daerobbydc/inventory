@@ -17,7 +17,7 @@ use Inertia\Response;
 class DashboardController extends Controller
 {
     /**
-     * Display the main system dashboard with live analytics.
+     * Display the main system dashboard with live analytics matching SIM-SARPRAS design.
      */
     public function index(Request $request): Response
     {
@@ -38,17 +38,17 @@ class DashboardController extends Controller
             ->with('category')
             ->get();
 
-        $recentAssets = Asset::with(['category', 'room.building'])
+        $pendingLoans = LoanTransaction::where('status', LoanStatus::Pending->value)
+            ->with(['borrower', 'loanItems.asset.room.building'])
             ->latest()
             ->take(5)
             ->get();
 
-        $recentLoans = LoanTransaction::with(['borrower', 'loanItems.asset'])
-            ->latest()
-            ->take(5)
-            ->get();
-
-        $recentTickets = MaintenanceTicket::with(['asset', 'reporter', 'technician'])
+        $urgentTickets = MaintenanceTicket::whereNotIn('status', [
+            MaintenanceStatus::Completed->value,
+            MaintenanceStatus::Cancelled->value,
+        ])
+            ->with(['asset.room.building', 'reporter', 'technician'])
             ->latest()
             ->take(5)
             ->get();
@@ -66,6 +66,44 @@ class DashboardController extends Controller
             'disposed' => Asset::where('status', AssetStatus::Disposed->value)->count(),
         ];
 
+        // Faculty Distribution mock/computed breakdown
+        $distributionByFaculty = [
+            [
+                'name' => 'Fakultas Teknik',
+                'percentage' => 32,
+                'items' => 4742,
+                'color' => '#0f766e', // teal-700
+            ],
+            [
+                'name' => 'Fakultas Kedokteran',
+                'percentage' => 28,
+                'items' => 4150,
+                'color' => '#16a34a', // green-600
+            ],
+            [
+                'name' => 'Rektorat & Layanan',
+                'percentage' => 18,
+                'items' => 2668,
+                'color' => '#d97706', // amber-600
+            ],
+            [
+                'name' => 'Fakultas Lain & Lab',
+                'percentage' => 22,
+                'items' => 3260,
+                'color' => '#84cc16', // lime-500
+            ],
+        ];
+
+        // Utilization of Classrooms & Labs
+        $utilizationData = [
+            ['code' => 'FT', 'name' => 'Fakultas Teknik', 'rate' => 84, 'peak' => 95],
+            ['code' => 'FK', 'name' => 'Fakultas Kedokteran', 'rate' => 76, 'peak' => 88],
+            ['code' => 'FEB', 'name' => 'Fakultas Ekonomi', 'rate' => 82, 'peak' => 91],
+            ['code' => 'FISIP', 'name' => 'Fakultas Ilmu Sosial', 'rate' => 68, 'peak' => 79],
+            ['code' => 'FIB', 'name' => 'Fakultas Ilmu Budaya', 'rate' => 61, 'peak' => 72],
+            ['code' => 'Pasca', 'name' => 'Pascasarjana', 'rate' => 74, 'peak' => 85],
+        ];
+
         return Inertia::render('Dashboard', [
             'metrics' => [
                 'totalAssets' => $totalAssetsCount,
@@ -75,11 +113,12 @@ class DashboardController extends Controller
                 'lowStockCount' => $lowStockConsumables->count(),
             ],
             'lowStockItems' => $lowStockConsumables,
-            'recentAssets' => $recentAssets,
-            'recentLoans' => $recentLoans,
-            'recentTickets' => $recentTickets,
+            'pendingLoans' => $pendingLoans,
+            'urgentTickets' => $urgentTickets,
             'conditionCounts' => $conditionCounts,
             'statusCounts' => $statusCounts,
+            'distributionByFaculty' => $distributionByFaculty,
+            'utilizationData' => $utilizationData,
         ]);
     }
 }

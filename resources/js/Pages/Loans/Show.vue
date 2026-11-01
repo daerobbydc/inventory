@@ -477,3 +477,4 @@ const getStatusBadge = (st) => {
         </div>
     </AuthenticatedLayout>
 </template>
+
