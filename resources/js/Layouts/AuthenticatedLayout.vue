@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import { Link, usePage } from '@inertiajs/vue3';
@@ -16,6 +16,9 @@ import {
     Bell, 
     CheckCircle2, 
     AlertCircle, 
+    AlertTriangle,
+    Info,
+    Clock,
     X,
     Menu,
     ChevronDown,
@@ -27,8 +30,12 @@ import {
 } from 'lucide-vue-next';
 
 const showingSidebarMobile = ref(false);
+const showingNotifications = ref(false);
 const page = usePage();
 const dismissFlash = ref(false);
+
+const notifications = computed(() => page.props.notifications || []);
+const unreadCount = computed(() => page.props.unread_notifications_count || notifications.value.length || 0);
 </script>
 
 <template>
@@ -249,27 +256,113 @@ const dismissFlash = ref(false);
 
                 <!-- Right Top Tools -->
                 <div class="flex items-center gap-3">
-                    <!-- Campus Selector Pill -->
-                    <div class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-xs font-semibold text-slate-700 cursor-pointer transition">
-                        <Building2 class="w-3.5 h-3.5 text-slate-400" />
-                        <span>Kampus Utama (Pusat)</span>
-                        <ChevronDown class="w-3.5 h-3.5 text-slate-400" />
-                    </div>
+                    <!-- Notification Bell with Interactive Dropdown -->
+                    <div class="relative">
+                        <button 
+                            @click="showingNotifications = !showingNotifications"
+                            class="relative p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-full transition"
+                            title="Pemberitahuan Sistem"
+                        >
+                            <Bell class="w-4 h-4" />
+                            <span 
+                                v-if="unreadCount > 0"
+                                class="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-bold text-[9px] flex items-center justify-center animate-pulse"
+                            >
+                                {{ unreadCount > 9 ? '9+' : unreadCount }}
+                            </span>
+                        </button>
 
-                    <!-- Academic Year Selector Pill -->
-                    <div class="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-xs font-semibold text-slate-700 cursor-pointer transition">
-                        <Calendar class="w-3.5 h-3.5 text-slate-400" />
-                        <span>TA 2024/2025 Genap</span>
-                        <ChevronDown class="w-3.5 h-3.5 text-slate-400" />
-                    </div>
+                        <!-- Backdrop to close on click outside -->
+                        <div 
+                            v-show="showingNotifications" 
+                            class="fixed inset-0 z-40" 
+                            @click="showingNotifications = false"
+                        ></div>
 
-                    <!-- Notification Bell -->
-                    <button class="relative p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-full transition">
-                        <Bell class="w-4 h-4" />
-                        <span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-bold text-[9px] flex items-center justify-center">
-                            3
-                        </span>
-                    </button>
+                        <!-- Notification Dropdown Panel -->
+                        <Transition
+                            enter-active-class="transition ease-out duration-150"
+                            enter-from-class="transform opacity-0 scale-95"
+                            enter-to-class="transform opacity-100 scale-100"
+                            leave-active-class="transition ease-in duration-100"
+                            leave-from-class="transform opacity-100 scale-100"
+                            leave-to-class="transform opacity-0 scale-95"
+                        >
+                            <div 
+                                v-show="showingNotifications" 
+                                class="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200/90 z-50 overflow-hidden"
+                            >
+                                <!-- Header -->
+                                <div class="px-4 py-3 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <Bell class="w-4 h-4 text-[#1e3a8a]" />
+                                        <span class="text-xs font-bold text-slate-900">Pemberitahuan Sistem</span>
+                                    </div>
+                                    <span v-if="unreadCount > 0" class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-bold">
+                                        {{ unreadCount }} Aktif
+                                    </span>
+                                </div>
+
+                                <!-- Notification Items List -->
+                                <div class="max-h-80 overflow-y-auto divide-y divide-slate-100">
+                                    <div 
+                                        v-if="notifications.length > 0"
+                                        v-for="notif in notifications" 
+                                        :key="notif.id"
+                                    >
+                                        <Link 
+                                            :href="notif.url"
+                                            @click="showingNotifications = false"
+                                            class="p-3.5 hover:bg-slate-50 transition flex items-start gap-3 block"
+                                        >
+                                            <div 
+                                                :class="[
+                                                    'w-7 h-7 rounded-lg shrink-0 flex items-center justify-center mt-0.5',
+                                                    notif.type === 'danger' ? 'bg-rose-50 text-rose-600' :
+                                                    notif.type === 'warning' ? 'bg-amber-50 text-amber-600' :
+                                                    notif.type === 'success' ? 'bg-emerald-50 text-emerald-600' :
+                                                    'bg-blue-50 text-[#1e3a8a]'
+                                                ]"
+                                            >
+                                                <AlertTriangle v-if="notif.type === 'danger'" class="w-3.5 h-3.5" />
+                                                <Clock v-else-if="notif.type === 'warning'" class="w-3.5 h-3.5" />
+                                                <CheckCircle2 v-else-if="notif.type === 'success'" class="w-3.5 h-3.5" />
+                                                <Info v-else class="w-3.5 h-3.5" />
+                                            </div>
+
+                                            <div class="flex-1 min-w-0 space-y-0.5">
+                                                <div class="text-xs font-bold text-slate-900 leading-tight">
+                                                    {{ notif.title }}
+                                                </div>
+                                                <p class="text-[11px] text-slate-500 leading-normal line-clamp-2">
+                                                    {{ notif.message }}
+                                                </p>
+                                                <div class="text-[10px] text-slate-400 pt-0.5 font-medium">
+                                                    {{ notif.time }}
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </div>
+
+                                    <!-- Empty State -->
+                                    <div v-else class="p-8 text-center">
+                                        <div class="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-2">
+                                            <Bell class="w-5 h-5 text-slate-300" />
+                                        </div>
+                                        <p class="text-xs font-semibold text-slate-700">Tidak ada notifikasi baru</p>
+                                        <p class="text-[11px] text-slate-400 mt-0.5">Semua permohonan & tugas Anda sudah terbarui.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="px-4 py-2 bg-slate-50/60 border-t border-slate-100 text-center">
+                                    <span class="text-[10px] text-slate-400 font-medium">
+                                        SIM-SARPRAS Universitas Al-Khairiyah
+                                    </span>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
 
                     <!-- User Profile Dropdown -->
                     <Dropdown align="right" width="48">

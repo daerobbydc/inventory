@@ -183,4 +183,3 @@ class RoleSpecificDashboardTest extends TestCase
         );
     }
 }
-
