@@ -81,7 +81,12 @@ const getStatusBadge = (st) => {
                             Peminjaman Sarana & Fasilitas
                         </h1>
                         <p class="text-xs text-slate-500">
-                            Pengajuan digital pemanfaatan laboratorium, perangkat audio visual, dan verifikasi serah terima fisik.
+                            <template v-if="isStaff">
+                                Pengajuan digital pemanfaatan laboratorium, perangkat audio visual, dan verifikasi serah terima fisik.
+                            </template>
+                            <template v-else>
+                                Daftar riwayat dan permohonan peminjaman sarana prasarana kampus Anda.
+                            </template>
                         </p>
                     </div>
                 </div>
@@ -206,14 +211,14 @@ const getStatusBadge = (st) => {
                                         class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-[#1e3a8a] hover:bg-blue-50 border border-blue-200 transition"
                                     >
                                         <Eye class="w-3.5 h-3.5" />
-                                        Kelola
+                                        <span>{{ isStaff ? 'Kelola' : 'Detail Voucher' }}</span>
                                     </Link>
                                 </td>
                             </tr>
 
                             <tr v-if="!loans.data?.length">
                                 <td colspan="7" class="px-6 py-12 text-center text-sm text-slate-400">
-                                    Belum ada transaksi peminjaman yang sesuai dengan filter.
+                                    {{ isStaff ? 'Belum ada transaksi peminjaman yang sesuai dengan filter.' : 'Anda belum memiliki riwayat permohonan peminjaman sarana prasarana.' }}
                                 </td>
                             </tr>
                         </tbody>

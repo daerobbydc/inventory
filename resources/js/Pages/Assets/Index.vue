@@ -286,8 +286,9 @@ const getStatusBadge = (st) => {
                                 <!-- Actions -->
                                 <td class="px-6 py-4 text-right">
                                     <div class="inline-flex items-center gap-1.5">
-                                        <!-- QR Modal Trigger -->
+                                        <!-- QR Modal Trigger (Staff only) -->
                                         <button
+                                            v-if="$page.props.auth?.user?.can_manage_assets"
                                             @click="openQrModal(asset)"
                                             type="button"
                                             title="Tampilkan Label QR"
@@ -296,7 +297,7 @@ const getStatusBadge = (st) => {
                                             <QrCode class="w-3.5 h-3.5" />
                                         </button>
 
-                                        <!-- Detail Link -->
+                                        <!-- Detail Link (All) -->
                                         <Link
                                             :href="route('assets.show', asset.id)"
                                             title="Buku Induk Aset"
@@ -305,8 +306,9 @@ const getStatusBadge = (st) => {
                                             <Eye class="w-3.5 h-3.5" />
                                         </Link>
 
-                                        <!-- Edit Link -->
+                                        <!-- Edit Link (Staff only) -->
                                         <Link
+                                            v-if="$page.props.auth?.user?.can_manage_assets"
                                             :href="route('assets.edit', asset.id)"
                                             title="Ubah Data"
                                             class="w-7 h-7 rounded-lg text-slate-600 hover:text-[#1e3a8a] hover:bg-blue-50 border border-slate-200 flex items-center justify-center transition"

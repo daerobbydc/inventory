@@ -290,6 +290,26 @@ const isStepActive = (stepKey) => {
                         </form>
                     </div>
 
+                    <!-- Information Card for Reporter / Non-maintenance Users -->
+                    <div v-else class="bg-blue-50/70 rounded-2xl border border-blue-200/80 p-5 text-xs text-blue-950 space-y-3 shadow-xs">
+                        <div class="flex items-center gap-2 font-bold text-[#1e3a8a]">
+                            <CheckCircle2 class="w-4 h-4 text-[#1e3a8a]" />
+                            <span>Status Laporan Kerusakan</span>
+                        </div>
+                        <p class="text-[11px] text-blue-900 leading-relaxed">
+                            Laporan kendala fasilitas ini telah diterima oleh Biro Sarana & Prasarana Universitas Al-Khairiyah. Tim teknisi akan melakukan penanganan sesuai antrean dan tingkat prioritas masalah.
+                        </p>
+                        <div class="bg-white/80 p-3 rounded-xl border border-blue-200/60 space-y-1">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Status Penanganan:</span>
+                            <span class="font-extrabold text-slate-800 block text-xs">
+                                {{ ticket.status?.label || ticket.status }}
+                            </span>
+                            <span class="text-[10px] text-slate-500 block">
+                                {{ ticket.technician ? `Teknisi penanggung jawab: ${ticket.technician.name}` : 'Menunggu penugasan teknisi jaga dari Biro Sarpras' }}
+                            </span>
+                        </div>
+                    </div>
+
                     <!-- Person In Charge Card -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm space-y-4 text-xs">
                         <div class="font-extrabold text-slate-900 border-b border-slate-100 pb-2">Personil Terkait</div>

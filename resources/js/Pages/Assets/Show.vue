@@ -170,17 +170,27 @@ const getStatusBadge = (st) => {
                                 <span class="font-semibold text-slate-800 mt-0.5 block">{{ asset.purchase_date || '-' }}</span>
                             </div>
 
-                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <div v-if="$page.props.auth?.user?.can_manage_assets" class="p-3 bg-slate-50 rounded-xl border border-slate-100">
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Harga Perolehan Awal</span>
                                 <span class="font-black text-slate-900 text-base mt-0.5 block">{{ formatRupiah(asset.purchase_cost) }}</span>
                             </div>
 
-                            <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100">
+                            <div v-if="$page.props.auth?.user?.can_manage_assets" class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100">
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 block">Estimasi Nilai Buku Terkini</span>
                                 <div class="flex items-center gap-1.5 font-black text-[#1e3a8a] text-base mt-0.5">
                                     <TrendingDown class="w-4 h-4" />
                                     <span>{{ formatRupiah(currentBookValue) }}</span>
                                 </div>
+                            </div>
+
+                            <div v-if="!$page.props.auth?.user?.can_manage_assets" class="p-3 bg-blue-50/60 rounded-xl border border-blue-100">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-blue-800 block">Status Hak Akses Peminjaman</span>
+                                <span class="font-bold text-slate-900 text-sm mt-0.5 block">Tersedia untuk Civitas Akademika</span>
+                            </div>
+
+                            <div v-if="!$page.props.auth?.user?.can_manage_assets" class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Kondisi Fisik Saat Ini</span>
+                                <span class="font-bold text-slate-900 text-sm mt-0.5 block">{{ getConditionBadge(asset.condition).label }}</span>
                             </div>
                         </div>
 
@@ -339,7 +349,9 @@ const getStatusBadge = (st) => {
                             Token: {{ asset.qr_code_token }}
                         </div>
 
+                        <!-- Staff Action: Print Physical Label -->
                         <button
+                            v-if="$page.props.auth?.user?.can_manage_assets"
                             @click="printLabel"
                             type="button"
                             class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
@@ -347,6 +359,25 @@ const getStatusBadge = (st) => {
                             <Printer class="w-3.5 h-3.5" />
                             Cetak Stiker Label Fisik
                         </button>
+
+                        <!-- Student / Civitas Action: Quick Loan / Report -->
+                        <div v-else class="space-y-2">
+                            <Link
+                                v-if="asset.status === 'available'"
+                                :href="route('loans.create')"
+                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
+                            >
+                                <Repeat class="w-3.5 h-3.5" />
+                                Ajukan Peminjaman Unit Ini
+                            </Link>
+                            <Link
+                                :href="route('maintenance.create')"
+                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-white hover:bg-rose-50 text-rose-600 border border-rose-200 rounded-xl text-xs font-bold transition"
+                            >
+                                <AlertTriangle class="w-3.5 h-3.5 text-rose-500" />
+                                Lapor Kendala Fasilitas
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -218,8 +218,8 @@ const submit = () => {
                     <p v-if="form.errors.issue_description" class="text-xs text-rose-600 font-medium mt-1">{{ form.errors.issue_description }}</p>
                 </div>
 
-                <!-- Section 4: Penugasan Teknisi Awal (Opsional) -->
-                <div>
+                <!-- Section 4: Penugasan Teknisi Awal (Hanya Petugas / Teknisi) -->
+                <div v-if="$page.props.auth?.user?.can_update_maintenance">
                     <label class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2">
                         4. Penugasan Teknisi Langsung (Opsional)
                     </label>

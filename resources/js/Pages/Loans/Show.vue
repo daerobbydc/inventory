@@ -182,6 +182,59 @@ const getStatusBadge = (st) => {
                 </div>
             </div>
 
+            <!-- Status Guidance Alert Box (Tailored for borrower / non-staff) -->
+            <div v-if="!canManage" class="rounded-2xl border p-5 transition flex items-start gap-4 shadow-xs"
+                :class="[
+                    loan.status === 'pending' ? 'bg-amber-50/90 border-amber-200/80 text-amber-950' : '',
+                    loan.status === 'approved' ? 'bg-blue-50/90 border-blue-200/80 text-blue-950' : '',
+                    loan.status === 'borrowed' ? 'bg-indigo-50/90 border-indigo-200/80 text-indigo-950' : '',
+                    loan.status === 'returned' ? 'bg-emerald-50/90 border-emerald-200/80 text-emerald-950' : '',
+                    loan.status === 'rejected' ? 'bg-rose-50/90 border-rose-200/80 text-rose-950' : '',
+                ]"
+            >
+                <div class="mt-0.5 p-2 rounded-xl"
+                    :class="[
+                        loan.status === 'pending' ? 'bg-amber-100 text-amber-700' : '',
+                        loan.status === 'approved' ? 'bg-blue-100 text-[#1e3a8a]' : '',
+                        loan.status === 'borrowed' ? 'bg-indigo-100 text-indigo-700' : '',
+                        loan.status === 'returned' ? 'bg-emerald-100 text-emerald-700' : '',
+                        loan.status === 'rejected' ? 'bg-rose-100 text-rose-700' : '',
+                    ]"
+                >
+                    <Clock v-if="loan.status === 'pending'" class="w-5 h-5 shrink-0" />
+                    <CheckCircle2 v-else-if="loan.status === 'approved'" class="w-5 h-5 shrink-0" />
+                    <Repeat v-else-if="loan.status === 'borrowed'" class="w-5 h-5 shrink-0" />
+                    <ShieldCheck v-else-if="loan.status === 'returned'" class="w-5 h-5 shrink-0" />
+                    <XCircle v-else-if="loan.status === 'rejected'" class="w-5 h-5 shrink-0" />
+                </div>
+                <div class="space-y-1 text-xs">
+                    <h4 class="font-extrabold text-sm text-slate-900">
+                        <template v-if="loan.status === 'pending'">Permohonan Anda Sedang Menunggu Verifikasi</template>
+                        <template v-else-if="loan.status === 'approved'">Permohonan Disetujui — Siap Diambil di Ruangan/Lab!</template>
+                        <template v-else-if="loan.status === 'borrowed'">Barang Sedang Anda Pinjam</template>
+                        <template v-else-if="loan.status === 'returned'">Peminjaman Selesai Dikembalikan</template>
+                        <template v-else-if="loan.status === 'rejected'">Permohonan Peminjaman Tidak Disetujui</template>
+                    </h4>
+                    <p class="leading-relaxed text-slate-700">
+                        <template v-if="loan.status === 'pending'">
+                            Pengajuan peminjaman sarana prasarana ini telah masuk ke sistem Biro Sarpras Universitas Al-Khairiyah dan sedang menunggu verifikasi ketersediaan fisik oleh PIC Ruangan / Laboratorium terkait.
+                        </template>
+                        <template v-else-if="loan.status === 'approved'">
+                            Selamat! Pengajuan Anda telah disetujui. Silakan temui petugas di laboratorium/ruangan asal barang dan tunjukkan nomor voucher <span class="font-mono font-bold text-[#1e3a8a]">{{ loan.transaction_code }}</span> untuk serah terima fisik barang.
+                        </template>
+                        <template v-else-if="loan.status === 'borrowed'">
+                            Unit barang inventaris telah diserahterimakan kepada Anda. Mohon menjaga kebersihan & keutuhan unit dan pastikan melakukan pengembalian fisik sebelum batas tenggat: <strong class="font-bold text-slate-900">{{ loan.expected_return_date }}</strong>.
+                        </template>
+                        <template v-else-if="loan.status === 'returned'">
+                            Seluruh unit barang inventaris telah diserahterimakan kembali dan diverifikasi kondisinya oleh petugas sarpras pada tanggal <strong class="font-bold text-slate-900">{{ loan.actual_return_date }}</strong>. Terima kasih atas kerja samanya.
+                        </template>
+                        <template v-else-if="loan.status === 'rejected'">
+                            Mohon maaf, permohonan peminjaman ini tidak dapat disetujui oleh verifikator sarpras. Silakan periksa rincian alasan penolakan pada kolom catatan di bawah ini.
+                        </template>
+                    </p>
+                </div>
+            </div>
+
             <!-- Main 2-Cols -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left 2 Cols: Voucher Data & Items -->
