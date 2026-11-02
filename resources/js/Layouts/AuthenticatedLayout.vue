@@ -39,46 +39,46 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#f4f7fa] flex text-slate-900 font-sans">
+    <div class="min-h-screen bg-[#eef2f6] flex text-slate-900 font-sans">
         <!-- Backdrop for Mobile Sidebar -->
         <div 
             v-if="showingSidebarMobile" 
             @click="showingSidebarMobile = false"
-            class="fixed inset-0 z-40 bg-slate-900/50 md:hidden"
+            class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm md:hidden"
         ></div>
 
         <!-- Left Sidebar Navigation -->
         <aside 
             :class="[
-                'fixed md:sticky top-0 z-50 h-screen w-64 bg-white border-r border-slate-200/80 flex flex-col justify-between transition-transform duration-300 ease-in-out',
+                'fixed md:sticky top-0 z-50 h-screen w-64 bg-[#0a1628] border-r border-[#152438] flex flex-col justify-between transition-transform duration-300 ease-in-out select-none',
                 showingSidebarMobile ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
             ]"
         >
             <div>
                 <!-- Brand Header -->
-                <div class="h-20 px-6 flex items-center gap-3 border-b border-slate-100">
-                    <div class="h-10 w-10 rounded-xl bg-[#1e3a8a] flex items-center justify-center text-white shadow-md shadow-blue-900/25">
+                <div class="h-20 px-6 flex items-center gap-3 border-b border-white/[0.08] bg-[#07101d]">
+                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-[#1e3a8a] flex items-center justify-center text-white shadow-lg shadow-blue-500/25 ring-1 ring-white/20">
                         <ShieldCheck class="h-6 w-6 stroke-[2.2]" />
                     </div>
                     <div>
-                        <div class="text-base font-extrabold tracking-tight text-[#1e3a8a] leading-none">SIM-SARPRAS</div>
-                        <div class="text-[11px] font-medium text-slate-400 mt-1">Univ. Al-Khairiyah</div>
+                        <div class="text-base font-extrabold tracking-tight text-white leading-none">SIM-SARPRAS</div>
+                        <div class="text-[11px] font-semibold text-blue-300/80 mt-1">Univ. Al-Khairiyah</div>
                     </div>
                 </div>
 
                 <!-- Nav Menu Links -->
-                <nav class="p-4 space-y-1.5">
+                <nav class="p-3.5 space-y-1">
                     <!-- Dashboard -->
                     <Link
                         :href="route('dashboard')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('dashboard') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <LayoutDashboard class="w-4 h-4 shrink-0" />
+                        <LayoutDashboard :class="['w-4 h-4 shrink-0 transition', route().current('dashboard') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Dashboard</span>
                     </Link>
 
@@ -86,13 +86,13 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                     <Link
                         :href="route('assets.index')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('assets.*') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <Layers class="w-4 h-4 shrink-0" />
+                        <Layers :class="['w-4 h-4 shrink-0 transition', route().current('assets.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Data Aset & Inventaris</span>
                     </Link>
 
@@ -101,13 +101,13 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                         v-if="$page.props.auth?.user?.can_manage_consumables"
                         :href="route('consumables.index')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('consumables.*') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <Boxes class="w-4 h-4 shrink-0" />
+                        <Boxes :class="['w-4 h-4 shrink-0 transition', route().current('consumables.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Barang Habis Pakai (ATK)</span>
                     </Link>
 
@@ -115,13 +115,13 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                     <Link
                         :href="route('loans.index')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('loans.*') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <Repeat class="w-4 h-4 shrink-0" />
+                        <Repeat :class="['w-4 h-4 shrink-0 transition', route().current('loans.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Peminjaman Aset (Alat)</span>
                     </Link>
 
@@ -129,13 +129,13 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                     <Link
                         :href="route('room-bookings.index')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('room-bookings.*') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <DoorOpen class="w-4 h-4 shrink-0" />
+                        <DoorOpen :class="['w-4 h-4 shrink-0 transition', route().current('room-bookings.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Peminjaman Ruangan</span>
                     </Link>
 
@@ -144,13 +144,13 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                         v-if="$page.props.auth?.user?.can_perform_audit"
                         :href="route('stock-opname.scanner')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('stock-opname.*') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <QrCode class="w-4 h-4 shrink-0" />
+                        <QrCode :class="['w-4 h-4 shrink-0 transition', route().current('stock-opname.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Scanner QR Sensus</span>
                     </Link>
 
@@ -158,13 +158,13 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                     <Link
                         :href="route('maintenance.index')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('maintenance.*') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <Wrench class="w-4 h-4 shrink-0" />
+                        <Wrench :class="['w-4 h-4 shrink-0 transition', route().current('maintenance.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Pemeliharaan & Servis</span>
                     </Link>
 
@@ -173,13 +173,13 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                         v-if="$page.props.auth?.user?.can_manage_disposals"
                         :href="route('disposals.index')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('disposals.*') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <ArchiveX class="w-4 h-4 shrink-0" />
+                        <ArchiveX :class="['w-4 h-4 shrink-0 transition', route().current('disposals.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Penghapusan Aset</span>
                     </Link>
 
@@ -188,13 +188,13 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                         v-if="$page.props.auth?.user?.can_manage_assets"
                         :href="route('reports.index')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('reports.*') 
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <FileText class="w-4 h-4 shrink-0" />
+                        <FileText :class="['w-4 h-4 shrink-0 transition', route().current('reports.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Laporan & Audit</span>
                     </Link>
 
@@ -203,29 +203,29 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                         v-if="$page.props.auth?.user?.can_manage_settings"
                         :href="route('settings.index')"
                         :class="[
-                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
                             route().current('settings.*')
-                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
-                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
                         ]"
                     >
-                        <Settings class="w-4 h-4 shrink-0" />
+                        <Settings :class="['w-4 h-4 shrink-0 transition', route().current('settings.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
                         <span>Pengaturan Sistem</span>
                     </Link>
                 </nav>
             </div>
 
             <!-- Bottom System Status Card in Sidebar -->
-            <div class="p-4 border-t border-slate-100">
-                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                    <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+            <div class="p-4 border-t border-white/[0.08]">
+                <div class="p-3 bg-white/[0.05] rounded-xl border border-white/[0.08] backdrop-blur-sm">
+                    <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-blue-300/70 mb-1">
                         <span>Status Sistem</span>
-                        <span class="inline-block w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-pulse"></span>
                     </div>
-                    <div class="text-xs font-semibold text-slate-700 leading-tight">
-                        Sinkronisasi Inventaris Terpadu
+                    <div class="text-xs font-semibold text-white leading-tight">
+                        Sinkronisasi Terpadu Aktif
                     </div>
-                    <div class="text-[10px] text-slate-400 mt-0.5">(Biro Sarpras Unival)</div>
+                    <div class="text-[10px] text-blue-200/50 mt-0.5">(Biro Sarpras Unival)</div>
                 </div>
             </div>
         </aside>

@@ -46,13 +46,13 @@ class SystemNotificationService
             // Overdue or near-due loans
             $borrowedLoans = LoanTransaction::where('borrower_id', $user->id)
                 ->where('status', LoanStatus::Borrowed->value)
-                ->where('expected_return_date', '<=', now()->addDay())
+                ->where('return_due_date', '<=', now()->addDay())
                 ->latest()
                 ->take(3)
                 ->get();
 
             foreach ($borrowedLoans as $loan) {
-                $isOverdue = $loan->expected_return_date && $loan->expected_return_date->isPast();
+                $isOverdue = $loan->return_due_date && $loan->return_due_date->isPast();
                 $notifications[] = [
                     'id' => 'loan_due_'.$loan->id,
                     'title' => $isOverdue ? 'Jatuh Tempo Pengembalian' : 'Batas Pengembalian Besok',
@@ -61,7 +61,7 @@ class SystemNotificationService
                         : "Peminjaman {$loan->transaction_code} memiliki tenggat waktu pengembalian besok.",
                     'url' => route('loans.show', $loan->id),
                     'type' => $isOverdue ? 'danger' : 'warning',
-                    'time' => $loan->expected_return_date?->diffForHumans() ?? 'Segera',
+                    'time' => $loan->return_due_date?->diffForHumans() ?? 'Segera',
                 ];
             }
 

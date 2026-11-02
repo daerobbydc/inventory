@@ -57,31 +57,34 @@ const formatTimeRange = (start, end) => {
 <template>
     <div class="space-y-6">
         <!-- 1. Top Welcome Banner Card -->
-        <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/70 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div class="space-y-2 max-w-2xl">
-                <div class="flex items-center gap-2 text-xs font-semibold text-slate-500">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-[#1e3a8a] border border-blue-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#1e3a8a] animate-pulse"></span>
+        <div class="bg-gradient-to-r from-[#0a1628] via-[#0e2752] to-[#1e3a8a] text-white rounded-2xl p-6 sm:p-7 border border-blue-900/60 shadow-lg shadow-blue-950/15 relative overflow-hidden flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <!-- Decorative ambient glow -->
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="space-y-2 max-w-2xl relative z-10">
+                <div class="flex items-center gap-2 text-xs font-semibold">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-cyan-200 border border-blue-400/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
                         Panel Pengelola Ruang & Laboratorium
                     </span>
-                    <span>•</span>
-                    <span class="text-slate-500">PIC: {{ $page.props.auth?.user?.name }}</span>
+                    <span class="text-blue-200/60">•</span>
+                    <span class="text-blue-200">PIC: {{ $page.props.auth?.user?.name }}</span>
                 </div>
 
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
                     Pengawasan Ruang & Inventaris Terpadu
                 </h1>
 
-                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
                     Pusat verifikasi peminjaman alat laboratorium, persetujuan reservasi ruang kelas/lab, dan pemantauan kondisi aset binaan Anda di Universitas Al-Khairiyah.
                 </p>
             </div>
 
             <!-- Quick Action Buttons -->
-            <div class="flex flex-wrap sm:grid sm:grid-cols-2 lg:flex gap-2.5 shrink-0">
+            <div class="flex flex-wrap sm:grid sm:grid-cols-2 lg:flex gap-2.5 shrink-0 relative z-10">
                 <Link
                     :href="route('loans.index')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/20 transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-blue-50 text-[#0c182c] rounded-xl text-xs font-extrabold shadow-md transition"
                 >
                     <Layers class="w-4 h-4 stroke-[2.5]" />
                     <span>Verifikasi Alat</span>
@@ -89,7 +92,7 @@ const formatTimeRange = (start, end) => {
 
                 <Link
                     :href="route('room-bookings.index')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md transition"
                 >
                     <DoorOpen class="w-4 h-4 stroke-[2.5]" />
                     <span>Verifikasi Ruangan</span>
@@ -97,9 +100,9 @@ const formatTimeRange = (start, end) => {
 
                 <Link
                     :href="route('maintenance.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-rose-50 border border-slate-200 text-rose-600 rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/30 text-rose-100 rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
                 >
-                    <AlertTriangle class="w-4 h-4 text-rose-500" />
+                    <AlertTriangle class="w-4 h-4 text-rose-300" />
                     <span>Lapor Kerusakan</span>
                 </Link>
             </div>
@@ -108,10 +111,10 @@ const formatTimeRange = (start, end) => {
         <!-- 2. Four Metric Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Ruangan Dikelola -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-blue-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Ruangan Dikelola</span>
-                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#1e3a8a] flex items-center justify-center">
+                    <span class="text-xs font-bold text-slate-500">Ruangan Dikelola</span>
+                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
                         <DoorOpen class="w-4 h-4" />
                     </div>
                 </div>
@@ -123,14 +126,14 @@ const formatTimeRange = (start, end) => {
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Tanggung jawab Anda</span>
-                    <span class="text-[#1e3a8a] font-semibold text-[11px]">Laboratorium & Kelas</span>
+                    <span class="text-blue-700 font-bold text-[11px]">Laboratorium & Kelas</span>
                 </div>
             </div>
 
             <!-- Total Aset di Ruangan -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-indigo-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Aset di Ruang Anda</span>
+                    <span class="text-xs font-bold text-slate-500">Aset di Ruang Anda</span>
                     <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
                         <Layers class="w-4 h-4" />
                     </div>
@@ -143,17 +146,17 @@ const formatTimeRange = (start, end) => {
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Terdata di SIM-SARPRAS</span>
-                    <Link :href="route('assets.index')" class="text-indigo-700 font-semibold hover:underline inline-flex items-center gap-1">
+                    <Link :href="route('assets.index')" class="text-indigo-700 font-bold hover:underline inline-flex items-center gap-1">
                         Katalog <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
             <!-- Menunggu Persetujuan -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-amber-200/80 border-t-4 border-t-amber-500 bg-amber-50/20 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-amber-700">Menunggu Persetujuan</span>
-                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                    <span class="text-xs font-bold text-amber-700">Menunggu Persetujuan</span>
+                    <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
                         <Clock class="w-4 h-4" />
                     </div>
                 </div>
@@ -161,20 +164,20 @@ const formatTimeRange = (start, end) => {
                     <span class="text-3xl font-extrabold text-amber-700">
                         {{ picData.metrics?.pendingApprovals || 0 }}
                     </span>
-                    <span class="text-xs font-medium text-amber-700/70">permohonan baru</span>
+                    <span class="text-xs font-medium text-amber-700/80">permohonan baru</span>
                 </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <div class="mt-3 pt-3 border-t border-amber-200 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Alat & reservasi ruang</span>
-                    <a href="#pending-approvals" class="text-amber-700 font-bold hover:underline inline-flex items-center gap-1">
+                    <a href="#pending-approvals" class="text-amber-700 font-extrabold hover:underline inline-flex items-center gap-1">
                         Verifikasi Segera <ChevronRight class="w-3 h-3" />
                     </a>
                 </div>
             </div>
 
             <!-- Aset Rusak / Perlu Servis -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-rose-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-rose-600">Aset Rusak / Servis</span>
+                    <span class="text-xs font-bold text-rose-600">Aset Rusak / Servis</span>
                     <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
                         <AlertTriangle class="w-4 h-4" />
                     </div>
@@ -183,11 +186,11 @@ const formatTimeRange = (start, end) => {
                     <span class="text-3xl font-extrabold text-rose-600">
                         {{ picData.metrics?.damagedAssetsCount || 0 }}
                     </span>
-                    <span class="text-xs font-medium text-rose-600/70">unit butuh perbaikan</span>
+                    <span class="text-xs font-medium text-rose-600/80">unit butuh perbaikan</span>
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Kerusakan ringan/berat</span>
-                    <Link :href="route('maintenance.index')" class="text-rose-600 font-semibold hover:underline inline-flex items-center gap-1">
+                    <Link :href="route('maintenance.index')" class="text-rose-600 font-bold hover:underline inline-flex items-center gap-1">
                         Cek Servis <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>

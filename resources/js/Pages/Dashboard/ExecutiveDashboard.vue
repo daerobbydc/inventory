@@ -40,31 +40,34 @@ const formatRupiah = (val) => {
 <template>
     <div class="space-y-6">
         <!-- 1. Top Welcome Banner Card -->
-        <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/70 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div class="space-y-2 max-w-2xl">
-                <div class="flex items-center gap-2 text-xs font-semibold text-slate-500">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#1e3a8a] animate-pulse"></span>
+        <div class="bg-gradient-to-r from-[#0a1628] via-[#0f244a] to-[#1e3a8a] text-white rounded-2xl p-6 sm:p-7 border border-blue-900/60 shadow-lg shadow-blue-950/15 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative overflow-hidden">
+            <!-- Decorative ambient glow -->
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="space-y-2 max-w-2xl relative z-10">
+                <div class="flex items-center gap-2 text-xs font-semibold">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-cyan-200 border border-blue-400/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
                         Executive & Sarpras View
                     </span>
-                    <span>•</span>
-                    <span class="text-slate-400">Sinkronisasi Real-Time</span>
+                    <span class="text-blue-200/60">•</span>
+                    <span class="text-blue-200/80">Sinkronisasi Real-Time</span>
                 </div>
 
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
                     SIM-SARPRAS Universitas Al-Khairiyah
                 </h1>
 
-                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
                     Pusat pemantauan inventaris terintegrasi, pemanfaatan ruang akademik, permohonan logistik, dan jadwal pemeliharaan fasilitas kampus.
                 </p>
             </div>
 
-            <div class="flex flex-wrap sm:grid sm:grid-cols-2 gap-2.5 shrink-0">
+            <div class="flex flex-wrap sm:grid sm:grid-cols-2 gap-2.5 shrink-0 relative z-10">
                 <Link
                     v-if="$page.props.auth?.user?.can_manage_assets"
                     :href="route('assets.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-blue-50 text-[#0c182c] rounded-xl text-xs font-extrabold shadow-md transition"
                 >
                     <Plus class="w-4 h-4 stroke-[2.5]" />
                     <span>Registrasi Aset Baru</span>
@@ -72,26 +75,26 @@ const formatRupiah = (val) => {
 
                 <Link
                     :href="route('loans.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
                 >
-                    <Plus class="w-4 h-4 text-[#1e3a8a] stroke-[2.5]" />
+                    <Plus class="w-4 h-4 text-cyan-300 stroke-[2.5]" />
                     <span>Ajukan Peminjaman</span>
                 </Link>
 
                 <Link
                     :href="route('maintenance.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-rose-50/50 border border-slate-200 text-rose-600 rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/30 text-rose-100 rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
                 >
-                    <AlertTriangle class="w-4 h-4 text-rose-500" />
+                    <AlertTriangle class="w-4 h-4 text-rose-300" />
                     <span>Lapor Kerusakan</span>
                 </Link>
 
                 <Link
                     v-if="$page.props.auth?.user?.can_manage_assets"
                     :href="route('reports.print')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
                 >
-                    <Download class="w-4 h-4 text-slate-500" />
+                    <Download class="w-4 h-4 text-blue-200" />
                     <span>Export Rekap</span>
                 </Link>
             </div>
@@ -100,24 +103,24 @@ const formatRupiah = (val) => {
         <!-- 2. Four Color Metric Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- Card 1: Total Nilai Aset Kampus -->
-            <div class="bg-[#fff1f2]/70 border border-rose-100 rounded-2xl p-5 shadow-sm hover:shadow transition flex flex-col justify-between">
+            <div class="bg-gradient-to-br from-[#0c1f3f] to-[#1e3a8a] text-white border border-blue-900 rounded-2xl p-5 shadow-md shadow-blue-950/20 hover:shadow-lg transition flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
-                        <div class="h-9 w-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center">
+                        <div class="h-9 w-9 rounded-xl bg-white/10 text-cyan-300 flex items-center justify-center">
                             <Building2 class="w-5 h-5" />
                         </div>
-                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-rose-700 bg-rose-100/70 px-2 py-0.5 rounded-full">
-                            <TrendingUp class="w-3 h-3" />
+                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-200 bg-white/10 px-2 py-0.5 rounded-full border border-white/10">
+                            <TrendingUp class="w-3 h-3 text-cyan-300" />
                             +4.2%
                         </span>
                     </div>
-                    <div class="text-[10px] font-extrabold uppercase tracking-wider text-rose-600">TOTAL NILAI ASET KAMPUS</div>
-                    <div class="text-2xl font-black text-slate-900 mt-1">{{ formatRupiah(metrics.totalValuation) }}</div>
-                    <div class="text-[11px] text-slate-500 mt-1">Valuasi perolehan aset yayasan</div>
+                    <div class="text-[10px] font-extrabold uppercase tracking-wider text-blue-200">TOTAL NILAI ASET KAMPUS</div>
+                    <div class="text-2xl font-black text-white mt-1">{{ formatRupiah(metrics.totalValuation) }}</div>
+                    <div class="text-[11px] text-blue-200/80 mt-1">Valuasi perolehan aset kampus</div>
                 </div>
-                <div class="mt-4 pt-3 border-t border-rose-200/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500">Nilai Buku: <strong class="text-slate-700">{{ formatRupiah(metrics.totalValuation * 0.75) }}</strong></span>
-                    <Link :href="route('reports.index')" class="text-rose-600 hover:text-rose-800 font-bold">Lihat Audit Aset</Link>
+                <div class="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-[11px]">
+                    <span class="text-blue-200/80">Nilai Buku: <strong class="text-white">{{ formatRupiah(metrics.totalValuation * 0.75) }}</strong></span>
+                    <Link :href="route('reports.index')" class="text-cyan-300 hover:text-white font-bold">Lihat Audit</Link>
                 </div>
             </div>
 

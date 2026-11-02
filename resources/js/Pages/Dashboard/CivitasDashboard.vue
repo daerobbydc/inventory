@@ -111,36 +111,39 @@ const getTicketStatusBadge = (st) => {
 <template>
     <div class="space-y-6">
         <!-- 1. Top Welcome Banner Card -->
-        <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/70 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div class="space-y-2 max-w-2xl">
-                <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-[#1e3a8a] border border-blue-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#1e3a8a] animate-pulse"></span>
+        <div class="bg-gradient-to-r from-[#0a182c] via-[#0e2752] to-[#1e3a8a] text-white rounded-2xl p-6 sm:p-7 border border-blue-900/60 shadow-lg shadow-blue-950/15 relative overflow-hidden flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <!-- Decorative ambient glow -->
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="space-y-2 max-w-2xl relative z-10">
+                <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-cyan-200 border border-blue-400/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
                         Portal Layanan Civitas Akademika
                     </span>
-                    <span>•</span>
-                    <span class="text-slate-500 font-medium">
+                    <span class="text-blue-200/60">•</span>
+                    <span class="text-blue-200 font-medium">
                         {{ $page.props.auth?.user?.role_label || 'Civitas Kampus' }}
                     </span>
-                    <span v-if="$page.props.auth?.user?.faculty">
+                    <span v-if="$page.props.auth?.user?.faculty" class="text-blue-300">
                         • {{ $page.props.auth?.user?.faculty?.name }}
                     </span>
                 </div>
 
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
                     Selamat Datang, {{ $page.props.auth?.user?.name }}!
                 </h1>
 
-                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
                     Akses peminjaman alat penunjang kuliah/riset, reservasi ruangan kelas & laboratorium, serta pelaporan keluhan fasilitas kampus Universitas Al-Khairiyah.
                 </p>
             </div>
 
             <!-- Quick Action Buttons -->
-            <div class="flex flex-wrap sm:grid sm:grid-cols-2 lg:flex gap-2.5 shrink-0">
+            <div class="flex flex-wrap sm:grid sm:grid-cols-2 lg:flex gap-2.5 shrink-0 relative z-10">
                 <Link
                     :href="route('loans.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/20 transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-blue-50 text-[#0c182c] rounded-xl text-xs font-extrabold shadow-md transition"
                 >
                     <Plus class="w-4 h-4 stroke-[2.5]" />
                     <span>Pinjam Aset / Alat</span>
@@ -148,7 +151,7 @@ const getTicketStatusBadge = (st) => {
 
                 <Link
                     :href="route('room-bookings.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-md transition"
                 >
                     <DoorOpen class="w-4 h-4 stroke-[2.5]" />
                     <span>Reservasi Ruangan</span>
@@ -156,9 +159,9 @@ const getTicketStatusBadge = (st) => {
 
                 <Link
                     :href="route('maintenance.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-rose-50 border border-slate-200 text-rose-600 rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/30 text-rose-100 rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
                 >
-                    <AlertTriangle class="w-4 h-4 text-rose-500" />
+                    <AlertTriangle class="w-4 h-4 text-rose-300" />
                     <span>Lapor Fasilitas</span>
                 </Link>
             </div>
@@ -167,10 +170,10 @@ const getTicketStatusBadge = (st) => {
         <!-- 2. Four Metric Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Peminjaman Aktif -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-blue-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Peminjaman Aset Saya</span>
-                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#1e3a8a] flex items-center justify-center">
+                    <span class="text-xs font-bold text-slate-500">Peminjaman Aset Saya</span>
+                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
                         <Layers class="w-4 h-4" />
                     </div>
                 </div>
@@ -182,16 +185,16 @@ const getTicketStatusBadge = (st) => {
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Barang sedang Anda bawa</span>
-                    <Link :href="route('loans.index')" class="text-[#1e3a8a] font-semibold hover:underline inline-flex items-center gap-1">
+                    <Link :href="route('loans.index')" class="text-blue-700 font-bold hover:underline inline-flex items-center gap-1">
                         Riwayat <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
             <!-- Reservasi Ruangan Aktif -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-emerald-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Reservasi Ruangan</span>
+                    <span class="text-xs font-bold text-slate-500">Reservasi Ruangan</span>
                     <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
                         <Calendar class="w-4 h-4" />
                     </div>
@@ -204,16 +207,16 @@ const getTicketStatusBadge = (st) => {
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Ruangan kelas & lab</span>
-                    <Link :href="route('room-bookings.index')" class="text-emerald-700 font-semibold hover:underline inline-flex items-center gap-1">
+                    <Link :href="route('room-bookings.index')" class="text-emerald-700 font-bold hover:underline inline-flex items-center gap-1">
                         Jadwal Saya <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
             <!-- Laporan Kerusakan -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-amber-500 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Laporan Kerusakan Saya</span>
+                    <span class="text-xs font-bold text-slate-500">Laporan Kerusakan Saya</span>
                     <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
                         <Wrench class="w-4 h-4" />
                     </div>
@@ -226,16 +229,16 @@ const getTicketStatusBadge = (st) => {
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Penanganan oleh teknisi</span>
-                    <Link :href="route('maintenance.index')" class="text-amber-700 font-semibold hover:underline inline-flex items-center gap-1">
+                    <Link :href="route('maintenance.index')" class="text-amber-700 font-bold hover:underline inline-flex items-center gap-1">
                         Cek Status <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
             <!-- Ruang Kampus Siap Pakai -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-indigo-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Fasilitas Ruang Kampus</span>
+                    <span class="text-xs font-bold text-slate-500">Fasilitas Ruang Kampus</span>
                     <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
                         <Building2 class="w-4 h-4" />
                     </div>
@@ -248,7 +251,7 @@ const getTicketStatusBadge = (st) => {
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Terbuka untuk kegiatan</span>
-                    <Link :href="route('room-bookings.index')" class="text-[#1e3a8a] font-semibold hover:underline inline-flex items-center gap-1">
+                    <Link :href="route('room-bookings.index')" class="text-indigo-700 font-bold hover:underline inline-flex items-center gap-1">
                         Pesan Ruang <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>

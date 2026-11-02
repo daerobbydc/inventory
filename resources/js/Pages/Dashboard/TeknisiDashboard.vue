@@ -83,31 +83,34 @@ const getStatusBadge = (st) => {
 <template>
     <div class="space-y-6">
         <!-- 1. Top Welcome Banner Card -->
-        <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/70 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div class="space-y-2 max-w-2xl">
-                <div class="flex items-center gap-2 text-xs font-semibold text-slate-500">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-[#1e3a8a] border border-blue-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#1e3a8a] animate-pulse"></span>
+        <div class="bg-gradient-to-r from-[#0a1628] via-[#0f244a] to-[#1e3a8a] text-white rounded-2xl p-6 sm:p-7 border border-blue-900/60 shadow-lg shadow-blue-950/15 relative overflow-hidden flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <!-- Decorative ambient glow -->
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="space-y-2 max-w-2xl relative z-10">
+                <div class="flex items-center gap-2 text-xs font-semibold">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-cyan-200 border border-blue-400/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
                         Panel Operasional Lapangan & Servis
                     </span>
-                    <span>•</span>
-                    <span class="text-slate-500">Teknisi Bertugas: {{ $page.props.auth?.user?.name }}</span>
+                    <span class="text-blue-200/60">•</span>
+                    <span class="text-blue-200">Teknisi Bertugas: {{ $page.props.auth?.user?.name }}</span>
                 </div>
 
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
                     Pusat Penanganan Tiket Pemeliharaan
                 </h1>
 
-                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
                     Kelola disposisi servis fasilitas, perbaikan peralatan laboratorium, serta pembaruan status pengerjaan sarpras kampus Universitas Al-Khairiyah.
                 </p>
             </div>
 
             <!-- Quick Action Buttons -->
-            <div class="flex flex-wrap sm:grid sm:grid-cols-2 lg:flex gap-2.5 shrink-0">
+            <div class="flex flex-wrap sm:grid sm:grid-cols-2 lg:flex gap-2.5 shrink-0 relative z-10">
                 <Link
                     :href="route('maintenance.index')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/20 transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-blue-50 text-[#0c182c] rounded-xl text-xs font-extrabold shadow-md transition"
                 >
                     <Wrench class="w-4 h-4 stroke-[2.5]" />
                     <span>Daftar Seluruh Tiket</span>
@@ -115,17 +118,17 @@ const getStatusBadge = (st) => {
 
                 <Link
                     :href="route('maintenance.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-rose-50 border border-slate-200 text-rose-600 rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-md transition"
                 >
-                    <Plus class="w-4 h-4 text-rose-500" />
+                    <Plus class="w-4 h-4" />
                     <span>Lapor Temuan Kerusakan</span>
                 </Link>
 
                 <Link
                     :href="route('consumables.index')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
                 >
-                    <Package class="w-4 h-4 text-slate-500" />
+                    <Package class="w-4 h-4 text-cyan-200" />
                     <span>Katalog Suku Cadang</span>
                 </Link>
             </div>
@@ -134,10 +137,10 @@ const getStatusBadge = (st) => {
         <!-- 2. Four Metric Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Tugas Ditugaskan ke Saya -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-blue-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Tugas Servis Saya</span>
-                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#1e3a8a] flex items-center justify-center">
+                    <span class="text-xs font-bold text-slate-500">Tugas Servis Saya</span>
+                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
                         <Wrench class="w-4 h-4" />
                     </div>
                 </div>
@@ -149,36 +152,36 @@ const getStatusBadge = (st) => {
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Perlu penanganan Anda</span>
-                    <a href="#my-tasks" class="text-[#1e3a8a] font-semibold hover:underline inline-flex items-center gap-1">
+                    <a href="#my-tasks" class="text-blue-700 font-bold hover:underline inline-flex items-center gap-1">
                         Lihat Antrean <ChevronRight class="w-3 h-3" />
                     </a>
                 </div>
             </div>
 
             <!-- Tiket Urgent / Kritis -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-rose-200/80 border-t-4 border-t-rose-600 bg-rose-50/30 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-rose-600">Prioritas Darurat / Urgent</span>
-                    <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                    <span class="text-xs font-bold text-rose-700">Prioritas Darurat / Urgent</span>
+                    <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center">
                         <AlertTriangle class="w-4 h-4" />
                     </div>
                 </div>
                 <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-rose-600">
+                    <span class="text-3xl font-extrabold text-rose-700">
                         {{ teknisiData.metrics?.urgentCount || 0 }}
                     </span>
-                    <span class="text-xs font-medium text-rose-600/70">tiket darurat</span>
+                    <span class="text-xs font-medium text-rose-700/80">tiket darurat</span>
                 </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <div class="mt-3 pt-3 border-t border-rose-200 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Fasilitas vital kampus</span>
-                    <span class="text-rose-600 font-semibold text-[11px]">Butuh respon cepat</span>
+                    <span class="text-rose-700 font-extrabold text-[11px]">Butuh respon cepat</span>
                 </div>
             </div>
 
             <!-- Menunggu Suku Cadang -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-purple-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Menunggu Suku Cadang</span>
+                    <span class="text-xs font-bold text-slate-500">Menunggu Suku Cadang</span>
                     <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center">
                         <Package class="w-4 h-4" />
                     </div>
@@ -191,16 +194,16 @@ const getStatusBadge = (st) => {
                 </div>
                 <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                     <span class="text-slate-500">Pengadaan / PO logistik</span>
-                    <Link :href="route('consumables.index')" class="text-purple-700 font-semibold hover:underline inline-flex items-center gap-1">
+                    <Link :href="route('consumables.index')" class="text-purple-700 font-bold hover:underline inline-flex items-center gap-1">
                         Cek Stok <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
             <!-- Selesai Bulan Ini -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/70 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-emerald-600 shadow-sm flex flex-col justify-between">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-semibold text-slate-500">Selesai Bulan Ini</span>
+                    <span class="text-xs font-bold text-slate-500">Selesai Bulan Ini</span>
                     <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
                         <CheckCircle2 class="w-4 h-4" />
                     </div>
