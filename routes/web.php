@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetDisposalController;
+use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ConsumableController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacultyController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\MaintenanceTicketController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoomBookingController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\UserController;
@@ -99,6 +101,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('faculties', [FacultyController::class, 'store'])->name('faculties.store');
         Route::put('faculties/{faculty}', [FacultyController::class, 'update'])->name('faculties.update');
         Route::delete('faculties/{faculty}', [FacultyController::class, 'destroy'])->name('faculties.destroy');
+        Route::post('buildings', [BuildingController::class, 'store'])->name('buildings.store');
+        Route::put('buildings/{building}', [BuildingController::class, 'update'])->name('buildings.update');
+        Route::delete('buildings/{building}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
+        Route::post('rooms', [RoomController::class, 'store'])->name('rooms.store');
+        Route::put('rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
+        Route::delete('rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
         Route::post('users', [UserController::class, 'store'])->name('users.store');
         Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
