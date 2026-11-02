@@ -8,11 +8,11 @@ import { ShieldCheck } from 'lucide-vue-next';
         <!-- Brand Header -->
         <div class="mb-6 text-center">
             <Link href="/" class="inline-flex items-center gap-3 group">
-                <div class="h-12 w-12 rounded-2xl bg-[#168a42] flex items-center justify-center text-white shadow-md shadow-emerald-700/20 group-hover:scale-105 transition">
+                <div class="h-12 w-12 rounded-2xl bg-[#1e3a8a] flex items-center justify-center text-white shadow-md shadow-blue-900/25 group-hover:scale-105 transition">
                     <ShieldCheck class="h-7 w-7 stroke-[2.2]" />
                 </div>
                 <div class="text-left">
-                    <div class="text-xl font-extrabold tracking-tight text-[#168a42] leading-none">SIM-SARPRAS</div>
+                    <div class="text-xl font-extrabold tracking-tight text-[#1e3a8a] leading-none">SIM-SARPRAS</div>
                     <div class="text-xs font-semibold text-slate-500 mt-1">Universitas Al-Khairiyah</div>
                 </div>
             </Link>

@@ -64,7 +64,7 @@ const submit = () => {
                     </Link>
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#1e3a8a] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
                                 Permohonan Fasilitas
                             </span>
                         </div>
@@ -84,7 +84,7 @@ const submit = () => {
                     <!-- Schedule & Purpose Card -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6 space-y-4">
                         <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
-                            <span class="w-6 h-6 rounded-full bg-[#168a42] text-white flex items-center justify-center text-xs font-bold">1</span>
+                            <span class="w-6 h-6 rounded-full bg-[#1e3a8a] text-white flex items-center justify-center text-xs font-bold">1</span>
                             <h2 class="text-sm font-bold text-slate-900">Jadwal & Tujuan Penggunaan</h2>
                         </div>
 
@@ -95,7 +95,7 @@ const submit = () => {
                                     v-model="form.loan_date"
                                     type="date"
                                     required
-                                    class="w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-xs font-medium focus:bg-white focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] focus:outline-none"
+                                    class="w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-xs font-medium focus:bg-white focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] focus:outline-none"
                                     :class="form.errors.loan_date ? 'border-rose-400' : 'border-slate-200'"
                                 />
                                 <span v-if="form.errors.loan_date" class="text-xs text-rose-600 mt-1 block">{{ form.errors.loan_date }}</span>
@@ -108,7 +108,7 @@ const submit = () => {
                                     type="date"
                                     required
                                     :min="form.loan_date"
-                                    class="w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-xs font-medium focus:bg-white focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] focus:outline-none"
+                                    class="w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-xs font-medium focus:bg-white focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] focus:outline-none"
                                     :class="form.errors.expected_return_date ? 'border-rose-400' : 'border-slate-200'"
                                 />
                                 <span v-if="form.errors.expected_return_date" class="text-xs text-rose-600 mt-1 block">{{ form.errors.expected_return_date }}</span>
@@ -122,7 +122,7 @@ const submit = () => {
                                 required
                                 rows="3"
                                 placeholder="Contoh: Praktikum Jaringan Komputer / Seminar Nasional Himpunan Mahasiswa..."
-                                class="w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] focus:outline-none"
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] focus:outline-none"
                                 :class="form.errors.purpose ? 'border-rose-400' : 'border-slate-200'"
                             ></textarea>
                             <span v-if="form.errors.purpose" class="text-xs text-rose-600 mt-1 block">{{ form.errors.purpose }}</span>
@@ -133,7 +133,7 @@ const submit = () => {
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6 space-y-4">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-100">
                             <div class="flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-[#168a42] text-white flex items-center justify-center text-xs font-bold">2</span>
+                                <span class="w-6 h-6 rounded-full bg-[#1e3a8a] text-white flex items-center justify-center text-xs font-bold">2</span>
                                 <div>
                                     <h2 class="text-sm font-bold text-slate-900">Pilih Unit Barang yang Dipinjam</h2>
                                     <p class="text-[11px] text-slate-400">Aset dengan status prima & tersedia di kampus</p>
@@ -144,8 +144,8 @@ const submit = () => {
                                 <input
                                     v-model="assetSearch"
                                     type="text"
-                                    placeholder="Cari nama atau kode BMN..."
-                                    class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] focus:outline-none"
+                                    placeholder="Cari nama atau kode aset yayasan..."
+                                    class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] focus:outline-none"
                                 />
                             </div>
                         </div>
@@ -157,7 +157,7 @@ const submit = () => {
                                 @click="toggleAssetSelection(asset.id)"
                                 :class="[
                                     'p-3.5 rounded-xl flex items-center justify-between cursor-pointer transition mb-1.5',
-                                    isAssetSelected(asset.id) ? 'bg-emerald-50/70 border border-emerald-300' : 'hover:bg-slate-50 border border-transparent'
+                                    isAssetSelected(asset.id) ? 'bg-blue-50/70 border border-blue-300' : 'hover:bg-slate-50 border border-transparent'
                                 ]"
                             >
                                 <div class="flex items-center gap-3">
@@ -165,12 +165,12 @@ const submit = () => {
                                         type="checkbox"
                                         :checked="isAssetSelected(asset.id)"
                                         @click.stop="toggleAssetSelection(asset.id)"
-                                        class="rounded-md border-slate-300 text-[#168a42] focus:ring-[#168a42]"
+                                        class="rounded-md border-slate-300 text-[#1e3a8a] focus:ring-[#1e3a8a]"
                                     />
                                     <div>
                                         <div class="text-xs font-bold text-slate-900">{{ asset.name }}</div>
                                         <div class="text-[11px] text-slate-500 flex items-center gap-2 mt-0.5">
-                                            <span class="font-mono text-[#168a42] font-semibold">{{ asset.asset_code }}</span>
+                                            <span class="font-mono text-[#1e3a8a] font-semibold">{{ asset.asset_code }}</span>
                                             <span>• {{ asset.category?.name }}</span>
                                             <span>• Ruang: {{ asset.room?.name }}</span>
                                         </div>
@@ -194,7 +194,7 @@ const submit = () => {
                 <div class="space-y-6">
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6 sticky top-24">
                         <div class="flex items-center gap-2 pb-3 border-b border-slate-100 mb-4">
-                            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#168a42] flex items-center justify-center">
+                            <div class="w-7 h-7 rounded-lg bg-blue-50 text-[#1e3a8a] flex items-center justify-center">
                                 <Box class="w-4 h-4" />
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Ringkasan Peminjaman</h3>
@@ -235,7 +235,7 @@ const submit = () => {
                         <button
                             type="submit"
                             :disabled="form.processing || form.asset_ids.length === 0"
-                            class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition disabled:opacity-50"
+                            class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition disabled:opacity-50"
                         >
                             <CheckCircle2 class="w-4 h-4" />
                             {{ form.processing ? 'Mengirim...' : 'Kirim Pengajuan Peminjaman' }}

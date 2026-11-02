@@ -378,7 +378,7 @@ class DatabaseSeeder extends Seeder
             'priority' => MaintenancePriority::High,
             'status' => MaintenanceStatus::WaitingParts,
             'cost' => 1250000,
-            'resolution_notes' => 'Lampu proyektor aus • Status: PO Sparepart BMN-204 telah diajukan ke rekanan.',
+            'resolution_notes' => 'Lampu proyektor aus • Status: PO Sparepart SPR-204 telah diajukan ke rekanan.',
         ]);
 
         MaintenanceTicket::create([

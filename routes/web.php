@@ -44,16 +44,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Pemeliharaan & Servis
     Route::resource('maintenance', MaintenanceTicketController::class)->except(['destroy']);
 
-    // Sensus BMN & Scanner Kamera Langsung
+    // Sensus Aset & Scanner Kamera Langsung
     Route::get('stock-opname/scanner', [StockOpnameController::class, 'scanner'])->name('stock-opname.scanner');
     Route::get('stock-opname/lookup', [StockOpnameController::class, 'lookup'])->name('stock-opname.lookup');
     Route::post('stock-opname/verify', [StockOpnameController::class, 'verify'])->name('stock-opname.verify');
 
-    // Penghapusan & Pemutihan BMN
+    // Penghapusan & Pemutihan Aset Yayasan
     Route::resource('disposals', AssetDisposalController::class)->only(['index', 'store']);
     Route::get('disposals/{asset}/print', [AssetDisposalController::class, 'print'])->name('disposals.print');
 
-    // Laporan & Audit BMN
+    // Laporan & Audit Aset Yayasan
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
 

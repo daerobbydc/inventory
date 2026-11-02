@@ -21,7 +21,7 @@ const triggerPrint = () => {
 </script>
 
 <template>
-    <Head :title="`Berita Acara Penghapusan BMN - ${asset.asset_code}`" />
+    <Head :title="`Berita Acara Penghapusan Aset - ${asset.asset_code}`" />
 
     <div class="min-h-screen bg-slate-100 text-slate-900 font-sans print:bg-white p-4 sm:p-8">
         <!-- Print Toolbar -->
@@ -33,12 +33,12 @@ const triggerPrint = () => {
                 >
                     <ArrowLeft class="w-4 h-4" />
                 </button>
-                <div class="text-xs font-bold text-slate-700">Pratinjau Berita Acara Penghapusan BMN</div>
+                <div class="text-xs font-bold text-slate-700">Pratinjau Berita Acara Penghapusan Aset Yayasan</div>
             </div>
 
             <button
                 @click="triggerPrint"
-                class="px-4 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm transition"
+                class="px-4 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm transition"
             >
                 <Printer class="w-4 h-4" />
                 <span>Cetak / Simpan PDF</span>
@@ -49,13 +49,13 @@ const triggerPrint = () => {
         <div class="max-w-4xl mx-auto bg-white p-8 sm:p-12 border border-slate-200 shadow-md print:border-none print:shadow-none print:p-0">
             <!-- Kop Surat Resmi -->
             <div class="border-b-2 border-slate-900 pb-4 mb-6 flex items-center gap-6">
-                <div class="w-16 h-16 rounded-xl bg-[#168a42] text-white flex items-center justify-center font-black text-xs print:border print:border-slate-800">
+                <div class="w-16 h-16 rounded-xl bg-[#1e3a8a] text-white flex items-center justify-center font-black text-xs print:border print:border-slate-800">
                     UNIVAL
                 </div>
                 <div class="flex-1 text-center pr-16">
-                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-600">KEMENTERIAN PENDIDIKAN TINGGI, SAINS, DAN TEKNOLOGI</h2>
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-600">YAYASAN AL-KHAIRIYAH CITANGKIL</h2>
                     <h1 class="text-lg font-black uppercase text-slate-900 mt-0.5">UNIVERSITAS AL-KHAIRIYAH</h1>
-                    <p class="text-xs font-extrabold text-[#168a42]">BIRO SARANA DAN PRASARANA (SIM-SARPRAS)</p>
+                    <p class="text-xs font-extrabold text-[#1e3a8a]">BIRO SARANA DAN PRASARANA (SIM-SARPRAS)</p>
                     <p class="text-[10px] text-slate-500 mt-0.5">Jl. H. Enggus Arja No. 1, Citangkil, Kota Cilegon • Website: sarpras.unival.ac.id • Email: sarpras@unival.ac.id</p>
                 </div>
             </div>
@@ -63,14 +63,14 @@ const triggerPrint = () => {
             <!-- Title -->
             <div class="text-center my-6">
                 <h2 class="text-base font-black uppercase tracking-wide text-slate-900 underline">
-                    BERITA ACARA PENGHAPUSAN BARANG MILIK NEGARA (BMN)
+                    BERITA ACARA PENGHAPUSAN ASET TETAP YAYASAN
                 </h2>
                 <p class="text-xs font-mono font-bold text-slate-700 mt-1">Nomor: {{ meta.ba_code }}</p>
             </div>
 
             <div class="text-xs text-slate-700 leading-relaxed space-y-4">
                 <p>
-                    Pada hari ini, tanggal <strong>{{ meta.date }}</strong>, bertempat di Kantor Biro Sarana dan Prasarana Universitas Al-Khairiyah, telah dilakukan pemeriksaan fisik dan verifikasi administrasi terhadap Barang Milik Negara (BMN) di bawah ini:
+                    Pada hari ini, tanggal <strong>{{ meta.date }}</strong>, bertempat di Kantor Biro Sarana dan Prasarana Universitas Al-Khairiyah, telah dilakukan pemeriksaan fisik dan verifikasi administrasi terhadap Aset Inventaris Yayasan di bawah ini:
                 </p>
 
                 <!-- Asset Detail Table -->
@@ -78,7 +78,7 @@ const triggerPrint = () => {
                     <table class="w-full text-xs">
                         <tbody class="divide-y divide-slate-200">
                             <tr>
-                                <td class="px-4 py-2 bg-slate-50 font-bold w-48">Kode Register BMN</td>
+                                <td class="px-4 py-2 bg-slate-50 font-bold w-48">Kode Register Aset</td>
                                 <td class="px-4 py-2 font-mono font-bold">{{ asset.asset_code }}</td>
                             </tr>
                             <tr>
@@ -114,7 +114,7 @@ const triggerPrint = () => {
                 </div>
 
                 <p>
-                    Berdasarkan hasil pemeriksaan fisik, aset tersebut dinyatakan secara teknis dan ekonomis <strong>tidak dapat dipergunakan kembali</strong> untuk menunjang kegiatan operasional tridharma perguruan tinggi. Oleh karena itu, direkomendasikan dan disetujui untuk <strong>dihapuskan dari Buku Induk Inventaris BMN Universitas Al-Khairiyah</strong>.
+                    Berdasarkan hasil pemeriksaan fisik, aset tersebut dinyatakan secara teknis dan ekonomis <strong>tidak dapat dipergunakan kembali</strong> untuk menunjang kegiatan operasional tridharma perguruan tinggi. Oleh karena itu, direkomendasikan dan disetujui untuk <strong>dihapuskan dari Buku Induk Inventaris Universitas Al-Khairiyah</strong>.
                 </p>
                 <p>
                     Demikian Berita Acara ini dibuat dengan sebenarnya dan ditandatangani untuk dipergunakan sebagaimana mestinya.
@@ -141,3 +141,4 @@ const triggerPrint = () => {
         </div>
     </div>
 </template>
+

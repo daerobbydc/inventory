@@ -58,9 +58,9 @@ class AssetDisposalController extends Controller
 
         $asset = Asset::findOrFail($validated['asset_id']);
 
-        $baNumber = 'BA-BMN/'.now()->format('Ym').'/HAPUS-'.rand(100, 999);
+        $baNumber = 'BA-ASET/'.now()->format('Ym').'/HAPUS-'.rand(100, 999);
 
-        $notes = "Penghapusan BMN ({$validated['disposal_method']}) No. BA: {$baNumber}. Alasan: {$validated['disposal_reason']}";
+        $notes = "Penghapusan Aset Yayasan ({$validated['disposal_method']}) No. BA: {$baNumber}. Alasan: {$validated['disposal_reason']}";
         if ($asset->notes) {
             $notes = $asset->notes."\n".$notes;
         }
@@ -75,7 +75,7 @@ class AssetDisposalController extends Controller
     }
 
     /**
-     * Official printable Berita Acara Penghapusan BMN.
+     * Official printable Berita Acara Penghapusan Aset.
      */
     public function print(Asset $asset): Response
     {
@@ -97,7 +97,7 @@ class AssetDisposalController extends Controller
             ],
             'meta' => [
                 'date' => now()->translatedFormat('d F Y'),
-                'ba_code' => 'BA-BMN/'.now()->format('Ym').'/HAPUS-'.$asset->id,
+                'ba_code' => 'BA-ASET/'.now()->format('Ym').'/HAPUS-'.$asset->id,
             ],
         ]);
     }

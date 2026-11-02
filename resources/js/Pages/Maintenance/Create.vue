@@ -113,8 +113,8 @@ const submit = () => {
                             <input
                                 v-model="assetSearch"
                                 type="text"
-                                placeholder="Ketik nama aset, kode BMN (misal: AST-2026-...), atau ruangan..."
-                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                                placeholder="Ketik nama aset, kode aset yayasan (misal: AST-2026-...), atau ruangan..."
+                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                             />
                         </div>
 
@@ -212,7 +212,7 @@ const submit = () => {
                         v-model="form.issue_description"
                         rows="4"
                         placeholder="Deskripsikan secara detail gejala kerusakan (misal: AC keluar angin panas dan berisik sejak kemarin, lampu indikator merah menyala terus...)"
-                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                         required
                     ></textarea>
                     <p v-if="form.errors.issue_description" class="text-xs text-rose-600 font-medium mt-1">{{ form.errors.issue_description }}</p>
@@ -225,7 +225,7 @@ const submit = () => {
                     </label>
                     <select
                         v-model="form.technician_id"
-                        class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                        class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                     >
                         <option value="">-- Biarkan Kosong (Akan Didispatch oleh Biro Sarpras) --</option>
                         <option v-for="tech in technicians" :key="tech.id" :value="tech.id">
@@ -245,7 +245,7 @@ const submit = () => {
                     <button
                         type="submit"
                         :disabled="form.processing || !form.asset_id"
-                        class="px-6 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-700/20 transition disabled:opacity-50"
+                        class="px-6 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-md shadow-blue-900/25 transition disabled:opacity-50"
                     >
                         Kirim Laporan Kerusakan
                     </button>

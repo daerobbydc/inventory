@@ -38,7 +38,7 @@ const formatRupiah = (val) => {
 };
 
 const deleteAsset = () => {
-    if (confirm(`Apakah Anda yakin ingin menghapus aset "${props.asset.name}" dari Buku Induk BMN?`)) {
+    if (confirm(`Apakah Anda yakin ingin menghapus aset "${props.asset.name}" dari Buku Induk Aset?`)) {
         router.delete(route('assets.destroy', props.asset.id));
     }
 };
@@ -92,7 +92,7 @@ const getStatusBadge = (st) => {
                     </Link>
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-mono font-bold text-[#168a42] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                            <span class="text-xs font-mono font-bold text-[#1e3a8a] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
                                 {{ asset.asset_code }}
                             </span>
                             <span class="text-xs text-slate-400">• {{ asset.category?.name }}</span>
@@ -111,12 +111,12 @@ const getStatusBadge = (st) => {
                         class="inline-flex items-center gap-1.5 px-3.5 py-2.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition"
                     >
                         <Printer class="w-4 h-4 text-slate-500" />
-                        Cetak Label BMN
+                        Cetak Label Aset
                     </button>
 
                     <Link
                         :href="route('assets.edit', asset.id)"
-                        class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                        class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                     >
                         <Edit class="w-4 h-4" />
                         Ubah Data
@@ -140,10 +140,10 @@ const getStatusBadge = (st) => {
                     <!-- Technical & Procurement Details -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6 space-y-5">
                         <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">
-                            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#168a42] flex items-center justify-center">
+                            <div class="w-7 h-7 rounded-lg bg-blue-50 text-[#1e3a8a] flex items-center justify-center">
                                 <FileText class="w-4 h-4" />
                             </div>
-                            <h2 class="text-sm font-bold text-slate-900">Spesifikasi Teknis & Informasi Pengadaan BMN</h2>
+                            <h2 class="text-sm font-bold text-slate-900">Spesifikasi Teknis & Informasi Pengadaan Aset</h2>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-xs">
@@ -174,7 +174,7 @@ const getStatusBadge = (st) => {
 
                             <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100">
                                 <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 block">Estimasi Nilai Buku Terkini</span>
-                                <div class="flex items-center gap-1.5 font-black text-[#168a42] text-base mt-0.5">
+                                <div class="flex items-center gap-1.5 font-black text-[#1e3a8a] text-base mt-0.5">
                                     <TrendingDown class="w-4 h-4" />
                                     <span>{{ formatRupiah(currentBookValue) }}</span>
                                 </div>
@@ -187,7 +187,7 @@ const getStatusBadge = (st) => {
                         </div>
 
                         <div v-if="asset.notes" class="pt-1">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Catatan Tambahan BMN</span>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Catatan Tambahan Aset</span>
                             <p class="text-xs text-slate-600 italic bg-amber-50/40 p-2.5 rounded-xl border border-amber-100/60">{{ asset.notes }}</p>
                         </div>
                     </div>
@@ -199,7 +199,7 @@ const getStatusBadge = (st) => {
                                 @click="activeTab = 'movements'"
                                 :class="[
                                     'px-5 py-3.5 text-xs font-bold border-b-2 transition flex items-center gap-1.5',
-                                    activeTab === 'movements' ? 'border-[#168a42] text-[#168a42] bg-white' : 'border-transparent text-slate-500 hover:text-slate-800'
+                                    activeTab === 'movements' ? 'border-[#1e3a8a] text-[#1e3a8a] bg-white' : 'border-transparent text-slate-500 hover:text-slate-800'
                                 ]"
                             >
                                 <MapPin class="w-4 h-4" />
@@ -210,7 +210,7 @@ const getStatusBadge = (st) => {
                                 @click="activeTab = 'loans'"
                                 :class="[
                                     'px-5 py-3.5 text-xs font-bold border-b-2 transition flex items-center gap-1.5',
-                                    activeTab === 'loans' ? 'border-[#168a42] text-[#168a42] bg-white' : 'border-transparent text-slate-500 hover:text-slate-800'
+                                    activeTab === 'loans' ? 'border-[#1e3a8a] text-[#1e3a8a] bg-white' : 'border-transparent text-slate-500 hover:text-slate-800'
                                 ]"
                             >
                                 <Repeat class="w-4 h-4" />
@@ -221,7 +221,7 @@ const getStatusBadge = (st) => {
                                 @click="activeTab = 'maintenance'"
                                 :class="[
                                     'px-5 py-3.5 text-xs font-bold border-b-2 transition flex items-center gap-1.5',
-                                    activeTab === 'maintenance' ? 'border-[#168a42] text-[#168a42] bg-white' : 'border-transparent text-slate-500 hover:text-slate-800'
+                                    activeTab === 'maintenance' ? 'border-[#1e3a8a] text-[#1e3a8a] bg-white' : 'border-transparent text-slate-500 hover:text-slate-800'
                                 ]"
                             >
                                 <Wrench class="w-4 h-4" />
@@ -233,10 +233,10 @@ const getStatusBadge = (st) => {
                             <!-- Movements -->
                             <div v-if="activeTab === 'movements'" class="space-y-4">
                                 <div v-for="m in asset.movements" :key="m.id" class="flex items-start gap-3.5 text-xs">
-                                    <div class="w-2.5 h-2.5 rounded-full bg-[#168a42] mt-1 shrink-0"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-[#1e3a8a] mt-1 shrink-0"></div>
                                     <div class="flex-1 border-b border-slate-100 pb-3">
                                         <div class="font-bold text-slate-900">
-                                            Dipindahkan dari <span class="text-slate-600 font-semibold">{{ m.from_room?.name }}</span> ke <span class="text-[#168a42] font-extrabold">{{ m.to_room?.name }}</span>
+                                            Dipindahkan dari <span class="text-slate-600 font-semibold">{{ m.from_room?.name }}</span> ke <span class="text-[#1e3a8a] font-extrabold">{{ m.to_room?.name }}</span>
                                         </div>
                                         <div class="text-slate-400 text-[11px] mt-0.5">Petugas: {{ m.moved_by?.name }} • {{ m.moved_at }}</div>
                                         <p v-if="m.reason" class="text-slate-600 italic mt-1">{{ m.reason }}</p>
@@ -251,7 +251,7 @@ const getStatusBadge = (st) => {
                             <div v-if="activeTab === 'loans'" class="space-y-3">
                                 <div v-for="item in asset.loan_items" :key="item.id" class="p-3 bg-slate-50 rounded-xl text-xs border border-slate-100">
                                     <div class="flex items-center justify-between">
-                                        <span class="font-bold font-mono text-[#168a42]">{{ item.loan_transaction?.transaction_code }}</span>
+                                        <span class="font-bold font-mono text-[#1e3a8a]">{{ item.loan_transaction?.transaction_code }}</span>
                                         <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">{{ item.loan_transaction?.status }}</span>
                                     </div>
                                     <div class="text-slate-900 font-bold mt-1">Peminjam: {{ item.loan_transaction?.borrower?.name }}</div>
@@ -288,7 +288,7 @@ const getStatusBadge = (st) => {
                     <!-- Penempatan Fisik -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6">
                         <div class="flex items-center gap-2 mb-4">
-                            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#168a42] flex items-center justify-center">
+                            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#1e3a8a] flex items-center justify-center">
                                 <MapPin class="w-4 h-4" />
                             </div>
                             <h3 class="text-sm font-bold text-slate-900">Penempatan Fisik Sarana</h3>
@@ -298,7 +298,7 @@ const getStatusBadge = (st) => {
                             <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100">
                                 <span class="text-slate-400 block text-[10px] font-bold uppercase tracking-wider">Ruangan / Lab</span>
                                 <div class="font-extrabold text-sm text-slate-900 mt-0.5">{{ asset.room?.name }}</div>
-                                <div class="text-[11px] text-[#168a42] font-mono mt-0.5 font-semibold">Kode: {{ asset.room?.code }}</div>
+                                <div class="text-[11px] text-[#1e3a8a] font-mono mt-0.5 font-semibold">Kode: {{ asset.room?.code }}</div>
                             </div>
 
                             <div class="space-y-2 text-slate-600 pl-1 text-xs">
@@ -317,8 +317,8 @@ const getStatusBadge = (st) => {
                     <!-- Official Barcode Label Preview -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6 text-center">
                         <div class="border-b border-slate-200 pb-2 mb-3">
-                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42]">UNIVERSITAS AL-KHAIRIYAH</div>
-                            <div class="text-[9px] font-bold text-slate-500 tracking-tight">LABEL RESMI BARANG MILIK NEGARA (BMN)</div>
+                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#1e3a8a]">UNIVERSITAS AL-KHAIRIYAH</div>
+                            <div class="text-[9px] font-bold text-slate-500 tracking-tight">LABEL RESMI INVENTARIS YAYASAN AL-KHAIRIYAH</div>
                         </div>
 
                         <div class="font-mono text-xs font-bold text-slate-900">{{ asset.asset_code }}</div>
@@ -339,7 +339,7 @@ const getStatusBadge = (st) => {
                         <button
                             @click="printLabel"
                             type="button"
-                            class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                            class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                         >
                             <Printer class="w-3.5 h-3.5" />
                             Cetak Stiker Label Fisik

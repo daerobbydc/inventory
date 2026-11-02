@@ -43,7 +43,7 @@ const triggerManualSync = () => {
     isSyncing.value = true;
     setTimeout(() => {
         isSyncing.value = false;
-        alert('Sinkronisasi data BMN dengan Kemdikbudristek berhasil diperbarui.');
+        alert('Sinkronisasi data inventaris aset yayasan berhasil diperbarui.');
     }, 1200);
 };
 
@@ -132,7 +132,7 @@ const sendTestWhatsApp = () => {
                     </div>
                     <h1 class="text-2xl font-black text-slate-900 tracking-tight">Pengaturan Sistem & Master Data</h1>
                     <p class="text-xs sm:text-sm text-slate-500 mt-1">
-                        Manajemen struktur gedung, ruang perkuliahan, pengguna & hak akses, klasifikasi BMN, dan gateway integrasi.
+                        Manajemen struktur gedung, ruang perkuliahan, pengguna & hak akses, klasifikasi aset yayasan, dan gateway integrasi.
                     </p>
                 </div>
 
@@ -141,7 +141,7 @@ const sendTestWhatsApp = () => {
                         :href="route('profile.edit')"
                         class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-xs flex items-center gap-2"
                     >
-                        <UserCheck class="w-4 h-4 text-emerald-600" />
+                        <UserCheck class="w-4 h-4 text-[#1e3a8a]" />
                         <span>Profil Saya</span>
                     </Link>
                 </div>
@@ -162,7 +162,7 @@ const sendTestWhatsApp = () => {
                     <div class="text-xl font-black text-slate-900 mt-0.5">{{ stats.total_rooms }} Ruangan</div>
                 </div>
                 <div class="p-4 bg-white rounded-xl border border-slate-200/70 shadow-xs">
-                    <span class="text-[10px] font-extrabold uppercase text-slate-400">Kategori BMN</span>
+                    <span class="text-[10px] font-extrabold uppercase text-slate-400">Kategori Aset</span>
                     <div class="text-xl font-black text-slate-900 mt-0.5">{{ stats.total_categories }} Golongan</div>
                 </div>
                 <div class="p-4 bg-white rounded-xl border border-slate-200/70 shadow-xs">
@@ -181,7 +181,7 @@ const sendTestWhatsApp = () => {
                     @click="activeTab = 'rooms'"
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap',
-                        activeTab === 'rooms' ? 'bg-[#168a42] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                        activeTab === 'rooms' ? 'bg-[#1e3a8a] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
                     <Building2 class="w-4 h-4" />
@@ -191,7 +191,7 @@ const sendTestWhatsApp = () => {
                     @click="activeTab = 'users'"
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap',
-                        activeTab === 'users' ? 'bg-[#168a42] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                        activeTab === 'users' ? 'bg-[#1e3a8a] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
                     <Users class="w-4 h-4" />
@@ -201,17 +201,17 @@ const sendTestWhatsApp = () => {
                     @click="activeTab = 'categories'"
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap',
-                        activeTab === 'categories' ? 'bg-[#168a42] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                        activeTab === 'categories' ? 'bg-[#1e3a8a] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
                     <Layers class="w-4 h-4" />
-                    <span>Golongan Kategori BMN</span>
+                    <span>Golongan Kategori Aset</span>
                 </button>
                 <button
                     @click="activeTab = 'vendors'"
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap',
-                        activeTab === 'vendors' ? 'bg-[#168a42] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                        activeTab === 'vendors' ? 'bg-[#1e3a8a] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
                     <Store class="w-4 h-4" />
@@ -221,7 +221,7 @@ const sendTestWhatsApp = () => {
                     @click="activeTab = 'whatsapp'"
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap',
-                        activeTab === 'whatsapp' ? 'bg-[#168a42] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                        activeTab === 'whatsapp' ? 'bg-[#1e3a8a] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
                     <Phone class="w-4 h-4" />
@@ -231,11 +231,11 @@ const sendTestWhatsApp = () => {
                     @click="activeTab = 'sync'"
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap',
-                        activeTab === 'sync' ? 'bg-[#168a42] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                        activeTab === 'sync' ? 'bg-[#1e3a8a] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
                     <Wifi class="w-4 h-4" />
-                    <span>Integrasi BMN Kemdikbudristek</span>
+                    <span>Sinkronisasi Data & Gateway API</span>
                 </button>
             </div>
 
@@ -261,7 +261,7 @@ const sendTestWhatsApp = () => {
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             <tr v-for="room in rooms" :key="room.id" class="hover:bg-slate-50/70 transition">
-                                <td class="px-6 py-4 font-mono font-bold text-[#168a42]">{{ room.code }}</td>
+                                <td class="px-6 py-4 font-mono font-bold text-[#1e3a8a]">{{ room.code }}</td>
                                 <td class="px-4 py-4 font-bold text-slate-900">{{ room.name }}</td>
                                 <td class="px-4 py-4 text-slate-600">
                                     {{ room.building?.name }} ({{ room.building?.campus?.name || 'Pusat' }})
@@ -272,7 +272,7 @@ const sendTestWhatsApp = () => {
                                     <div class="text-[10px] text-slate-400">{{ room.pic?.department || 'Biro Sarpras' }}</div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-50 text-[#168a42] border border-emerald-200">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-50 text-[#1e3a8a] border border-emerald-200">
                                         {{ room.assets_count }} item
                                     </span>
                                 </td>
@@ -291,7 +291,7 @@ const sendTestWhatsApp = () => {
                     </div>
                     <button
                         @click="openCreateUser"
-                        class="px-3.5 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                        class="px-3.5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
                     >
                         <Plus class="w-4 h-4" />
                         <span>Tambah Pengguna</span>
@@ -362,17 +362,17 @@ const sendTestWhatsApp = () => {
                 </div>
             </div>
 
-            <!-- Tab 3: Golongan Kategori BMN -->
+            <!-- Tab 3: Golongan Kategori Aset -->
             <div v-if="activeTab === 'categories'" class="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-100">
-                    <h3 class="text-sm font-bold text-slate-900">Klasifikasi Kategori & Standar Masa Manfaat BMN</h3>
+                    <h3 class="text-sm font-bold text-slate-900">Klasifikasi Kategori & Standar Masa Manfaat Aset</h3>
                     <p class="text-[11px] text-slate-500">Masa manfaat ekonomis digunakan untuk perhitungan penyusutan otomatis setiap semester</p>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead class="bg-slate-50/80 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
                             <tr>
-                                <th class="px-6 py-3.5">Kode Akun BMN</th>
+                                <th class="px-6 py-3.5">Kode Akun Aset</th>
                                 <th class="px-4 py-3.5">Nama Golongan Kategori</th>
                                 <th class="px-4 py-3.5 text-center">Masa Manfaat</th>
                                 <th class="px-4 py-3.5">Metode Depresiasi</th>
@@ -381,7 +381,7 @@ const sendTestWhatsApp = () => {
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             <tr v-for="cat in categories" :key="cat.id" class="hover:bg-slate-50/70 transition">
-                                <td class="px-6 py-4 font-mono font-bold text-[#168a42]">{{ cat.code }}</td>
+                                <td class="px-6 py-4 font-mono font-bold text-[#1e3a8a]">{{ cat.code }}</td>
                                 <td class="px-4 py-4 font-bold text-slate-900">{{ cat.name }}</td>
                                 <td class="px-4 py-4 text-center font-bold text-slate-800">{{ cat.useful_life_years }} Tahun</td>
                                 <td class="px-4 py-4 text-slate-600">Garis Lurus (Straight Line)</td>
@@ -426,7 +426,7 @@ const sendTestWhatsApp = () => {
             <div v-if="activeTab === 'whatsapp'" class="space-y-6">
                 <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm">
                     <div class="flex items-center gap-3 pb-6 border-b border-slate-100">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#168a42] flex items-center justify-center font-bold">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#1e3a8a] flex items-center justify-center font-bold">
                             <Phone class="w-6 h-6" />
                         </div>
                         <div>
@@ -449,7 +449,7 @@ const sendTestWhatsApp = () => {
                                 v-model="waForm.phone"
                                 type="text"
                                 placeholder="08xxxxxxxxxx"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             />
                         </div>
@@ -459,7 +459,7 @@ const sendTestWhatsApp = () => {
                             <textarea
                                 v-model="waForm.message"
                                 rows="3"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             ></textarea>
                         </div>
@@ -467,7 +467,7 @@ const sendTestWhatsApp = () => {
                         <button
                             type="submit"
                             :disabled="waForm.processing"
-                            class="px-5 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-2 disabled:opacity-50"
+                            class="px-5 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-2 disabled:opacity-50"
                         >
                             <Send class="w-4 h-4" />
                             <span>Kirim Simulasi Pesan WhatsApp</span>
@@ -476,19 +476,19 @@ const sendTestWhatsApp = () => {
                 </div>
             </div>
 
-            <!-- Tab 6: Integrasi BMN Kemdikbudristek -->
+            <!-- Tab 6: Sinkronisasi Data & Gateway API -->
             <div v-if="activeTab === 'sync'" class="space-y-6">
                 <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
                         <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#168a42] flex items-center justify-center font-bold">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-100 text-[#1e3a8a] flex items-center justify-center font-bold">
                                 <Wifi class="w-6 h-6" />
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <h3 class="text-base font-black text-slate-900">BMN Synchronizer Online</h3>
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                                    <h3 class="text-base font-black text-slate-900">Sistem Sinkronisasi Inventaris Terpadu</h3>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-900">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
                                         Connected
                                     </span>
                                 </div>
@@ -499,7 +499,7 @@ const sendTestWhatsApp = () => {
                         <button
                             @click="triggerManualSync"
                             :disabled="isSyncing"
-                            class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
+                            class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
                         >
                             <RefreshCw :class="['w-4 h-4', isSyncing ? 'animate-spin' : '']" />
                             <span>{{ isSyncing ? 'Menghubungkan...' : 'Sinkronkan Sekarang' }}</span>
@@ -547,7 +547,7 @@ const sendTestWhatsApp = () => {
                             <input
                                 v-model="userForm.name"
                                 type="text"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             />
                         </div>
@@ -556,7 +556,7 @@ const sendTestWhatsApp = () => {
                             <input
                                 v-model="userForm.email"
                                 type="email"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             />
                         </div>
@@ -568,7 +568,7 @@ const sendTestWhatsApp = () => {
                             <input
                                 v-model="userForm.nip_nim"
                                 type="text"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             />
                         </div>
                         <div>
@@ -577,7 +577,7 @@ const sendTestWhatsApp = () => {
                                 v-model="userForm.phone"
                                 type="text"
                                 placeholder="08xxxxxxxxxx"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             />
                         </div>
                     </div>
@@ -587,7 +587,7 @@ const sendTestWhatsApp = () => {
                             <label class="block text-xs font-bold text-slate-700 mb-1">Peran (Role)</label>
                             <select
                                 v-model="userForm.role"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             >
                                 <option v-for="r in roles" :key="r.value" :value="r.value">
@@ -601,7 +601,7 @@ const sendTestWhatsApp = () => {
                                 v-model="userForm.department"
                                 type="text"
                                 placeholder="Fakultas Teknik / Unit Sarpras"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             />
                         </div>
                     </div>
@@ -612,7 +612,7 @@ const sendTestWhatsApp = () => {
                             v-model="userForm.password"
                             type="password"
                             placeholder="password"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             required
                         />
                     </div>
@@ -628,7 +628,7 @@ const sendTestWhatsApp = () => {
                         <button
                             type="submit"
                             :disabled="userForm.processing"
-                            class="px-5 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
+                            class="px-5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
                         >
                             {{ editingUser ? 'Simpan Perubahan' : 'Tambah Pengguna' }}
                         </button>

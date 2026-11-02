@@ -34,7 +34,7 @@ defineProps({
                         <div class="flex items-center gap-2 text-xs font-semibold text-slate-500">
                             <span>Pengaturan Akun</span>
                             <span>•</span>
-                            <span class="text-[#168a42] font-bold">SIM-SARPRAS Kampus</span>
+                            <span class="text-[#1e3a8a] font-bold">SIM-SARPRAS Universitas Al-Khairiyah</span>
                         </div>
                         <h1 class="text-2xl font-black text-slate-900 tracking-tight">Profil & Keamanan Pengguna</h1>
                     </div>
@@ -43,7 +43,7 @@ defineProps({
 
             <!-- Profile Info Form Card -->
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/70 shadow-sm">
-                <div class="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#168a42] mb-4">
+                <div class="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#1e3a8a] mb-4">
                     <User class="w-4 h-4" />
                     <span>Informasi Data Diri</span>
                 </div>

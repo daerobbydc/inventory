@@ -142,7 +142,7 @@ const getStatusBadgeClass = (status) => {
                 <div class="flex items-center gap-3 shrink-0">
                     <Link
                         :href="route('maintenance.create')"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                     >
                         <Plus class="w-4 h-4 stroke-[2.5]" />
                         <span>+ Lapor Kerusakan Baru</span>
@@ -194,10 +194,10 @@ const getStatusBadgeClass = (status) => {
                 <!-- Card 4: Selesai Diperbaiki -->
                 <div class="bg-[#f0fdf4]/90 border border-emerald-100 rounded-2xl p-5 shadow-sm">
                     <div class="flex items-center justify-between">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[#168a42] flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
                             <CheckCircle2 class="w-5 h-5" />
                         </div>
-                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-[#168a42]">Selesai</span>
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Selesai</span>
                     </div>
                     <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 mt-3">SELESAI DIPERBAIKI</div>
                     <div class="text-2xl font-black text-slate-900 mt-0.5">{{ metrics.completed || 0 }} Tiket</div>
@@ -214,7 +214,7 @@ const getStatusBadgeClass = (status) => {
                         :class="[
                             'px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap',
                             selectedStatus === 'all'
-                                ? 'bg-[#168a42] text-white shadow-xs'
+                                ? 'bg-[#1e3a8a] text-white shadow-xs'
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         ]"
                     >
@@ -225,7 +225,7 @@ const getStatusBadgeClass = (status) => {
                         :class="[
                             'px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap',
                             selectedStatus === 'reported'
-                                ? 'bg-[#168a42] text-white shadow-xs'
+                                ? 'bg-[#1e3a8a] text-white shadow-xs'
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         ]"
                     >
@@ -236,7 +236,7 @@ const getStatusBadgeClass = (status) => {
                         :class="[
                             'px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap',
                             selectedStatus === 'in_progress'
-                                ? 'bg-[#168a42] text-white shadow-xs'
+                                ? 'bg-[#1e3a8a] text-white shadow-xs'
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         ]"
                     >
@@ -247,7 +247,7 @@ const getStatusBadgeClass = (status) => {
                         :class="[
                             'px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap',
                             selectedStatus === 'waiting_parts'
-                                ? 'bg-[#168a42] text-white shadow-xs'
+                                ? 'bg-[#1e3a8a] text-white shadow-xs'
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         ]"
                     >
@@ -258,7 +258,7 @@ const getStatusBadgeClass = (status) => {
                         :class="[
                             'px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap',
                             selectedStatus === 'completed'
-                                ? 'bg-[#168a42] text-white shadow-xs'
+                                ? 'bg-[#1e3a8a] text-white shadow-xs'
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         ]"
                     >
@@ -271,7 +271,7 @@ const getStatusBadgeClass = (status) => {
                     <select
                         v-model="selectedPriority"
                         @change="applyFilter"
-                        class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                        class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                     >
                         <option value="all">Semua Prioritas</option>
                         <option value="critical">Kritis / Mendesak</option>
@@ -287,7 +287,7 @@ const getStatusBadgeClass = (status) => {
                             @keyup.enter="applyFilter"
                             type="text"
                             placeholder="Cari tiket, aset, pelapor..."
-                            class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                         />
                     </div>
 
@@ -362,7 +362,7 @@ const getStatusBadgeClass = (status) => {
                                 <!-- Teknisi -->
                                 <td class="px-4 py-4 whitespace-nowrap">
                                     <div v-if="ticket.technician" class="flex items-center gap-2">
-                                        <div class="w-6 h-6 rounded-full bg-emerald-100 text-[#168a42] flex items-center justify-center font-bold text-[10px]">
+                                        <div class="w-6 h-6 rounded-full bg-blue-100 text-[#1e3a8a] flex items-center justify-center font-bold text-[10px]">
                                             {{ ticket.technician.name.charAt(0) }}
                                         </div>
                                         <div>
@@ -399,7 +399,7 @@ const getStatusBadgeClass = (status) => {
                                         <button
                                             v-if="ticket.status?.value !== 'completed'"
                                             @click="openDispatch(ticket)"
-                                            class="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#168a42] border border-emerald-200 text-[11px] font-bold transition flex items-center gap-1"
+                                            class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#1e3a8a] border border-blue-200 text-[11px] font-bold transition flex items-center gap-1"
                                             title="Update & Dispatch"
                                         >
                                             <UserCheck class="w-3.5 h-3.5" />
@@ -442,7 +442,7 @@ const getStatusBadgeClass = (status) => {
                             :class="[
                                 'px-3 py-1.5 rounded-lg text-xs font-semibold transition',
                                 link.active
-                                    ? 'bg-[#168a42] text-white shadow-xs'
+                                    ? 'bg-[#1e3a8a] text-white shadow-xs'
                                     : link.url
                                         ? 'text-slate-600 hover:bg-slate-100'
                                         : 'text-slate-300 pointer-events-none'
@@ -459,7 +459,7 @@ const getStatusBadgeClass = (status) => {
             <div class="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden animate-in fade-in zoom-in duration-150">
                 <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                     <div class="flex items-center gap-2 text-slate-900 font-bold text-sm">
-                        <Wrench class="w-4 h-4 text-[#168a42]" />
+                        <Wrench class="w-4 h-4 text-[#1e3a8a]" />
                         <span>Dispatch Teknisi & Update Progres Tiket</span>
                     </div>
                     <button @click="showDispatchModal = false" class="text-slate-400 hover:text-slate-600">
@@ -469,7 +469,7 @@ const getStatusBadgeClass = (status) => {
 
                 <form @submit.prevent="submitDispatch" class="p-6 space-y-4">
                     <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs">
-                        <div class="font-mono font-bold text-[#168a42]">{{ dispatchTicket?.ticket_code }}</div>
+                        <div class="font-mono font-bold text-[#1e3a8a]">{{ dispatchTicket?.ticket_code }}</div>
                         <div class="font-semibold text-slate-800 mt-1">{{ dispatchTicket?.asset?.name }}</div>
                         <div class="text-slate-500 mt-0.5 line-clamp-2">{{ dispatchTicket?.issue_description }}</div>
                     </div>
@@ -479,7 +479,7 @@ const getStatusBadgeClass = (status) => {
                         <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Teknisi Penanggung Jawab</label>
                         <select
                             v-model="dispatchForm.technician_id"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             required
                         >
                             <option value="" disabled>-- Pilih Teknisi On-Duty --</option>
@@ -494,7 +494,7 @@ const getStatusBadgeClass = (status) => {
                         <label class="block text-xs font-bold text-slate-700 mb-1">Status Penanganan</label>
                         <select
                             v-model="dispatchForm.status"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             required
                         >
                             <option value="in_progress">Sedang Dikerjakan</option>
@@ -510,7 +510,7 @@ const getStatusBadgeClass = (status) => {
                             v-model="dispatchForm.resolution_notes"
                             rows="3"
                             placeholder="Tuliskan instruksi penanganan teknisi atau catatan suku cadang..."
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                         ></textarea>
                     </div>
 
@@ -525,7 +525,7 @@ const getStatusBadgeClass = (status) => {
                         <button
                             type="submit"
                             :disabled="dispatchForm.processing"
-                            class="px-4 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
+                            class="px-4 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
                         >
                             Simpan Perubahan
                         </button>

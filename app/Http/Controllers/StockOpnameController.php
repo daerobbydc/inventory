@@ -28,7 +28,7 @@ class StockOpnameController extends Controller
         if (! $session) {
             $session = StockOpnameSession::create([
                 'session_code' => 'SO/'.now()->format('Y').'/SM'.(now()->month > 6 ? '2' : '1').'/001',
-                'name' => 'Sensus BMN & Audit Fisik TA '.now()->format('Y'),
+                'name' => 'Sensus & Audit Fisik Aset Yayasan TA '.now()->format('Y'),
                 'start_date' => now()->toDateString(),
                 'end_date' => now()->addDays(30)->toDateString(),
                 'status' => StockOpnameStatus::Ongoing,
@@ -79,7 +79,7 @@ class StockOpnameController extends Controller
             ->first();
 
         if (! $asset) {
-            return response()->json(['error' => "Aset dengan kode '{$code}' tidak ditemukan di sistem BMN"], 404);
+            return response()->json(['error' => "Aset dengan kode '{$code}' tidak ditemukan di sistem inventaris"], 404);
         }
 
         $currentRoomId = $request->query('room_id');
@@ -151,7 +151,7 @@ class StockOpnameController extends Controller
                 'to_room_id' => $validated['scanned_room_id'],
                 'moved_by_id' => $request->user()->id,
                 'moved_at' => now(),
-                'reason' => 'Relokasi otomatis dari hasil verifikasi audit fisik sensus BMN.',
+                'reason' => 'Relokasi otomatis dari hasil verifikasi audit fisik sensus aset yayasan.',
             ]);
 
             $asset->room_id = $validated['scanned_room_id'];

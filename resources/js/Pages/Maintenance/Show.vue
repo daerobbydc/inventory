@@ -133,7 +133,7 @@ const isStepActive = (stepKey) => {
                         <div 
                             :class="[
                                 'w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black',
-                                isStepActive(step.key) ? 'bg-[#168a42] text-white' : 'bg-slate-200 text-slate-500'
+                                isStepActive(step.key) ? 'bg-[#1e3a8a] text-white' : 'bg-slate-200 text-slate-500'
                             ]"
                         >
                             <Check v-if="isStepActive(step.key)" class="w-3 h-3 stroke-[3]" />
@@ -151,7 +151,7 @@ const isStepActive = (stepKey) => {
                     <!-- Asset Card -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm">
                         <div class="flex items-center gap-2.5 text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                            <Layers class="w-4 h-4 text-[#168a42]" />
+                            <Layers class="w-4 h-4 text-[#1e3a8a]" />
                             <span>Informasi Fasilitas & Aset</span>
                         </div>
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
@@ -170,7 +170,7 @@ const isStepActive = (stepKey) => {
                                 :href="route('assets.show', ticket.asset.id)"
                                 class="px-3.5 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 transition shrink-0"
                             >
-                                Buku Induk BMN →
+                                Buku Induk Aset →
                             </Link>
                         </div>
 
@@ -204,7 +204,7 @@ const isStepActive = (stepKey) => {
                     <!-- Tindakan & Catatan Selesai -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm">
                         <div class="flex items-center gap-2.5 text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                            <Wrench class="w-4 h-4 text-[#168a42]" />
+                            <Wrench class="w-4 h-4 text-[#1e3a8a]" />
                             <span>Rekam Tindakan & Catatan Teknisi</span>
                         </div>
                         <p v-if="ticket.resolution_notes" class="text-sm text-slate-800 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
@@ -226,7 +226,7 @@ const isStepActive = (stepKey) => {
                     <!-- Update Status & Dispatch Form -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm">
                         <h3 class="text-sm font-extrabold text-slate-900 mb-4 flex items-center gap-2">
-                            <Wrench class="w-4 h-4 text-[#168a42]" />
+                            <Wrench class="w-4 h-4 text-[#1e3a8a]" />
                             <span>Update Progres Penanganan</span>
                         </h3>
 
@@ -236,7 +236,7 @@ const isStepActive = (stepKey) => {
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Status Tiket</label>
                                 <select
                                     v-model="form.status"
-                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 >
                                     <option v-for="s in statuses" :key="s.value" :value="s.value">
                                         {{ s.label }}
@@ -249,7 +249,7 @@ const isStepActive = (stepKey) => {
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Teknisi Penanggung Jawab</label>
                                 <select
                                     v-model="form.technician_id"
-                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 >
                                     <option value="">-- Pilih Teknisi --</option>
                                     <option v-for="t in technicians" :key="t.id" :value="t.id">
@@ -265,7 +265,7 @@ const isStepActive = (stepKey) => {
                                     v-model="form.cost"
                                     type="number"
                                     placeholder="0"
-                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 />
                             </div>
 
@@ -276,14 +276,14 @@ const isStepActive = (stepKey) => {
                                     v-model="form.resolution_notes"
                                     rows="3"
                                     placeholder="Tindakan yang telah dilakukan..."
-                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 ></textarea>
                             </div>
 
                             <button
                                 type="submit"
                                 :disabled="form.processing"
-                                class="w-full py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
+                                class="w-full py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition disabled:opacity-50"
                             >
                                 Simpan Perubahan Tiket
                             </button>
@@ -308,7 +308,7 @@ const isStepActive = (stepKey) => {
 
                         <!-- Teknisi -->
                         <div class="flex items-start gap-3 pt-3 border-t border-slate-100">
-                            <div class="w-8 h-8 rounded-full bg-emerald-50 text-[#168a42] flex items-center justify-center font-bold">
+                            <div class="w-8 h-8 rounded-full bg-blue-50 text-[#1e3a8a] flex items-center justify-center font-bold">
                                 {{ ticket.technician?.name?.charAt(0) || 'T' }}
                             </div>
                             <div>

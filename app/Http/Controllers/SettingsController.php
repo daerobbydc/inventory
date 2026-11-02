@@ -43,10 +43,10 @@ class SettingsController extends Controller
 
         $syncStatus = [
             'synchronizer_status' => 'Online',
-            'gateway' => 'Kemdikbudristek SIMAK-BMN v4.2',
+            'gateway' => 'SIM-SARPRAS Universitas Al-Khairiyah Gateway v2.0',
             'last_sync' => now()->subMinutes(25)->translatedFormat('d F Y H:i').' WIB',
             'scheduled_interval' => 'Setiap 6 Jam',
-            'endpoint' => 'https://api-bmn.kemdikbud.go.id/v1/sync',
+            'endpoint' => 'https://api-sarpras.unival.ac.id/v1/sync',
             'sync_health' => '100% Berhasil',
         ];
 

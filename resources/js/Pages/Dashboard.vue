@@ -51,12 +51,12 @@ const formatRupiah = (val) => {
                 <!-- Left Title & Status -->
                 <div class="space-y-2 max-w-2xl">
                     <div class="flex items-center gap-2 text-xs font-semibold text-slate-500">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
                             Sistem Operasional Real-Time
                         </span>
                         <span>•</span>
-                        <span class="text-slate-400">Sinkronisasi BMN Pukul 08:30 WIB</span>
+                        <span class="text-slate-400">Sinkronisasi Inventaris Pukul 08:30 WIB</span>
                     </div>
 
                     <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
@@ -73,7 +73,7 @@ const formatRupiah = (val) => {
                     <!-- Registrasi Aset Baru -->
                     <Link
                         :href="route('assets.create')"
-                        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                     >
                         <Plus class="w-4 h-4 stroke-[2.5]" />
                         <span>Registrasi Aset Baru</span>
@@ -84,7 +84,7 @@ const formatRupiah = (val) => {
                         :href="route('loans.create')"
                         class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition"
                     >
-                        <Plus class="w-4 h-4 text-emerald-600 stroke-[2.5]" />
+                        <Plus class="w-4 h-4 text-[#1e3a8a] stroke-[2.5]" />
                         <span>Ajukan Peminjaman</span>
                     </Link>
 
@@ -128,7 +128,7 @@ const formatRupiah = (val) => {
                     </div>
                     <div class="mt-4 pt-3 border-t border-rose-200/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Nilai Susut: <strong class="text-slate-700">Rp 3.2 M</strong></span>
-                        <Link :href="route('reports.index')" class="text-rose-600 hover:text-rose-800 font-bold">Lihat Audit BMN</Link>
+                        <Link :href="route('reports.index')" class="text-rose-600 hover:text-rose-800 font-bold">Lihat Audit Aset</Link>
                     </div>
                 </div>
 
@@ -151,11 +151,11 @@ const formatRupiah = (val) => {
                     </div>
                     <div class="mt-4 pt-3 border-t border-amber-200/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Terlabel Barcode/RFID: <strong class="text-slate-700">98%</strong></span>
-                        <Link :href="route('stock-opname.scanner')" class="text-amber-700 hover:text-amber-900 font-bold">Scan Fisik BMN</Link>
+                        <Link :href="route('stock-opname.scanner')" class="text-amber-700 hover:text-amber-900 font-bold">Scan Fisik Aset</Link>
                     </div>
                 </div>
 
-                <!-- Card 3: Kondisi Aset Prima (Green tint) -->
+                <!-- Card 3: Kondisi Aset Prima (Blue tint) -->
                 <div class="bg-[#f0fdf4] border border-emerald-100 rounded-2xl p-5 shadow-sm hover:shadow transition flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
@@ -184,14 +184,14 @@ const formatRupiah = (val) => {
                 <div class="bg-[#eff6ff] border border-blue-100 rounded-2xl p-5 shadow-sm hover:shadow transition flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <div class="h-9 w-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                            <div class="h-9 w-9 rounded-xl bg-blue-100 text-[#1e3a8a] flex items-center justify-center">
                                 <Clock class="w-5 h-5" />
                             </div>
-                            <span class="inline-flex items-center text-[11px] font-bold text-blue-800 bg-blue-100 px-2.5 py-0.5 rounded-full">
+                            <span class="inline-flex items-center text-[11px] font-bold text-blue-900 bg-blue-100 px-2.5 py-0.5 rounded-full">
                                 Hari Ini
                             </span>
                         </div>
-                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-blue-600">PEMINJAMAN AKTIF</div>
+                        <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#1e3a8a]">PEMINJAMAN AKTIF</div>
                         <div class="text-2xl font-black text-slate-900 mt-1">38 Sesi Aktif</div>
                         <div class="text-[11px] text-slate-500 mt-1">
                             8 Ruang Kuliah • 12 Lab • 18 Perangkat AV
@@ -205,9 +205,9 @@ const formatRupiah = (val) => {
             </div>
 
             <!-- 3. Enterprise Info Banner Bar -->
-            <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-white rounded-2xl border border-emerald-200/70 p-4 flex items-center justify-between gap-4 shadow-sm">
+            <div class="bg-gradient-to-r from-blue-50 via-slate-50 to-white rounded-2xl border border-blue-200/70 p-4 flex items-center justify-between gap-4 shadow-sm">
                 <div class="flex items-center gap-3">
-                    <div class="h-9 w-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-700/20">
+                    <div class="h-9 w-9 rounded-xl bg-[#1e3a8a] text-white flex items-center justify-center shrink-0 shadow-sm shadow-blue-900/25">
                         <Sparkles class="w-5 h-5" />
                     </div>
                     <div>
@@ -215,7 +215,7 @@ const formatRupiah = (val) => {
                         <div class="text-[11px] text-slate-500">Visualisasi sinkronisasi data real-time dengan inventaris laboratorium, perpustakaan, dan gedung kuliah bersama.</div>
                     </div>
                 </div>
-                <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-emerald-200 rounded-full text-xs font-bold text-emerald-800 shrink-0 shadow-xs">
+                <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-blue-200 rounded-full text-xs font-bold text-blue-900 shrink-0 shadow-xs">
                     <span>Layout Terstandarisasi Dikti</span>
                 </div>
             </div>
@@ -237,7 +237,7 @@ const formatRupiah = (val) => {
                                 </span>
                                 <div class="flex items-center gap-3 text-[11px] text-slate-500 font-medium">
                                     <span class="flex items-center gap-1.5">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-[#168a42]"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full bg-[#1e3a8a]"></span>
                                         Rata-rata Kapasitas
                                     </span>
                                     <span class="flex items-center gap-1.5">
@@ -267,9 +267,9 @@ const formatRupiah = (val) => {
                                         class="absolute -top-1 w-2 h-2 rounded-full bg-slate-400 border border-white"
                                         :style="{ bottom: `${item.peak}%` }"
                                     ></span>
-                                    <!-- Green filled bar -->
+                                    <!-- Blue filled bar -->
                                     <div 
-                                        class="w-full bg-[#168a42] rounded-t-xl transition-all duration-500 group-hover:bg-[#137a3b]"
+                                        class="w-full bg-[#1e3a8a] rounded-t-xl transition-all duration-500 group-hover:bg-[#172554]"
                                         :style="{ height: `${item.rate}%` }"
                                     ></div>
                                 </div>
@@ -283,7 +283,7 @@ const formatRupiah = (val) => {
                         <div>
                             Total Kelas: <strong class="text-slate-800">124 Ruang</strong> • Lab Khusus: <strong class="text-slate-800">42 Unit</strong>
                         </div>
-                        <Link :href="route('settings.index')" class="font-bold text-[#168a42] hover:text-[#137a3b] flex items-center gap-1">
+                        <Link :href="route('settings.index')" class="font-bold text-[#1e3a8a] hover:text-[#172554] flex items-center gap-1">
                             Lihat Denah Ruang & Jadwal Lengkap
                             <ChevronRight class="w-4 h-4" />
                         </Link>
@@ -342,7 +342,7 @@ const formatRupiah = (val) => {
                     <!-- Footer -->
                     <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                         <span>Pembaruan Buku Induk: <strong class="text-slate-700">Kemarin</strong></span>
-                        <Link :href="route('reports.index')" class="font-bold text-[#168a42] hover:text-[#137a3b]">Detail Sensus BMN</Link>
+                        <Link :href="route('reports.index')" class="font-bold text-[#1e3a8a] hover:text-[#172554]">Detail Sensus Aset</Link>
                     </div>
                 </div>
             </div>
@@ -355,7 +355,7 @@ const formatRupiah = (val) => {
                         <!-- Header -->
                         <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                             <div class="flex items-center gap-2.5">
-                                <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#168a42] flex items-center justify-center">
+                                <div class="w-7 h-7 rounded-lg bg-blue-50 text-[#1e3a8a] flex items-center justify-center">
                                     <CheckCircle2 class="w-4 h-4" />
                                 </div>
                                 <div>
@@ -396,13 +396,13 @@ const formatRupiah = (val) => {
                                             <div class="text-[10px] text-slate-400">Durasi: 4 Jam</div>
                                         </td>
                                         <td class="px-4 py-3.5">
-                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-blue-900 border border-blue-200">
                                                 Seminar Nasional
                                             </span>
                                         </td>
                                         <td class="px-6 py-3.5 text-center">
                                             <div class="inline-flex items-center gap-1.5">
-                                                <button class="w-7 h-7 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow-xs">
+                                                <button class="w-7 h-7 rounded-lg bg-[#1e3a8a] hover:bg-[#172554] text-white flex items-center justify-center transition shadow-xs">
                                                     <Check class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
                                                 <button class="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 flex items-center justify-center transition">
@@ -427,13 +427,13 @@ const formatRupiah = (val) => {
                                             <div class="text-[10px] text-slate-400">Durasi: 3 Jam</div>
                                         </td>
                                         <td class="px-4 py-3.5">
-                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-blue-900 border border-blue-200">
                                                 Praktikum Mandiri
                                             </span>
                                         </td>
                                         <td class="px-6 py-3.5 text-center">
                                             <div class="inline-flex items-center gap-1.5">
-                                                <button class="w-7 h-7 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow-xs">
+                                                <button class="w-7 h-7 rounded-lg bg-[#1e3a8a] hover:bg-[#172554] text-white flex items-center justify-center transition shadow-xs">
                                                     <Check class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
                                                 <button class="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 flex items-center justify-center transition">
@@ -464,7 +464,7 @@ const formatRupiah = (val) => {
                                         </td>
                                         <td class="px-6 py-3.5 text-center">
                                             <div class="inline-flex items-center gap-1.5">
-                                                <button class="w-7 h-7 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow-xs">
+                                                <button class="w-7 h-7 rounded-lg bg-[#1e3a8a] hover:bg-[#172554] text-white flex items-center justify-center transition shadow-xs">
                                                     <Check class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
                                                 <button class="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 flex items-center justify-center transition">
@@ -481,7 +481,7 @@ const formatRupiah = (val) => {
                     <!-- Footer -->
                     <div class="px-6 py-3.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                         <span>Menampilkan 3 dari 18 permohonan aktif</span>
-                        <Link :href="route('loans.index')" class="font-bold text-[#168a42] hover:text-[#137a3b] flex items-center gap-1">
+                        <Link :href="route('loans.index')" class="font-bold text-[#1e3a8a] hover:text-[#172554] flex items-center gap-1">
                             Kelola Semua Permohonan
                             <ChevronRight class="w-4 h-4" />
                         </Link>
@@ -556,7 +556,7 @@ const formatRupiah = (val) => {
                                         </span>
                                     </div>
                                     <div class="text-[11px] text-slate-500 mt-1">
-                                        Lampu proyektor aus • Status: PO Sparepart BMN-204
+                                        Lampu proyektor aus • Status: PO Sparepart INV-204
                                     </div>
                                 </div>
 
@@ -564,7 +564,7 @@ const formatRupiah = (val) => {
                                 <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 hover:border-slate-200 transition">
                                     <div class="flex items-start justify-between gap-2">
                                         <div class="font-bold text-xs text-slate-900">Lift Gedung Rektorat Pemeliharaan</div>
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-emerald-100 text-emerald-800 shrink-0">
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-blue-100 text-blue-800 shrink-0">
                                             Selesai 80%
                                         </span>
                                     </div>
@@ -592,7 +592,7 @@ const formatRupiah = (val) => {
                     <!-- Footer -->
                     <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                         <span>8 Teknisi On-Duty di Kampus</span>
-                        <Link :href="route('maintenance.index')" class="font-bold text-[#168a42] hover:text-[#137a3b] flex items-center gap-1">
+                        <Link :href="route('maintenance.index')" class="font-bold text-[#1e3a8a] hover:text-[#172554] flex items-center gap-1">
                             Buka Dispatch Teknisi
                             <ChevronRight class="w-4 h-4" />
                         </Link>

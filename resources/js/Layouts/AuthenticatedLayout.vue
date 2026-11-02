@@ -49,11 +49,11 @@ const dismissFlash = ref(false);
             <div>
                 <!-- Brand Header -->
                 <div class="h-20 px-6 flex items-center gap-3 border-b border-slate-100">
-                    <div class="h-10 w-10 rounded-xl bg-[#168a42] flex items-center justify-center text-white shadow-md shadow-emerald-700/20">
+                    <div class="h-10 w-10 rounded-xl bg-[#1e3a8a] flex items-center justify-center text-white shadow-md shadow-blue-900/25">
                         <ShieldCheck class="h-6 w-6 stroke-[2.2]" />
                     </div>
                     <div>
-                        <div class="text-base font-extrabold tracking-tight text-[#168a42] leading-none">SIM-SARPRAS</div>
+                        <div class="text-base font-extrabold tracking-tight text-[#1e3a8a] leading-none">SIM-SARPRAS</div>
                         <div class="text-[11px] font-medium text-slate-400 mt-1">Univ. Al-Khairiyah</div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ const dismissFlash = ref(false);
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('dashboard') 
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
@@ -80,7 +80,7 @@ const dismissFlash = ref(false);
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('assets.*') 
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
@@ -94,7 +94,7 @@ const dismissFlash = ref(false);
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('consumables.*') 
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
@@ -108,7 +108,7 @@ const dismissFlash = ref(false);
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('loans.*') 
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
@@ -122,7 +122,7 @@ const dismissFlash = ref(false);
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('stock-opname.*') 
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
@@ -136,7 +136,7 @@ const dismissFlash = ref(false);
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('maintenance.*') 
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
@@ -144,18 +144,18 @@ const dismissFlash = ref(false);
                         <span>Pemeliharaan & Servis</span>
                     </Link>
 
-                    <!-- Pemutihan BMN -->
+                    <!-- Penghapusan Aset -->
                     <Link
                         :href="route('disposals.index')"
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('disposals.*') 
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
                         <ArchiveX class="w-4 h-4 shrink-0" />
-                        <span>Pemutihan BMN</span>
+                        <span>Penghapusan Aset</span>
                     </Link>
 
                     <!-- Laporan & Audit -->
@@ -164,7 +164,7 @@ const dismissFlash = ref(false);
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('reports.*') 
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
@@ -178,7 +178,7 @@ const dismissFlash = ref(false);
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
                             route().current('settings.*') || route().current('profile.*')
-                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"
                     >
@@ -193,12 +193,12 @@ const dismissFlash = ref(false);
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
                     <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
                         <span>Status Sistem</span>
-                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="inline-block w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
                     </div>
                     <div class="text-xs font-semibold text-slate-700 leading-tight">
-                        BMN Synchronizer Online
+                        Sinkronisasi Inventaris Terpadu
                     </div>
-                    <div class="text-[10px] text-slate-400 mt-0.5">(Kemdikbudristek)</div>
+                    <div class="text-[10px] text-slate-400 mt-0.5">(Biro Sarpras Unival)</div>
                 </div>
             </div>
         </aside>
@@ -221,8 +221,8 @@ const dismissFlash = ref(false);
                         <Search class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                         <input
                             type="text"
-                            placeholder="Cari aset, ruangan, kode BMN, dll..."
-                            class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                            placeholder="Cari aset, ruangan, kode inventaris..."
+                            class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                         />
                     </div>
                 </div>
@@ -255,7 +255,7 @@ const dismissFlash = ref(false);
                     <Dropdown align="right" width="48">
                         <template #trigger>
                             <button class="flex items-center gap-2 pl-2 pr-1 py-1 rounded-full hover:bg-slate-50 transition">
-                                <div class="w-8 h-8 rounded-full bg-emerald-100 text-[#168a42] border border-emerald-200 flex items-center justify-center font-bold text-xs">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 text-[#1e3a8a] border border-blue-200 flex items-center justify-center font-bold text-xs">
                                     {{ $page.props.auth?.user?.name?.charAt(0) || 'B' }}
                                 </div>
                                 <div class="hidden sm:block text-left text-xs leading-tight">

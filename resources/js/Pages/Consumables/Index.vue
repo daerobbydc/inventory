@@ -135,7 +135,7 @@ const submitTransaction = () => {
                 <div class="flex items-center gap-2.5 shrink-0">
                     <button
                         @click="showCreateModal = true"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                     >
                         <Plus class="w-4 h-4 stroke-[2.5]" />
                         <span>+ Tambah Barang Baru</span>
@@ -159,10 +159,10 @@ const submitTransaction = () => {
 
                 <div class="bg-[#f0fdf4]/90 border border-emerald-100 rounded-2xl p-5 shadow-xs">
                     <div class="flex items-center justify-between">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[#168a42] flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[#1e3a8a] flex items-center justify-center">
                             <DollarSign class="w-5 h-5" />
                         </div>
-                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-[#168a42]">Nilai Total</span>
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-[#1e3a8a]">Nilai Total</span>
                     </div>
                     <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 mt-3">VALUASI PERSEDIAAN</div>
                     <div class="text-2xl font-black text-slate-900 mt-0.5">{{ formatRupiah(metrics.total_valuation) }}</div>
@@ -202,7 +202,7 @@ const submitTransaction = () => {
                         :class="[
                             'px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap',
                             selectedStockStatus === 'all'
-                                ? 'bg-[#168a42] text-white shadow-xs'
+                                ? 'bg-[#1e3a8a] text-white shadow-xs'
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         ]"
                     >
@@ -225,7 +225,7 @@ const submitTransaction = () => {
                         :class="[
                             'px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap',
                             selectedStockStatus === 'safe'
-                                ? 'bg-[#168a42] text-white shadow-xs'
+                                ? 'bg-[#1e3a8a] text-white shadow-xs'
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                         ]"
                     >
@@ -237,7 +237,7 @@ const submitTransaction = () => {
                     <select
                         v-model="selectedCategory"
                         @change="applyFilter"
-                        class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                        class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                     >
                         <option value="all">Semua Kategori</option>
                         <option v-for="cat in categories" :key="cat.id" :value="cat.id">
@@ -252,7 +252,7 @@ const submitTransaction = () => {
                             @keyup.enter="applyFilter"
                             type="text"
                             placeholder="Cari kode atau nama barang..."
-                            class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                         />
                     </div>
 
@@ -301,7 +301,7 @@ const submitTransaction = () => {
                             </span>
                             <span 
                                 v-else
-                                class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-[#168a42] shrink-0"
+                                class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-[#1e3a8a] shrink-0"
                             >
                                 Aman
                             </span>
@@ -318,7 +318,7 @@ const submitTransaction = () => {
                                 <div 
                                     :class="[
                                         'h-full rounded-full transition-all duration-300',
-                                        item.current_stock <= item.minimum_stock ? 'bg-amber-500' : 'bg-[#168a42]'
+                                        item.current_stock <= item.minimum_stock ? 'bg-amber-500' : 'bg-[#1e3a8a]'
                                     ]"
                                     :style="{ width: `${Math.min(100, Math.max(5, (item.current_stock / (item.minimum_stock * 3)) * 100))}%` }"
                                 ></div>
@@ -336,7 +336,7 @@ const submitTransaction = () => {
                         <button
                             @click="openTransaction(item, 'out')"
                             :disabled="item.current_stock <= 0"
-                            class="flex-1 py-1.5 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#168a42] text-xs font-bold transition flex items-center justify-center gap-1 disabled:opacity-40"
+                            class="flex-1 py-1.5 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#1e3a8a] text-xs font-bold transition flex items-center justify-center gap-1 disabled:opacity-40"
                         >
                             <ArrowUpRight class="w-3.5 h-3.5" />
                             <span>Minta ATK</span>
@@ -432,7 +432,7 @@ const submitTransaction = () => {
                                 v-model="createForm.item_code"
                                 type="text"
                                 placeholder="Misal: ATK-HVS-F4"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             />
                         </div>
@@ -440,7 +440,7 @@ const submitTransaction = () => {
                             <label class="block text-xs font-bold text-slate-700 mb-1">Kategori</label>
                             <select
                                 v-model="createForm.category_id"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             >
                                 <option value="" disabled>-- Pilih Kategori --</option>
@@ -457,7 +457,7 @@ const submitTransaction = () => {
                             v-model="createForm.name"
                             type="text"
                             placeholder="Misal: Kertas HVS F4 75 GSM Sinar Dunia (Rim)"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             required
                         />
                     </div>
@@ -469,7 +469,7 @@ const submitTransaction = () => {
                                 v-model="createForm.unit"
                                 type="text"
                                 placeholder="rim, box, botol"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             />
                         </div>
@@ -479,7 +479,7 @@ const submitTransaction = () => {
                                 v-model="createForm.current_stock"
                                 type="number"
                                 min="0"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             />
                         </div>
@@ -489,7 +489,7 @@ const submitTransaction = () => {
                                 v-model="createForm.minimum_stock"
                                 type="number"
                                 min="1"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             />
                         </div>
@@ -502,7 +502,7 @@ const submitTransaction = () => {
                             type="number"
                             min="0"
                             placeholder="55000"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             required
                         />
                     </div>
@@ -518,7 +518,7 @@ const submitTransaction = () => {
                         <button
                             type="submit"
                             :disabled="createForm.processing"
-                            class="px-5 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
+                            class="px-5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
                         >
                             Simpan Barang
                         </button>
@@ -557,7 +557,7 @@ const submitTransaction = () => {
                             type="number"
                             min="1"
                             :max="transactionForm.type === 'out' ? selectedConsumable?.current_stock : 10000"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             required
                         />
                     </div>
@@ -568,7 +568,7 @@ const submitTransaction = () => {
                             v-model="transactionForm.reference_number"
                             type="text"
                             placeholder="Misal: REQ/FT/2026/05 atau PO/2026/02"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                         />
                     </div>
 
@@ -578,7 +578,7 @@ const submitTransaction = () => {
                             v-model="transactionForm.notes"
                             rows="2"
                             placeholder="Misal: Kebutuhan cetak lembar ujian semester genap..."
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                         ></textarea>
                     </div>
 
@@ -593,7 +593,7 @@ const submitTransaction = () => {
                         <button
                             type="submit"
                             :disabled="transactionForm.processing"
-                            class="px-5 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
+                            class="px-5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
                         >
                             Simpan Mutasi
                         </button>
@@ -603,3 +603,4 @@ const submitTransaction = () => {
         </div>
     </AuthenticatedLayout>
 </template>
+

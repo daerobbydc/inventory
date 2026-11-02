@@ -50,7 +50,7 @@ const submit = () => {
                 <button
                     type="button"
                     @click="fillDemo('sarpras@kampus.ac.id')"
-                    class="p-2 text-left bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-lg transition"
+                    class="p-2 text-left bg-white hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-lg transition"
                 >
                     <div class="font-bold text-slate-800">Super Admin</div>
                     <div class="text-[10px] text-slate-400 truncate">sarpras@...</div>
@@ -58,7 +58,7 @@ const submit = () => {
                 <button
                     type="button"
                     @click="fillDemo('laboran.komputer@kampus.ac.id')"
-                    class="p-2 text-left bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-lg transition"
+                    class="p-2 text-left bg-white hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-lg transition"
                 >
                     <div class="font-bold text-slate-800">PIC Ruangan</div>
                     <div class="text-[10px] text-slate-400 truncate">laboran...@...</div>
@@ -66,7 +66,7 @@ const submit = () => {
                 <button
                     type="button"
                     @click="fillDemo('teknisi@kampus.ac.id')"
-                    class="p-2 text-left bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-lg transition"
+                    class="p-2 text-left bg-white hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-lg transition"
                 >
                     <div class="font-bold text-slate-800">Teknisi Servis</div>
                     <div class="text-[10px] text-slate-400 truncate">teknisi@...</div>
@@ -74,7 +74,7 @@ const submit = () => {
                 <button
                     type="button"
                     @click="fillDemo('mahasiswa@kampus.ac.id')"
-                    class="p-2 text-left bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 rounded-lg transition"
+                    class="p-2 text-left bg-white hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-lg transition"
                 >
                     <div class="font-bold text-slate-800">Mahasiswa / BEM</div>
                     <div class="text-[10px] text-slate-400 truncate">mahasiswa@...</div>
@@ -95,7 +95,7 @@ const submit = () => {
                         id="email"
                         type="email"
                         v-model="form.email"
-                        class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                        class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                         placeholder="nama@kampus.ac.id"
                         required
                         autofocus
@@ -111,7 +111,7 @@ const submit = () => {
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="text-[11px] text-[#168a42] hover:underline font-semibold"
+                        class="text-[11px] text-[#1e3a8a] hover:underline font-semibold"
                     >
                         Lupa sandi?
                     </Link>
@@ -122,7 +122,7 @@ const submit = () => {
                         id="password"
                         type="password"
                         v-model="form.password"
-                        class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                        class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                         placeholder="••••••••"
                         required
                         autocomplete="current-password"
@@ -141,7 +141,7 @@ const submit = () => {
             <button
                 type="submit"
                 :disabled="form.processing"
-                class="w-full py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-extrabold shadow-sm shadow-emerald-700/20 transition disabled:opacity-50 flex items-center justify-center gap-2"
+                class="w-full py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-extrabold shadow-sm shadow-blue-900/25 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
                 <LogIn class="w-4 h-4" />
                 <span>Masuk Sekarang</span>
@@ -149,7 +149,7 @@ const submit = () => {
 
             <div class="pt-4 text-center text-xs text-slate-500 border-t border-slate-100">
                 Belum memiliki akun terdaftar?
-                <Link :href="route('register')" class="text-[#168a42] font-bold hover:underline ml-1">
+                <Link :href="route('register')" class="text-[#1e3a8a] font-bold hover:underline ml-1">
                     Registrasi Akun Baru
                 </Link>
             </div>

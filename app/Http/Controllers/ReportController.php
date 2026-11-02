@@ -62,7 +62,7 @@ class ReportController extends Controller
             ];
         });
 
-        // 2. Physical Condition & Sensus BMN
+        // 2. Physical Condition & Sensus Aset Yayasan
         $conditionStats = [
             'good' => Asset::where('condition', AssetCondition::Good)->count(),
             'slightly_damaged' => Asset::where('condition', AssetCondition::LightDamage)->count(),
@@ -106,7 +106,7 @@ class ReportController extends Controller
     }
 
     /**
-     * Official Printable BMN Report format.
+     * Official Printable Asset Report format.
      */
     public function print(Request $request): Response
     {

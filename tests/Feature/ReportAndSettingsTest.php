@@ -68,7 +68,7 @@ class ReportAndSettingsTest extends TestCase
         );
     }
 
-    public function test_user_can_view_printable_bmn_report(): void
+    public function test_user_can_view_printable_asset_report(): void
     {
         $response = $this->actingAs($this->admin)->get(route('reports.print'));
 

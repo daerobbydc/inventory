@@ -105,7 +105,7 @@ const handleCodeDetected = async (code) => {
         // Play audio confirmation beep
         playBeep();
     } catch (err) {
-        alert(err.response?.data?.error || 'Aset tidak ditemukan dalam sistem BMN.');
+        alert(err.response?.data?.error || 'Aset tidak ditemukan dalam sistem inventaris.');
     } finally {
         isLookupLoading.value = false;
     }
@@ -155,7 +155,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <Head title="Audit Fisik & Scanner QR BMN - SIM-SARPRAS" />
+    <Head title="Audit Fisik & Scanner QR Aset - SIM-SARPRAS" />
 
     <AuthenticatedLayout>
         <div class="space-y-6">
@@ -163,14 +163,14 @@ onUnmounted(() => {
             <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/70 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <div class="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-1">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                            Sensus BMN Aktif
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-900 border border-blue-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+                            Sensus Aset Aktif
                         </span>
                         <span>•</span>
-                        <span class="font-mono text-emerald-800 font-bold">{{ session.session_code }}</span>
+                        <span class="font-mono text-blue-900 font-bold">{{ session.session_code }}</span>
                     </div>
-                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">Audit Fisik & Scanner Kamera QR BMN</h1>
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">Audit Fisik & Scanner Kamera QR Aset</h1>
                     <p class="text-xs sm:text-sm text-slate-500 mt-1">
                         Pindai label stiker aset fisik secara langsung menggunakan kamera HP/Laptop untuk verifikasi kesesuaian lokasi ruangan.
                     </p>
@@ -185,7 +185,7 @@ onUnmounted(() => {
                     <div class="h-8 w-px bg-slate-200"></div>
                     <div>
                         <span class="text-slate-400 block text-[10px] font-extrabold uppercase">Sesuai Ruang</span>
-                        <span class="text-base font-black text-[#168a42]">{{ stats.match_count }}</span>
+                        <span class="text-base font-black text-[#1e3a8a]">{{ stats.match_count }}</span>
                     </div>
                     <div class="h-8 w-px bg-slate-200"></div>
                     <div>
@@ -209,7 +209,7 @@ onUnmounted(() => {
                                 <Building2 class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                                 <select
                                     v-model="selectedRoomId"
-                                    class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                    class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 >
                                     <option v-for="room in rooms" :key="room.id" :value="room.id">
                                         {{ room.name }} ({{ room.building?.name }}) - Kode: {{ room.code }}
@@ -227,7 +227,7 @@ onUnmounted(() => {
                                 <button
                                     v-if="!isScanning"
                                     @click="startCamera"
-                                    class="px-3.5 py-1.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                                    class="px-3.5 py-1.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
                                 >
                                     <Camera class="w-3.5 h-3.5" />
                                     <span>Buka Kamera</span>
@@ -272,7 +272,7 @@ onUnmounted(() => {
                                         v-model="manualInputCode"
                                         type="text"
                                         placeholder="Ketik kode aset (misal: AST-2026-...) atau paste token QR..."
-                                        class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                        class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                     />
                                 </div>
                                 <button
@@ -341,7 +341,7 @@ onUnmounted(() => {
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Kondisi Fisik Terkini</label>
                                 <select
                                     v-model="verifyForm.condition"
-                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 >
                                     <option value="good">Kondisi Baik / Prima (Laik Pakai Penuh)</option>
                                     <option value="light_damage">Rusak Ringan (Perlu Servis Minor)</option>
@@ -355,7 +355,7 @@ onUnmounted(() => {
                                     id="relocate"
                                     type="checkbox"
                                     v-model="verifyForm.relocate_to_here"
-                                    class="mt-0.5 rounded text-[#168a42] focus:ring-[#168a42]"
+                                    class="mt-0.5 rounded text-[#1e3a8a] focus:ring-[#1e3a8a]"
                                 />
                                 <label for="relocate" class="text-xs text-amber-900 leading-snug cursor-pointer font-medium">
                                     <strong>Pindahkan lokasi aset ke ruangan ini</strong> (Sistem akan otomatis mencatat Berita Acara Mutasi Ruangan).
@@ -369,14 +369,14 @@ onUnmounted(() => {
                                     v-model="verifyForm.notes"
                                     type="text"
                                     placeholder="Misal: stiker fisik sedikit pudar, posisi di meja lab 04..."
-                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                    class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 />
                             </div>
 
                             <button
                                 type="submit"
                                 :disabled="verifyForm.processing"
-                                class="w-full py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-extrabold shadow-sm shadow-emerald-700/20 transition flex items-center justify-center gap-1.5 disabled:opacity-50"
+                                class="w-full py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-extrabold shadow-sm shadow-blue-900/25 transition flex items-center justify-center gap-1.5 disabled:opacity-50"
                             >
                                 <Check class="w-4 h-4 stroke-[2.5]" />
                                 <span>Simpan Verifikasi Aset Ini</span>
@@ -408,7 +408,7 @@ onUnmounted(() => {
                         <thead class="bg-slate-50/80 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
                             <tr>
                                 <th class="px-6 py-3">Waktu Scan</th>
-                                <th class="px-4 py-3">Kode BMN</th>
+                                <th class="px-4 py-3">Kode Aset</th>
                                 <th class="px-4 py-3">Nama Aset</th>
                                 <th class="px-4 py-3">Ruangan Seharusnya</th>
                                 <th class="px-4 py-3">Ruangan Ditemukan</th>
@@ -465,3 +465,4 @@ onUnmounted(() => {
         </div>
     </AuthenticatedLayout>
 </template>
+

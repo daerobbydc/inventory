@@ -112,7 +112,7 @@ const getStatusBadge = (st) => {
                     </Link>
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-mono font-bold text-[#168a42] bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+                            <span class="text-xs font-mono font-bold text-[#1e3a8a] bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100">
                                 {{ loan.transaction_code }}
                             </span>
                             <span :class="['px-2.5 py-0.5 text-[10px] font-extrabold rounded-full border', getStatusBadge(loan.status).class]">
@@ -141,7 +141,7 @@ const getStatusBadge = (st) => {
                         <button
                             @click="showApproveModal = true"
                             type="button"
-                            class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                            class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                         >
                             <CheckCircle2 class="w-4 h-4" />
                             Setujui
@@ -161,7 +161,7 @@ const getStatusBadge = (st) => {
                         <button
                             @click="handleHandover"
                             type="button"
-                            class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                            class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                         >
                             <Repeat class="w-4 h-4" />
                             Konfirmasi Serah Terima Barang
@@ -173,7 +173,7 @@ const getStatusBadge = (st) => {
                         <button
                             @click="showReturnModal = true"
                             type="button"
-                            class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                            class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                         >
                             <CheckCircle2 class="w-4 h-4" />
                             Proses Pengembalian
@@ -189,7 +189,7 @@ const getStatusBadge = (st) => {
                     <!-- Voucher Details Card -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6 space-y-5">
                         <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
-                            <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#168a42] flex items-center justify-center">
+                            <div class="w-7 h-7 rounded-lg bg-blue-50 text-[#1e3a8a] flex items-center justify-center">
                                 <FileText class="w-4 h-4" />
                             </div>
                             <h2 class="text-sm font-bold text-slate-900">Rincian Permohonan & Identitas Pemohon</h2>
@@ -219,8 +219,8 @@ const getStatusBadge = (st) => {
                             </div>
 
                             <div v-if="loan.actual_return_date">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 block">Tanggal Realisasi Kembali</span>
-                                <span class="font-black text-[#168a42] mt-0.5 block">{{ loan.actual_return_date }}</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-blue-900 block">Tanggal Realisasi Kembali</span>
+                                <span class="font-black text-[#1e3a8a] mt-0.5 block">{{ loan.actual_return_date }}</span>
                             </div>
 
                             <div v-if="loan.approver">
@@ -243,7 +243,7 @@ const getStatusBadge = (st) => {
                     <!-- Items Borrowed Table -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden">
                         <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-                            <h2 class="text-sm font-bold text-slate-900">Daftar Barang BMN Dipinjam ({{ loan.loan_items?.length || 0 }} Unit)</h2>
+                            <h2 class="text-sm font-bold text-slate-900">Daftar Barang Inventaris Dipinjam ({{ loan.loan_items?.length || 0 }} Unit)</h2>
                         </div>
 
                         <div class="overflow-x-auto">
@@ -261,7 +261,7 @@ const getStatusBadge = (st) => {
                                     <tr v-for="item in loan.loan_items" :key="item.id" class="hover:bg-slate-50/70 transition">
                                         <td class="px-6 py-4">
                                             <div class="font-bold text-slate-900">{{ item.asset?.name }}</div>
-                                            <div class="text-[11px] font-mono text-[#168a42] font-semibold mt-0.5">{{ item.asset?.asset_code }}</div>
+                                            <div class="text-[11px] font-mono text-[#1e3a8a] font-semibold mt-0.5">{{ item.asset?.asset_code }}</div>
                                         </td>
                                         <td class="px-5 py-4 text-slate-600">
                                             {{ item.asset?.room?.name }} ({{ item.asset?.room?.building?.code }})
@@ -278,7 +278,7 @@ const getStatusBadge = (st) => {
                                             <span v-else class="text-[11px] text-slate-400 italic">Belum dikembalikan</span>
                                         </td>
                                         <td class="px-6 py-4 text-right">
-                                            <Link :href="route('assets.show', item.asset_id)" class="font-bold text-[#168a42] hover:text-[#137a3b]">
+                                            <Link :href="route('assets.show', item.asset_id)" class="font-bold text-[#1e3a8a] hover:text-[#172554]">
                                                 Buku Induk
                                             </Link>
                                         </td>
@@ -297,7 +297,7 @@ const getStatusBadge = (st) => {
                         <div class="space-y-5 text-xs">
                             <!-- Step 1 -->
                             <div class="flex items-start gap-3">
-                                <div class="w-6 h-6 rounded-full bg-[#168a42] text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-xs">✓</div>
+                                <div class="w-6 h-6 rounded-full bg-[#1e3a8a] text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-xs">✓</div>
                                 <div>
                                     <div class="font-bold text-slate-900">1. Pengajuan Dikirim</div>
                                     <div class="text-slate-500 mt-0.5">Tercatat di sistem oleh {{ loan.borrower?.name }}</div>
@@ -307,7 +307,7 @@ const getStatusBadge = (st) => {
                             <!-- Step 2 -->
                             <div class="flex items-start gap-3">
                                 <div :class="['w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs', 
-                                    ['approved', 'borrowed', 'returned'].includes(loan.status) ? 'bg-[#168a42] text-white' : (loan.status === 'rejected' ? 'bg-rose-500 text-white' : 'bg-slate-200 text-slate-600')
+                                    ['approved', 'borrowed', 'returned'].includes(loan.status) ? 'bg-[#1e3a8a] text-white' : (loan.status === 'rejected' ? 'bg-rose-500 text-white' : 'bg-slate-200 text-slate-600')
                                 ]">
                                     {{ loan.status === 'rejected' ? '✕' : (['approved', 'borrowed', 'returned'].includes(loan.status) ? '✓' : '2') }}
                                 </div>
@@ -322,7 +322,7 @@ const getStatusBadge = (st) => {
                             <!-- Step 3 -->
                             <div class="flex items-start gap-3">
                                 <div :class="['w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs', 
-                                    ['borrowed', 'returned'].includes(loan.status) ? 'bg-[#168a42] text-white' : 'bg-slate-200 text-slate-600'
+                                    ['borrowed', 'returned'].includes(loan.status) ? 'bg-[#1e3a8a] text-white' : 'bg-slate-200 text-slate-600'
                                 ]">
                                     {{ ['borrowed', 'returned'].includes(loan.status) ? '✓' : '3' }}
                                 </div>
@@ -337,7 +337,7 @@ const getStatusBadge = (st) => {
                             <!-- Step 4 -->
                             <div class="flex items-start gap-3">
                                 <div :class="['w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-bold text-xs', 
-                                    loan.status === 'returned' ? 'bg-[#168a42] text-white' : 'bg-slate-200 text-slate-600'
+                                    loan.status === 'returned' ? 'bg-[#1e3a8a] text-white' : 'bg-slate-200 text-slate-600'
                                 ]">
                                     {{ loan.status === 'returned' ? '✓' : '4' }}
                                 </div>
@@ -352,12 +352,12 @@ const getStatusBadge = (st) => {
                     </div>
 
                     <!-- Campus Sarpras Guidelines -->
-                    <div class="bg-emerald-50/70 rounded-2xl border border-emerald-200/80 p-5 text-xs text-emerald-950 space-y-2.5">
-                        <div class="font-bold flex items-center gap-1.5 text-[#168a42]">
+                    <div class="bg-blue-50/70 rounded-2xl border border-blue-200/80 p-5 text-xs text-blue-950 space-y-2.5">
+                        <div class="font-bold flex items-center gap-1.5 text-[#1e3a8a]">
                             <ShieldCheck class="w-4 h-4" />
-                            Ketentuan Peminjaman Sarpras BMN:
+                            Ketentuan Peminjaman Sarpras Yayasan:
                         </div>
-                        <ul class="list-disc list-inside space-y-1.5 text-[11px] text-emerald-900 leading-relaxed">
+                        <ul class="list-disc list-inside space-y-1.5 text-[11px] text-blue-900 leading-relaxed">
                             <li>Peminjam wajib menjaga keutuhan unit dan seluruh aksesori bawaan.</li>
                             <li>Keterlambatan pengembalian tanpa konfirmasi dapat dikenakan pembatasan hak pinjam.</li>
                             <li>Setiap kerusakan fisik selama masa pinjam wajib dilaporkan pada petugas saat pengembalian.</li>
@@ -377,7 +377,7 @@ const getStatusBadge = (st) => {
                         <textarea
                             v-model="approveForm.approval_notes"
                             rows="3"
-                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] focus:outline-none"
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] focus:outline-none"
                         ></textarea>
                     </div>
 
@@ -393,7 +393,7 @@ const getStatusBadge = (st) => {
                             @click="handleApprove"
                             type="button"
                             :disabled="approveForm.processing"
-                            class="px-5 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                            class="px-5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                         >
                             Ya, Setujui Permohonan
                         </button>
@@ -453,7 +453,7 @@ const getStatusBadge = (st) => {
                                 <label class="block text-[11px] font-bold text-slate-700 mb-1">Kondisi Fisik Saat Kembali:</label>
                                 <select
                                     v-model="returnForm.return_conditions[item.id]"
-                                    class="w-full py-2 px-3 border border-slate-200 rounded-xl text-xs bg-white focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] focus:outline-none"
+                                    class="w-full py-2 px-3 border border-slate-200 rounded-xl text-xs bg-white focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] focus:outline-none"
                                 >
                                     <option v-for="c in conditions" :key="c.value" :value="c.value">{{ c.label }}</option>
                                 </select>
@@ -466,7 +466,7 @@ const getStatusBadge = (st) => {
                         <textarea
                             v-model="returnForm.return_notes"
                             rows="2"
-                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] focus:outline-none"
+                            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] focus:outline-none"
                         ></textarea>
                     </div>
 
@@ -482,7 +482,7 @@ const getStatusBadge = (st) => {
                             @click="handleReturn"
                             type="button"
                             :disabled="returnForm.processing"
-                            class="px-5 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition disabled:opacity-50"
+                            class="px-5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition disabled:opacity-50"
                         >
                             Selesaikan Pengembalian
                         </button>

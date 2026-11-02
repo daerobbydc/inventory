@@ -50,7 +50,7 @@ const formatRupiah = (val) => {
 </script>
 
 <template>
-    <Head title="Penghapusan & Pemutihan BMN - SIM-SARPRAS" />
+    <Head title="Penghapusan Aset Yayasan - SIM-SARPRAS" />
 
     <AuthenticatedLayout>
         <div class="space-y-6">
@@ -60,12 +60,12 @@ const formatRupiah = (val) => {
                     <div class="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-1">
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
                             <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
-                            Tata Kelola BMN Siklus Akhir
+                            Tata Kelola Aset Siklus Akhir
                         </span>
                         <span>•</span>
-                        <span>Berita Acara Pemutihan</span>
+                        <span>Berita Acara Penghapusan</span>
                     </div>
-                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">Penghapusan & Pemutihan Aset BMN</h1>
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight">Penghapusan & Pemutihan Aset Yayasan</h1>
                     <p class="text-xs sm:text-sm text-slate-500 mt-1">
                         Pencatatan resmi pelepasan aset yang rusak berat, hilang, atau melewati masa manfaat ekonomis dengan Berita Acara resmi.
                     </p>
@@ -87,7 +87,7 @@ const formatRupiah = (val) => {
                 <div class="bg-[#fff1f2]/80 border border-rose-100 rounded-2xl p-5 shadow-xs">
                     <span class="text-[10px] font-extrabold uppercase text-rose-700">TOTAL ASET DIHAPUSKAN</span>
                     <div class="text-2xl font-black text-slate-900 mt-1">{{ metrics.total_disposed }} Unit</div>
-                    <div class="text-[11px] text-slate-500 mt-1">Telah diterbitkan Berita Acara BMN</div>
+                    <div class="text-[11px] text-slate-500 mt-1">Telah diterbitkan Berita Acara Penghapusan</div>
                 </div>
 
                 <div class="bg-[#fffbeb]/90 border border-amber-100 rounded-2xl p-5 shadow-xs">
@@ -107,7 +107,7 @@ const formatRupiah = (val) => {
             <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                     <div>
-                        <h3 class="text-sm font-bold text-slate-900">Daftar Aset BMN yang Telah Dihapuskan (Disposed)</h3>
+                        <h3 class="text-sm font-bold text-slate-900">Daftar Aset yang Telah Dihapuskan (Disposed)</h3>
                         <p class="text-[11px] text-slate-500">Aset yang telah dilepas dari neraca buku induk universitas</p>
                     </div>
                 </div>
@@ -115,7 +115,7 @@ const formatRupiah = (val) => {
                     <table class="w-full text-left text-xs border-collapse">
                         <thead class="bg-slate-50/80 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
                             <tr>
-                                <th class="px-6 py-3.5">Kode BMN</th>
+                                <th class="px-6 py-3.5">Kode Aset</th>
                                 <th class="px-4 py-3.5">Nama Aset</th>
                                 <th class="px-4 py-3.5">Kategori</th>
                                 <th class="px-4 py-3.5 text-right">Harga Perolehan</th>
@@ -160,7 +160,7 @@ const formatRupiah = (val) => {
         <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs">
             <div class="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden animate-in fade-in zoom-in duration-150">
                 <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-                    <h3 class="text-sm font-bold text-slate-900">Form Pengajuan Berita Acara Pemutihan BMN</h3>
+                    <h3 class="text-sm font-bold text-slate-900">Form Pengajuan Berita Acara Pemutihan Aset</h3>
                     <button @click="showModal = false" class="text-slate-400 hover:text-slate-600">
                         <X class="w-4 h-4" />
                     </button>
@@ -170,7 +170,7 @@ const formatRupiah = (val) => {
                         <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Aset yang Diusulkan Hapus</label>
                         <select
                             v-model="form.asset_id"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             required
                         >
                             <option value="" disabled>-- Pilih Aset Rusak Berat / Maintenance --</option>
@@ -185,7 +185,7 @@ const formatRupiah = (val) => {
                             <label class="block text-xs font-bold text-slate-700 mb-1">Metode Pelepasan</label>
                             <select
                                 v-model="form.disposal_method"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                                 required
                             >
                                 <option value="musnah">Dimusnahkan (Rusak Total)</option>
@@ -201,7 +201,7 @@ const formatRupiah = (val) => {
                                 type="number"
                                 min="0"
                                 placeholder="0"
-                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             />
                         </div>
                     </div>
@@ -212,7 +212,7 @@ const formatRupiah = (val) => {
                             v-model="form.disposal_reason"
                             rows="3"
                             placeholder="Tuliskan justifikasi teknis (misal: Kompresor AC meledak, biaya servis melebihi 80% harga beli baru...)"
-                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42]"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
                             required
                         ></textarea>
                     </div>
@@ -238,3 +238,4 @@ const formatRupiah = (val) => {
         </div>
     </AuthenticatedLayout>
 </template>
+

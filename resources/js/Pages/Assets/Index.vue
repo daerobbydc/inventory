@@ -126,20 +126,20 @@ const getStatusBadge = (st) => {
             <!-- Header Banner Card -->
             <div class="bg-white rounded-2xl p-6 border border-slate-200/70 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="flex items-center gap-3.5">
-                    <div class="h-11 w-11 rounded-xl bg-emerald-50 text-[#168a42] flex items-center justify-center shrink-0 border border-emerald-100">
+                    <div class="h-11 w-11 rounded-xl bg-blue-50 text-[#1e3a8a] flex items-center justify-center shrink-0 border border-blue-100">
                         <Layers class="w-6 h-6 stroke-[2.2]" />
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-                                Buku Induk BMN Kampus
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-[#1e3a8a] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                                Buku Induk Aset Kampus
                             </span>
                         </div>
                         <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mt-0.5">
                             Data Aset & Inventaris Terpadu
                         </h1>
                         <p class="text-xs text-slate-500">
-                            Pengelolaan barang milik negara, pelabelan QR Code fisik, dan mutasi ruangan sarana.
+                            Pengelolaan inventaris sarana & prasarana yayasan, pelabelan QR Code fisik, dan mutasi ruangan.
                         </p>
                     </div>
                 </div>
@@ -147,7 +147,7 @@ const getStatusBadge = (st) => {
                 <div class="flex items-center gap-2.5 shrink-0">
                     <Link
                         :href="route('assets.create')"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                     >
                         <Plus class="w-4 h-4 stroke-[2.5]" />
                         <span>Registrasi Aset Baru</span>
@@ -165,8 +165,8 @@ const getStatusBadge = (st) => {
                             v-model="search"
                             @keyup.enter="applyFilters"
                             type="text"
-                            placeholder="Cari kode BMN, nama barang, serial number..."
-                            class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                            placeholder="Cari kode inventaris, nama barang, serial number..."
+                            class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                         />
                     </div>
 
@@ -175,7 +175,7 @@ const getStatusBadge = (st) => {
                         <select
                             v-model="selectedCategory"
                             @change="applyFilters"
-                            class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                            class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                         >
                             <option value="">Semua Kategori</option>
                             <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
@@ -187,7 +187,7 @@ const getStatusBadge = (st) => {
                         <select
                             v-model="selectedRoom"
                             @change="applyFilters"
-                            class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                            class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                         >
                             <option value="">Semua Ruangan</option>
                             <option v-for="room in rooms" :key="room.id" :value="room.id">
@@ -201,7 +201,7 @@ const getStatusBadge = (st) => {
                         <select
                             v-model="selectedCondition"
                             @change="applyFilters"
-                            class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#168a42]/30 focus:border-[#168a42] transition"
+                            class="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
                         >
                             <option value="">Semua Kondisi</option>
                             <option v-for="c in conditions" :key="c.value" :value="c.value">{{ c.label }}</option>
@@ -212,7 +212,7 @@ const getStatusBadge = (st) => {
                 <!-- Active Filters Reset Bar -->
                 <div v-if="search || selectedCategory || selectedRoom || selectedCondition || selectedStatus" class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                     <span class="font-medium">Filter aktif diterapkan</span>
-                    <button @click="resetFilters" class="font-bold text-[#168a42] hover:text-[#137a3b] flex items-center gap-1">
+                    <button @click="resetFilters" class="font-bold text-[#1e3a8a] hover:text-[#172554] flex items-center gap-1">
                         <RotateCcw class="w-3.5 h-3.5" />
                         Reset Filter
                     </button>
@@ -225,7 +225,7 @@ const getStatusBadge = (st) => {
                     <table class="w-full text-left border-collapse text-xs">
                         <thead class="bg-slate-50/80 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
                             <tr>
-                                <th class="px-6 py-3.5">Kode BMN & Seri</th>
+                                <th class="px-6 py-3.5">Kode Aset & Seri</th>
                                 <th class="px-6 py-3.5">Nama Barang & Spesifikasi</th>
                                 <th class="px-4 py-3.5">Kategori</th>
                                 <th class="px-5 py-3.5">Lokasi Penempatan</th>
@@ -261,7 +261,7 @@ const getStatusBadge = (st) => {
                                 <!-- Location -->
                                 <td class="px-5 py-4">
                                     <div class="flex items-center gap-1.5 text-xs text-slate-800 font-semibold">
-                                        <MapPin class="w-3.5 h-3.5 text-[#168a42] shrink-0" />
+                                        <MapPin class="w-3.5 h-3.5 text-[#1e3a8a] shrink-0" />
                                         <span>{{ asset.room?.name || '-' }}</span>
                                     </div>
                                     <div class="text-[10px] text-slate-400 pl-5 mt-0.5">
@@ -291,7 +291,7 @@ const getStatusBadge = (st) => {
                                             @click="openQrModal(asset)"
                                             type="button"
                                             title="Tampilkan Label QR"
-                                            class="w-7 h-7 rounded-lg text-slate-600 hover:text-[#168a42] hover:bg-emerald-50 border border-slate-200 flex items-center justify-center transition"
+                                            class="w-7 h-7 rounded-lg text-slate-600 hover:text-[#1e3a8a] hover:bg-blue-50 border border-slate-200 flex items-center justify-center transition"
                                         >
                                             <QrCode class="w-3.5 h-3.5" />
                                         </button>
@@ -300,7 +300,7 @@ const getStatusBadge = (st) => {
                                         <Link
                                             :href="route('assets.show', asset.id)"
                                             title="Buku Induk Aset"
-                                            class="w-7 h-7 rounded-lg text-slate-600 hover:text-[#168a42] hover:bg-emerald-50 border border-slate-200 flex items-center justify-center transition"
+                                            class="w-7 h-7 rounded-lg text-slate-600 hover:text-[#1e3a8a] hover:bg-blue-50 border border-slate-200 flex items-center justify-center transition"
                                         >
                                             <Eye class="w-3.5 h-3.5" />
                                         </Link>
@@ -309,7 +309,7 @@ const getStatusBadge = (st) => {
                                         <Link
                                             :href="route('assets.edit', asset.id)"
                                             title="Ubah Data"
-                                            class="w-7 h-7 rounded-lg text-slate-600 hover:text-[#168a42] hover:bg-emerald-50 border border-slate-200 flex items-center justify-center transition"
+                                            class="w-7 h-7 rounded-lg text-slate-600 hover:text-[#1e3a8a] hover:bg-blue-50 border border-slate-200 flex items-center justify-center transition"
                                         >
                                             <Edit class="w-3.5 h-3.5" />
                                         </Link>
@@ -329,7 +329,7 @@ const getStatusBadge = (st) => {
                 <!-- Pagination Bar -->
                 <div v-if="assets.links?.length > 3" class="px-6 py-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                     <div>
-                        Menampilkan <span class="font-bold text-slate-800">{{ assets.from || 0 }}</span> - <span class="font-bold text-slate-800">{{ assets.to || 0 }}</span> dari <span class="font-bold text-slate-800">{{ assets.total }}</span> aset BMN
+                        Menampilkan <span class="font-bold text-slate-800">{{ assets.from || 0 }}</span> - <span class="font-bold text-slate-800">{{ assets.to || 0 }}</span> dari <span class="font-bold text-slate-800">{{ assets.total }}</span> aset inventaris
                     </div>
                     <div class="flex items-center gap-1">
                         <Link
@@ -339,7 +339,7 @@ const getStatusBadge = (st) => {
                             v-html="link.label"
                             :class="[
                                 'px-3 py-1.5 rounded-lg text-xs font-semibold transition',
-                                link.active ? 'bg-[#168a42] text-white' : 'text-slate-600 hover:bg-slate-100',
+                                link.active ? 'bg-[#1e3a8a] text-white' : 'text-slate-600 hover:bg-slate-100',
                                 !link.url ? 'opacity-30 pointer-events-none' : ''
                             ]"
                         />
@@ -357,12 +357,12 @@ const getStatusBadge = (st) => {
                     <div class="text-center">
                         <!-- University Header in Label -->
                         <div class="border-b border-slate-200 pb-2 mb-3">
-                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42]">UNIVERSITAS AL-KHAIRIYAH</div>
-                            <div class="text-[9px] font-bold text-slate-500 tracking-tight">LABEL RESMI BARANG MILIK NEGARA (BMN)</div>
+                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#1e3a8a]">UNIVERSITAS AL-KHAIRIYAH</div>
+                            <div class="text-[9px] font-bold text-slate-500 tracking-tight">LABEL RESMI INVENTARIS YAYASAN AL-KHAIRIYAH</div>
                         </div>
 
                         <h3 class="text-sm font-bold text-slate-900 leading-tight">{{ selectedAssetForQr.name }}</h3>
-                        <p class="text-xs font-mono font-bold text-[#168a42] mt-1">{{ selectedAssetForQr.asset_code }}</p>
+                        <p class="text-xs font-mono font-bold text-[#1e3a8a] mt-1">{{ selectedAssetForQr.asset_code }}</p>
 
                         <!-- QR Code Canvas -->
                         <div class="my-4 flex justify-center p-3 bg-slate-50 border border-slate-200 rounded-xl inline-block mx-auto">
@@ -381,7 +381,7 @@ const getStatusBadge = (st) => {
                             </div>
                             <div class="flex justify-between font-mono text-[11px]">
                                 <span class="text-slate-400">Security Token:</span>
-                                <span class="text-[#168a42] font-semibold">{{ selectedAssetForQr.qr_code_token }}</span>
+                                <span class="text-[#1e3a8a] font-semibold">{{ selectedAssetForQr.qr_code_token }}</span>
                             </div>
                         </div>
 
@@ -389,7 +389,7 @@ const getStatusBadge = (st) => {
                             <button
                                 @click="printQrLabel"
                                 type="button"
-                                class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold transition shadow-sm"
+                                class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold transition shadow-sm"
                             >
                                 <Printer class="w-4 h-4" />
                                 Cetak Stiker Label

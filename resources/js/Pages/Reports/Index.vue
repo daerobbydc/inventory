@@ -49,16 +49,16 @@ const formatRupiah = (val) => {
             <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/70 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <div class="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-1">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                            Standar Akuntansi BMN Kemdikbudristek
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-900 border border-blue-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+                            Standar Akuntansi Aset Tetap Yayasan
                         </span>
                         <span>•</span>
-                        <span>Sinkronisasi SIMAK-BMN Terverifikasi</span>
+                        <span>Sinkronisasi Sistem Terverifikasi</span>
                     </div>
                     <h1 class="text-2xl font-black text-slate-900 tracking-tight">Pusat Laporan & Audit Inventaris Kampus</h1>
                     <p class="text-xs sm:text-sm text-slate-500 mt-1">
-                        Rekapitulasi nilai perolehan, depresiasi garis lurus, rekam sensus fisik BMN, dan audit kepatuhan aset.
+                        Rekapitulasi nilai perolehan, depresiasi garis lurus, rekam sensus fisik aset yayasan, dan audit kepatuhan sarana.
                     </p>
                 </div>
 
@@ -66,10 +66,10 @@ const formatRupiah = (val) => {
                     <Link
                         :href="route('reports.print')"
                         target="_blank"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-xl text-xs font-bold shadow-sm shadow-emerald-700/20 transition"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                     >
                         <Printer class="w-4 h-4" />
-                        <span>Cetak Rekap BMN Resmi</span>
+                        <span>Cetak Rekap Aset Resmi</span>
                     </Link>
                 </div>
             </div>
@@ -105,10 +105,10 @@ const formatRupiah = (val) => {
                 <!-- Card 3: Nilai Buku Saat Ini -->
                 <div class="bg-[#f0fdf4]/90 border border-emerald-100 rounded-2xl p-5 shadow-sm">
                     <div class="flex items-center justify-between">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[#168a42] flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[#1e3a8a] flex items-center justify-center">
                             <CheckCircle2 class="w-5 h-5" />
                         </div>
-                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-[#168a42]">Net Book Value</span>
+                        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-[#1e3a8a]">Net Book Value</span>
                     </div>
                     <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 mt-3">NILAI BUKU BERSIH TERKINI</div>
                     <div class="text-2xl font-black text-slate-900 mt-0.5">{{ formatRupiah(valuation.total_book_value) }}</div>
@@ -136,31 +136,31 @@ const formatRupiah = (val) => {
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2',
                         activeTab === 'depreciation'
-                            ? 'bg-[#168a42] text-white shadow-xs'
+                            ? 'bg-[#1e3a8a] text-white shadow-xs'
                             : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
                     <TrendingDown class="w-4 h-4" />
-                    <span>Rekap Nilai & Depresiasi BMN</span>
+                    <span>Rekap Nilai & Depresiasi Aset</span>
                 </button>
                 <button
                     @click="activeTab = 'census'"
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2',
                         activeTab === 'census'
-                            ? 'bg-[#168a42] text-white shadow-xs'
+                            ? 'bg-[#1e3a8a] text-white shadow-xs'
                             : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
                     <CheckCircle2 class="w-4 h-4" />
-                    <span>Audit Fisik & Sensus BMN</span>
+                    <span>Audit Fisik & Sensus Aset</span>
                 </button>
                 <button
                     @click="activeTab = 'movements'"
                     :class="[
                         'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2',
                         activeTab === 'movements'
-                            ? 'bg-[#168a42] text-white shadow-xs'
+                            ? 'bg-[#1e3a8a] text-white shadow-xs'
                             : 'text-slate-600 hover:bg-slate-100'
                     ]"
                 >
@@ -175,7 +175,7 @@ const formatRupiah = (val) => {
                 <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden">
                     <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                         <div>
-                            <h3 class="text-sm font-bold text-slate-900">Rekapitulasi per Golongan Kategori BMN</h3>
+                            <h3 class="text-sm font-bold text-slate-900">Rekapitulasi per Golongan Kategori Aset</h3>
                             <p class="text-[11px] text-slate-500">Perhitungan penyusutan garis lurus berdasarkan masa manfaat ekonomis</p>
                         </div>
                     </div>
@@ -184,7 +184,7 @@ const formatRupiah = (val) => {
                             <thead class="bg-slate-50/80 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
                                 <tr>
                                     <th class="px-6 py-3.5">Kode</th>
-                                    <th class="px-4 py-3.5">Kategori BMN</th>
+                                    <th class="px-4 py-3.5">Kategori Aset</th>
                                     <th class="px-4 py-3.5 text-center">Jumlah Unit</th>
                                     <th class="px-4 py-3.5 text-right">Nilai Perolehan</th>
                                     <th class="px-4 py-3.5 text-right">Akumulasi Susut</th>
@@ -193,7 +193,7 @@ const formatRupiah = (val) => {
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr v-for="cat in byCategory" :key="cat.id" class="hover:bg-slate-50/70 transition">
-                                    <td class="px-6 py-4 font-mono font-bold text-[#168a42]">{{ cat.code }}</td>
+                                    <td class="px-6 py-4 font-mono font-bold text-[#1e3a8a]">{{ cat.code }}</td>
                                     <td class="px-4 py-4 font-bold text-slate-900">{{ cat.name }}</td>
                                     <td class="px-4 py-4 text-center font-bold text-slate-800">{{ cat.count }} item</td>
                                     <td class="px-4 py-4 text-right font-medium text-slate-700">{{ formatRupiah(cat.acquisition_value) }}</td>
@@ -225,7 +225,7 @@ const formatRupiah = (val) => {
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr v-for="bld in byBuilding" :key="bld.id" class="hover:bg-slate-50/70 transition">
-                                    <td class="px-6 py-4 font-mono font-bold text-[#168a42]">{{ bld.code }}</td>
+                                    <td class="px-6 py-4 font-mono font-bold text-[#1e3a8a]">{{ bld.code }}</td>
                                     <td class="px-4 py-4 font-bold text-slate-900">{{ bld.name }}</td>
                                     <td class="px-4 py-4 text-center font-medium text-slate-700">{{ bld.room_count }} Ruangan</td>
                                     <td class="px-4 py-4 text-center font-bold text-slate-800">{{ bld.asset_count }} item</td>
@@ -238,7 +238,7 @@ const formatRupiah = (val) => {
                 </div>
             </div>
 
-            <!-- Tab 2: Sensus BMN & Audit Fisik -->
+            <!-- Tab 2: Sensus & Audit Fisik Aset Yayasan -->
             <div v-if="activeTab === 'census'" class="space-y-6">
                 <!-- Condition Breakdown Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -266,18 +266,18 @@ const formatRupiah = (val) => {
                             <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
                         </div>
                         <div class="text-3xl font-black text-slate-900 mt-2">{{ conditionStats.damaged || 0 }} Unit</div>
-                        <div class="text-xs text-rose-700 font-semibold mt-1">Usulan Penghapusan BMN</div>
+                        <div class="text-xs text-rose-700 font-semibold mt-1">Usulan Penghapusan Aset</div>
                     </div>
                 </div>
 
                 <!-- Sensus Sessions List -->
                 <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-slate-900 mb-4">Sesi Stock Opname & Sensus BMN Semesteran</h3>
+                    <h3 class="text-sm font-bold text-slate-900 mb-4">Sesi Stock Opname & Sensus Aset Semesteran</h3>
                     <div class="space-y-3">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div>
-                                <span class="font-mono text-xs font-bold text-emerald-700">SO/2026/SM1/001</span>
-                                <h4 class="font-bold text-slate-900 text-sm mt-0.5">Sensus Aset BMN Semester Genap TA 2024/2025</h4>
+                                <span class="font-mono text-xs font-bold text-blue-900">SO/2026/SM1/001</span>
+                                <h4 class="font-bold text-slate-900 text-sm mt-0.5">Sensus Aset Semester Genap TA 2024/2025</h4>
                                 <p class="text-xs text-slate-500 mt-0.5">Verifikasi fisik seluruh laboratorium, proyektor ruang kuliah, dan perangkat jaringan</p>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 self-start sm:self-center">
@@ -318,7 +318,7 @@ const formatRupiah = (val) => {
                                 <td class="px-4 py-4 text-slate-600">
                                     {{ m.from_room?.name || 'Gudang Pusat' }}
                                 </td>
-                                <td class="px-4 py-4 font-bold text-[#168a42]">
+                                <td class="px-4 py-4 font-bold text-[#1e3a8a]">
                                     {{ m.to_room?.name }}
                                 </td>
                                 <td class="px-4 py-4 text-slate-700 max-w-xs">

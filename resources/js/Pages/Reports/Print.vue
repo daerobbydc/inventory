@@ -22,7 +22,7 @@ const triggerPrint = () => {
 </script>
 
 <template>
-    <Head title="Cetak Laporan Rekapitulasi BMN - SIM-SARPRAS" />
+    <Head title="Cetak Laporan Rekapitulasi Aset Yayasan - SIM-SARPRAS" />
 
     <div class="min-h-screen bg-slate-100 text-slate-900 font-sans print:bg-white p-4 sm:p-8">
         <!-- Floating Print Bar (Hidden on print) -->
@@ -35,12 +35,12 @@ const triggerPrint = () => {
                 >
                     <ArrowLeft class="w-4 h-4" />
                 </button>
-                <div class="text-xs font-bold text-slate-700">Pratinjau Cetak Dokumen Resmi BMN</div>
+                <div class="text-xs font-bold text-slate-700">Pratinjau Dokumen Resmi Aset Yayasan</div>
             </div>
 
             <button
                 @click="triggerPrint"
-                class="px-4 py-2 bg-[#168a42] hover:bg-[#137a3b] text-white rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm transition"
+                class="px-4 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm transition"
             >
                 <Printer class="w-4 h-4" />
                 <span>Cetak / Simpan PDF</span>
@@ -51,13 +51,13 @@ const triggerPrint = () => {
         <div class="max-w-5xl mx-auto bg-white p-8 sm:p-12 border border-slate-200 shadow-md print:border-none print:shadow-none print:p-0">
             <!-- Kop Surat Resmi -->
             <div class="border-b-2 border-slate-900 pb-4 mb-6 flex items-center gap-6">
-                <div class="w-16 h-16 rounded-xl bg-[#168a42] text-white flex items-center justify-center font-black text-xs print:border print:border-slate-800">
+                <div class="w-16 h-16 rounded-xl bg-[#1e3a8a] text-white flex items-center justify-center font-black text-xs print:border print:border-slate-800">
                     UNIVAL
                 </div>
                 <div class="flex-1 text-center pr-16">
-                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-600">KEMENTERIAN PENDIDIKAN TINGGI, SAINS, DAN TEKNOLOGI</h2>
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-600">YAYASAN AL-KHAIRIYAH CITANGKIL</h2>
                     <h1 class="text-lg font-black uppercase text-slate-900 mt-0.5">UNIVERSITAS AL-KHAIRIYAH</h1>
-                    <p class="text-xs font-extrabold text-[#168a42]">BIRO SARANA DAN PRASARANA (SIM-SARPRAS)</p>
+                    <p class="text-xs font-extrabold text-[#1e3a8a]">BIRO SARANA DAN PRASARANA (SIM-SARPRAS)</p>
                     <p class="text-[10px] text-slate-500 mt-0.5">Jl. H. Enggus Arja No. 1, Citangkil, Kota Cilegon • Website: sarpras.unival.ac.id • Email: sarpras@unival.ac.id</p>
                 </div>
             </div>
@@ -65,7 +65,7 @@ const triggerPrint = () => {
             <!-- Title -->
             <div class="text-center my-6">
                 <h2 class="text-base font-black uppercase tracking-wide text-slate-900">
-                    BUKU INDUK BARANG MILIK NEGARA (BMN) & REKAP NILAI PENYUSUTAN
+                    BUKU INDUK INVENTARIS ASET TETAP YAYASAN AL-KHAIRIYAH
                 </h2>
                 <p class="text-xs text-slate-500 mt-1">Dicetak pada: {{ summary.generated_at }}</p>
             </div>
@@ -86,7 +86,7 @@ const triggerPrint = () => {
                 </div>
                 <div>
                     <span class="text-slate-500 block text-[10px] uppercase font-bold">Nilai Buku Bersih (NBV)</span>
-                    <strong class="text-sm font-black text-[#168a42]">{{ formatRupiah(summary.total_book_value) }}</strong>
+                    <strong class="text-sm font-black text-[#1e3a8a]">{{ formatRupiah(summary.total_book_value) }}</strong>
                 </div>
             </div>
 
@@ -95,7 +95,7 @@ const triggerPrint = () => {
                 <thead class="bg-slate-100 uppercase text-[9px] font-black tracking-wider text-slate-700 border-b border-slate-300">
                     <tr>
                         <th class="border border-slate-300 px-3 py-2 text-center w-8">No</th>
-                        <th class="border border-slate-300 px-3 py-2">Kode BMN</th>
+                        <th class="border border-slate-300 px-3 py-2">Kode Aset</th>
                         <th class="border border-slate-300 px-3 py-2">Nama Aset / Spesifikasi</th>
                         <th class="border border-slate-300 px-3 py-2">Kategori</th>
                         <th class="border border-slate-300 px-3 py-2">Lokasi Penempatan</th>
@@ -112,7 +112,7 @@ const triggerPrint = () => {
                         <td class="border border-slate-300 px-3 py-1.5">{{ item.category }}</td>
                         <td class="border border-slate-300 px-3 py-1.5">{{ item.location }}</td>
                         <td class="border border-slate-300 px-3 py-1.5 text-right">{{ formatRupiah(item.purchase_price) }}</td>
-                        <td class="border border-slate-300 px-3 py-1.5 text-right font-bold text-[#168a42]">{{ formatRupiah(item.book_value) }}</td>
+                        <td class="border border-slate-300 px-3 py-1.5 text-right font-bold text-[#1e3a8a]">{{ formatRupiah(item.book_value) }}</td>
                         <td class="border border-slate-300 px-3 py-1.5 text-center font-semibold">{{ item.condition }}</td>
                     </tr>
                 </tbody>
