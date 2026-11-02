@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
                     'department' => $user->department,
                     'can_manage_assets' => $user->canManageAssets(),
                     'can_manage_loans' => $user->canManageLoans(),
+                    'can_manage_room_bookings' => $user->canManageRoomBookings(),
                     'can_manage_consumables' => $user->canManageConsumables(),
                     'can_manage_disposals' => $user->canManageDisposals(),
                     'can_manage_settings' => $user->canManageSettings(),

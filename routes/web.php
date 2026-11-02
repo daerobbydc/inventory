@@ -4,10 +4,12 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetDisposalController;
 use App\Http\Controllers\ConsumableController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MaintenanceTicketController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoomBookingController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\UserController;
@@ -57,6 +59,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Peminjaman & Pengembalian Aset - Permohonan & Riwayat oleh Peminjam
     Route::resource('loans', LoanController::class)->only(['index', 'create', 'store', 'show']);
 
+    // Peminjaman / Reservasi Ruangan Kampus
+    Route::middleware(['role:super_admin,admin_fakultas,pic_ruangan'])->group(function () {
+        Route::post('room-bookings/{room_booking}/approve', [RoomBookingController::class, 'approve'])->name('room-bookings.approve');
+        Route::post('room-bookings/{room_booking}/reject', [RoomBookingController::class, 'reject'])->name('room-bookings.reject');
+    });
+    Route::post('room-bookings/{room_booking}/cancel', [RoomBookingController::class, 'cancel'])->name('room-bookings.cancel');
+    Route::resource('room-bookings', RoomBookingController::class)->only(['index', 'create', 'store', 'show']);
+
     // Pemeliharaan & Servis - Update Status / Dispatch teknisi oleh Staff & Teknisi
     Route::middleware(['role:super_admin,admin_fakultas,pic_ruangan,teknisi'])->group(function () {
         Route::put('maintenance/{maintenance}', [MaintenanceTicketController::class, 'update'])->name('maintenance.update');
@@ -86,6 +96,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Pengaturan Sistem & Master Data - Hanya Super Admin (Biro Sarpras)
     Route::middleware(['role:super_admin'])->group(function () {
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::post('faculties', [FacultyController::class, 'store'])->name('faculties.store');
+        Route::put('faculties/{faculty}', [FacultyController::class, 'update'])->name('faculties.update');
+        Route::delete('faculties/{faculty}', [FacultyController::class, 'destroy'])->name('faculties.destroy');
         Route::post('users', [UserController::class, 'store'])->name('users.store');
         Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');

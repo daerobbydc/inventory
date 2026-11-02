@@ -22,7 +22,8 @@ import {
     ShieldCheck,
     Boxes,
     QrCode,
-    ArchiveX
+    ArchiveX,
+    DoorOpen
 } from 'lucide-vue-next';
 
 const showingSidebarMobile = ref(false);
@@ -114,7 +115,21 @@ const dismissFlash = ref(false);
                         ]"
                     >
                         <Repeat class="w-4 h-4 shrink-0" />
-                        <span>Peminjaman & Fasilitas</span>
+                        <span>Peminjaman Aset (Alat)</span>
+                    </Link>
+
+                    <!-- Peminjaman Ruangan & Aula -->
+                    <Link
+                        :href="route('room-bookings.index')"
+                        :class="[
+                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            route().current('room-bookings.*') 
+                                ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
+                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        ]"
+                    >
+                        <DoorOpen class="w-4 h-4 shrink-0" />
+                        <span>Peminjaman Ruangan</span>
                     </Link>
 
                     <!-- Scanner QR Sensus (Staff & Teknisi) -->

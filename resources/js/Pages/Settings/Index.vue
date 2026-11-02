@@ -21,11 +21,15 @@ import {
     UserX,
     Send,
     MessageSquare,
-    Lock
+    Lock,
+    GraduationCap,
+    Pencil,
+    Trash2
 } from 'lucide-vue-next';
 
 const props = defineProps({
     stats: Object,
+    faculties: Array,
     campuses: Array,
     buildings: Array,
     rooms: Array,
@@ -36,7 +40,7 @@ const props = defineProps({
     syncStatus: Object,
 });
 
-const activeTab = ref('rooms');
+const activeTab = ref('faculties');
 const isSyncing = ref(false);
 
 const triggerManualSync = () => {
@@ -45,6 +49,59 @@ const triggerManualSync = () => {
         isSyncing.value = false;
         alert('Sinkronisasi data inventaris aset yayasan berhasil diperbarui.');
     }, 1200);
+};
+
+// Faculty Modal State
+const showFacultyModal = ref(false);
+const editingFaculty = ref(null);
+const facultyForm = useForm({
+    code: '',
+    name: '',
+    dean_name: '',
+    phone: '',
+    email: '',
+    description: '',
+});
+
+const openCreateFaculty = () => {
+    editingFaculty.value = null;
+    facultyForm.reset();
+    showFacultyModal.value = true;
+};
+
+const openEditFaculty = (f) => {
+    editingFaculty.value = f;
+    facultyForm.code = f.code;
+    facultyForm.name = f.name;
+    facultyForm.dean_name = f.dean_name || '';
+    facultyForm.phone = f.phone || '';
+    facultyForm.email = f.email || '';
+    facultyForm.description = f.description || '';
+    showFacultyModal.value = true;
+};
+
+const submitFaculty = () => {
+    if (editingFaculty.value) {
+        facultyForm.put(route('faculties.update', editingFaculty.value.id), {
+            onSuccess: () => {
+                showFacultyModal.value = false;
+                editingFaculty.value = null;
+            },
+        });
+    } else {
+        facultyForm.post(route('faculties.store'), {
+            onSuccess: () => {
+                showFacultyModal.value = false;
+                facultyForm.reset();
+            },
+        });
+    }
+};
+
+const deleteFaculty = (f) => {
+    if (confirm(`Apakah Anda yakin ingin menghapus fakultas ${f.name} (${f.code})?`)) {
+        facultyForm.delete(route('faculties.destroy', f.id));
+    }
 };
 
 // User Modal
@@ -58,12 +115,14 @@ const userForm = useForm({
     phone: '',
     role: 'dosen',
     department: '',
+    faculty_id: '',
 });
 
 const openCreateUser = () => {
     editingUser.value = null;
     userForm.reset();
     userForm.password = 'password';
+    userForm.faculty_id = '';
     showUserModal.value = true;
 };
 
@@ -76,6 +135,7 @@ const openEditUser = (u) => {
     userForm.phone = u.phone || '';
     userForm.role = u.role?.value || u.role;
     userForm.department = u.department || '';
+    userForm.faculty_id = u.faculty_id || '';
     showUserModal.value = true;
 };
 
@@ -148,10 +208,14 @@ const sendTestWhatsApp = () => {
             </div>
 
             <!-- Master Stats Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+                <div class="p-4 bg-white rounded-xl border border-slate-200/70 shadow-xs">
+                    <span class="text-[10px] font-extrabold uppercase text-[#1e3a8a]">Fakultas / Unit</span>
+                    <div class="text-xl font-black text-slate-900 mt-0.5">{{ stats.total_faculties || faculties?.length || 0 }} Unit</div>
+                </div>
                 <div class="p-4 bg-white rounded-xl border border-slate-200/70 shadow-xs">
                     <span class="text-[10px] font-extrabold uppercase text-slate-400">Kampus</span>
-                    <div class="text-xl font-black text-slate-900 mt-0.5">{{ stats.total_campuses }} Unit</div>
+                    <div class="text-xl font-black text-slate-900 mt-0.5">{{ stats.total_campuses }} Kampus</div>
                 </div>
                 <div class="p-4 bg-white rounded-xl border border-slate-200/70 shadow-xs">
                     <span class="text-[10px] font-extrabold uppercase text-slate-400">Gedung</span>
@@ -177,6 +241,16 @@ const sendTestWhatsApp = () => {
 
             <!-- Tab Pills -->
             <div class="bg-white rounded-2xl border border-slate-200/70 p-2 shadow-sm flex items-center gap-2 overflow-x-auto">
+                <button
+                    @click="activeTab = 'faculties'"
+                    :class="[
+                        'px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap',
+                        activeTab === 'faculties' ? 'bg-[#1e3a8a] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                    ]"
+                >
+                    <GraduationCap class="w-4 h-4" />
+                    <span>Fakultas & Unit ({{ faculties?.length || 0 }})</span>
+                </button>
                 <button
                     @click="activeTab = 'rooms'"
                     :class="[
@@ -239,6 +313,87 @@ const sendTestWhatsApp = () => {
                 </button>
             </div>
 
+            <!-- Tab: Manajemen Fakultas & Unit Kerja -->
+            <div v-if="activeTab === 'faculties'" class="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900">Struktur Fakultas & Unit Kerja Universitas Al-Khairiyah</h3>
+                        <p class="text-[11px] text-slate-500">Kelola master data fakultas, kepemimpinan dekan, serta alokasi ruangan dan pengguna sarpras</p>
+                    </div>
+                    <button
+                        @click="openCreateFaculty"
+                        class="px-3.5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+                    >
+                        <Plus class="w-4 h-4" />
+                        <span>Tambah Fakultas Baru</span>
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead class="bg-slate-50/80 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
+                            <tr>
+                                <th class="px-6 py-3.5">Kode</th>
+                                <th class="px-4 py-3.5">Nama Fakultas / Unit Kerja</th>
+                                <th class="px-4 py-3.5">Dekan / Pimpinan</th>
+                                <th class="px-4 py-3.5">Kontak & Email</th>
+                                <th class="px-4 py-3.5 text-center">Ruangan</th>
+                                <th class="px-4 py-3.5 text-center">Civitas</th>
+                                <th class="px-6 py-3.5 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr v-for="faculty in faculties" :key="faculty.id" class="hover:bg-slate-50/70 transition">
+                                <td class="px-6 py-4 font-mono font-bold text-[#1e3a8a]">{{ faculty.code }}</td>
+                                <td class="px-4 py-4">
+                                    <div class="font-bold text-slate-900">{{ faculty.name }}</div>
+                                    <div class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">{{ faculty.description || '-' }}</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="font-semibold text-slate-800">{{ faculty.dean_name || '-' }}</div>
+                                </td>
+                                <td class="px-4 py-4 text-slate-600">
+                                    <div>{{ faculty.phone || '-' }}</div>
+                                    <div class="text-[10px] text-slate-400">{{ faculty.email || '-' }}</div>
+                                </td>
+                                <td class="px-4 py-4 text-center">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-[#1e3a8a] border border-blue-200">
+                                        {{ faculty.rooms_count || 0 }} Ruang
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 text-center">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700">
+                                        {{ faculty.users_count || 0 }} User
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <button
+                                            @click="openEditFaculty(faculty)"
+                                            class="p-1.5 rounded-lg text-slate-500 hover:text-[#1e3a8a] hover:bg-blue-50 transition"
+                                            title="Ubah Data"
+                                        >
+                                            <Pencil class="w-3.5 h-3.5" />
+                                        </button>
+                                        <button
+                                            @click="deleteFaculty(faculty)"
+                                            class="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition"
+                                            title="Hapus"
+                                        >
+                                            <Trash2 class="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr v-if="!faculties?.length">
+                                <td colspan="7" class="px-6 py-8 text-center text-slate-400">
+                                    Belum ada data fakultas. Klik tombol "+ Tambah Fakultas Baru".
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Tab 1: Master Ruang & Gedung -->
             <div v-if="activeTab === 'rooms'" class="bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden">
                 <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
@@ -253,6 +408,7 @@ const sendTestWhatsApp = () => {
                             <tr>
                                 <th class="px-6 py-3.5">Kode Ruang</th>
                                 <th class="px-4 py-3.5">Nama Ruangan</th>
+                                <th class="px-4 py-3.5">Fakultas / Unit</th>
                                 <th class="px-4 py-3.5">Gedung & Kampus</th>
                                 <th class="px-4 py-3.5 text-center">Kapasitas</th>
                                 <th class="px-4 py-3.5">PIC Ruangan / Laboran</th>
@@ -263,6 +419,12 @@ const sendTestWhatsApp = () => {
                             <tr v-for="room in rooms" :key="room.id" class="hover:bg-slate-50/70 transition">
                                 <td class="px-6 py-4 font-mono font-bold text-[#1e3a8a]">{{ room.code }}</td>
                                 <td class="px-4 py-4 font-bold text-slate-900">{{ room.name }}</td>
+                                <td class="px-4 py-4">
+                                    <span v-if="room.faculty" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#1e3a8a] border border-blue-200">
+                                        {{ room.faculty.name }}
+                                    </span>
+                                    <span v-else class="text-slate-400 text-[11px]">Rektorat / Umum</span>
+                                </td>
                                 <td class="px-4 py-4 text-slate-600">
                                     {{ room.building?.name }} ({{ room.building?.campus?.name || 'Pusat' }})
                                 </td>
@@ -596,14 +758,27 @@ const sendTestWhatsApp = () => {
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Departemen / Fakultas</label>
-                            <input
-                                v-model="userForm.department"
-                                type="text"
-                                placeholder="Fakultas Teknik / Unit Sarpras"
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Fakultas / Unit Kerja</label>
+                            <select
+                                v-model="userForm.faculty_id"
                                 class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
-                            />
+                            >
+                                <option value="">-- Pilih Fakultas (Opsional) --</option>
+                                <option v-for="f in faculties" :key="f.id" :value="f.id">
+                                    {{ f.name }} ({{ f.code }})
+                                </option>
+                            </select>
                         </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Departemen / Keterangan Spesifik</label>
+                        <input
+                            v-model="userForm.department"
+                            type="text"
+                            placeholder="Contoh: Program Studi Informatika / Biro Sarpras"
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
+                        />
                     </div>
 
                     <div v-if="!editingUser">
@@ -631,6 +806,102 @@ const sendTestWhatsApp = () => {
                             class="px-5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
                         >
                             {{ editingUser ? 'Simpan Perubahan' : 'Tambah Pengguna' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Create / Edit Faculty -->
+        <div v-if="showFacultyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs">
+            <div class="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden animate-in fade-in zoom-in duration-150">
+                <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-slate-900">
+                        {{ editingFaculty ? 'Ubah Data Fakultas' : 'Tambah Fakultas Baru' }}
+                    </h3>
+                    <button @click="showFacultyModal = false" class="text-slate-400 hover:text-slate-600">
+                        <X class="w-4 h-4" />
+                    </button>
+                </div>
+                <form @submit.prevent="submitFaculty" class="p-6 space-y-4">
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Kode *</label>
+                            <input
+                                v-model="facultyForm.code"
+                                type="text"
+                                placeholder="FT / FEB"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
+                                required
+                            />
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Fakultas / Unit Kerja *</label>
+                            <input
+                                v-model="facultyForm.name"
+                                type="text"
+                                placeholder="Fakultas Teknik"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Dekan / Pimpinan Unit</label>
+                        <input
+                            v-model="facultyForm.dean_name"
+                            type="text"
+                            placeholder="Dr. Ir. H. Ahmad Sudrajat, M.T."
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
+                        />
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">No. Telepon / Hotline</label>
+                            <input
+                                v-model="facultyForm.phone"
+                                type="text"
+                                placeholder="0254-391234"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
+                            />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Email Resmi Fakultas</label>
+                            <input
+                                v-model="facultyForm.email"
+                                type="email"
+                                placeholder="teknik@unival.ac.id"
+                                class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi & Ruang Lingkup</label>
+                        <textarea
+                            v-model="facultyForm.description"
+                            rows="2"
+                            placeholder="Keterangan program studi, laboratorium riset, dll..."
+                            class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a]"
+                        ></textarea>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                        <button
+                            type="button"
+                            @click="showFacultyModal = false"
+                            class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition"
+                        >
+                            Batal
+                        </button>
+                        <button
+                            type="submit"
+                            :disabled="facultyForm.processing"
+                            class="px-5 py-2 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm transition disabled:opacity-50"
+                        >
+                            {{ editingFaculty ? 'Simpan Perubahan' : 'Daftarkan Fakultas' }}
                         </button>
                     </div>
                 </form>

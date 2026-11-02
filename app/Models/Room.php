@@ -20,6 +20,7 @@ class Room extends Model
      */
     protected $fillable = [
         'building_id',
+        'faculty_id',
         'code',
         'name',
         'floor_number',
@@ -64,5 +65,21 @@ class Room extends Model
     public function assets(): HasMany
     {
         return $this->hasMany(Asset::class);
+    }
+
+    /**
+     * Faculty that manages or owns this room.
+     */
+    public function faculty(): BelongsTo
+    {
+        return $this->belongsTo(Faculty::class);
+    }
+
+    /**
+     * Bookings / reservations for this room.
+     */
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(RoomBooking::class);
     }
 }

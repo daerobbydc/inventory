@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -27,6 +28,7 @@ class User extends Authenticatable
         'phone',
         'role',
         'department',
+        'faculty_id',
         'is_active',
     ];
 
@@ -193,6 +195,30 @@ class User extends Authenticatable
     public function canPerformAudit(): bool
     {
         return $this->isStaff() || $this->isTeknisi();
+    }
+
+    /**
+     * Faculty that this user belongs to.
+     */
+    public function faculty(): BelongsTo
+    {
+        return $this->belongsTo(Faculty::class);
+    }
+
+    /**
+     * Room bookings submitted by this user.
+     */
+    public function roomBookings(): HasMany
+    {
+        return $this->hasMany(RoomBooking::class);
+    }
+
+    /**
+     * Determine if user can manage/approve room reservations.
+     */
+    public function canManageRoomBookings(): bool
+    {
+        return $this->isStaff();
     }
 
     /**

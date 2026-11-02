@@ -25,6 +25,7 @@ class UserController extends Controller
             'phone' => ['nullable', 'string', 'max:25'],
             'role' => ['required', 'string'],
             'department' => ['nullable', 'string', 'max:100'],
+            'faculty_id' => ['nullable', 'exists:faculties,id'],
         ]);
 
         User::create([
@@ -35,6 +36,7 @@ class UserController extends Controller
             'phone' => $validated['phone'],
             'role' => $validated['role'],
             'department' => $validated['department'],
+            'faculty_id' => $validated['faculty_id'] ?? null,
             'is_active' => true,
         ]);
 
@@ -55,6 +57,7 @@ class UserController extends Controller
             'phone' => ['nullable', 'string', 'max:25'],
             'role' => ['required', 'string'],
             'department' => ['nullable', 'string', 'max:100'],
+            'faculty_id' => ['nullable', 'exists:faculties,id'],
         ]);
 
         $user->update($validated);

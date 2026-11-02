@@ -8,6 +8,7 @@ use App\Enums\ConsumableTransactionType;
 use App\Enums\LoanStatus;
 use App\Enums\MaintenancePriority;
 use App\Enums\MaintenanceStatus;
+use App\Enums\RoomBookingStatus;
 use App\Enums\UserRole;
 use App\Models\Asset;
 use App\Models\Building;
@@ -15,10 +16,12 @@ use App\Models\Campus;
 use App\Models\Category;
 use App\Models\Consumable;
 use App\Models\ConsumableTransaction;
+use App\Models\Faculty;
 use App\Models\LoanItem;
 use App\Models\LoanTransaction;
 use App\Models\MaintenanceTicket;
 use App\Models\Room;
+use App\Models\RoomBooking;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Seeder;
@@ -32,7 +35,53 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Seed Users for each Role
+        // 1. Seed Master Fakultas Universitas Al-Khairiyah
+        $fakTeknik = Faculty::create([
+            'code' => 'FT',
+            'name' => 'Fakultas Teknik',
+            'dean_name' => 'Dr. Ir. H. Ahmad Sudrajat, M.T.',
+            'phone' => '0254-391234',
+            'email' => 'teknik@unival.ac.id',
+            'description' => 'Fakultas Teknik mengelola Program Studi Teknik Informatika, Teknik Industri, dan Teknik Sipil.',
+        ]);
+
+        $fakEkonomi = Faculty::create([
+            'code' => 'FEB',
+            'name' => 'Fakultas Ekonomi & Bisnis',
+            'dean_name' => 'Dr. Hj. Siti Maryam, S.E., M.M.',
+            'phone' => '0254-391235',
+            'email' => 'feb@unival.ac.id',
+            'description' => 'Fakultas Ekonomi & Bisnis menyelenggarakan Program Studi Manajemen dan Akuntansi.',
+        ]);
+
+        $fakAgama = Faculty::create([
+            'code' => 'FAI',
+            'name' => 'Fakultas Agama Islam',
+            'dean_name' => 'Dr. H. Abdul Ghofur, M.Ag.',
+            'phone' => '0254-391236',
+            'email' => 'fai@unival.ac.id',
+            'description' => 'Fakultas Agama Islam dengan konsentrasi Pendidikan Agama Islam dan Hukum Ekonomi Syariah.',
+        ]);
+
+        $fakKomputer = Faculty::create([
+            'code' => 'FIK',
+            'name' => 'Fakultas Ilmu Komputer',
+            'dean_name' => 'Dr. M. Iqbal, M.Kom.',
+            'phone' => '0254-391237',
+            'email' => 'fik@unival.ac.id',
+            'description' => 'Riset terdepan bidang jaringan komputer, rekayasa kecerdasan buatan, dan sistem informasi.',
+        ]);
+
+        $rektoratUnit = Faculty::create([
+            'code' => 'REKTORAT',
+            'name' => 'Rektorat & Unit Layanan Kampus',
+            'dean_name' => 'Dr. H. Rafiudin, M.Si. (Rektor)',
+            'phone' => '0254-391230',
+            'email' => 'rektorat@unival.ac.id',
+            'description' => 'Pusat tata pamong universitas, biro administrasi umum & sarpras, dan perpustakaan pusat.',
+        ]);
+
+        // 2. Seed Users for each Role
         $superAdmin = User::create([
             'name' => 'Budi Santoso, S.Kom',
             'email' => 'sarpras@kampus.ac.id',
@@ -41,6 +90,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '081234567890',
             'role' => UserRole::SuperAdmin,
             'department' => 'Biro Administrasi Umum & Sarpras',
+            'faculty_id' => $rektoratUnit->id,
             'is_active' => true,
         ]);
 
@@ -51,7 +101,8 @@ class DatabaseSeeder extends Seeder
             'nip_nim' => '198804222014042002',
             'phone' => '081234567891',
             'role' => UserRole::AdminFakultas,
-            'department' => 'Fakultas Teknik & Ilmu Komputer',
+            'department' => 'Fakultas Teknik',
+            'faculty_id' => $fakTeknik->id,
             'is_active' => true,
         ]);
 
@@ -63,6 +114,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '081234567892',
             'role' => UserRole::PicRuangan,
             'department' => 'Laboratorium Komputer',
+            'faculty_id' => $fakTeknik->id,
             'is_active' => true,
         ]);
 
@@ -74,6 +126,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '081234567893',
             'role' => UserRole::Teknisi,
             'department' => 'Unit Pemeliharaan Sarpras',
+            'faculty_id' => $rektoratUnit->id,
             'is_active' => true,
         ]);
 
@@ -85,6 +138,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '081234567894',
             'role' => UserRole::Dosen,
             'department' => 'Program Studi Informatika',
+            'faculty_id' => $fakTeknik->id,
             'is_active' => true,
         ]);
 
@@ -96,6 +150,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '081234567895',
             'role' => UserRole::Mahasiswa,
             'department' => 'S1 Teknik Informatika',
+            'faculty_id' => $fakTeknik->id,
             'is_active' => true,
         ]);
 
@@ -125,6 +180,7 @@ class DatabaseSeeder extends Seeder
 
         $ruangSarpras = Room::create([
             'building_id' => $gedungRektorat->id,
+            'faculty_id' => $rektoratUnit->id,
             'code' => 'R-101',
             'name' => 'Kantor Pengelolaan Sarpras',
             'floor_number' => 1,
@@ -136,6 +192,7 @@ class DatabaseSeeder extends Seeder
 
         $ruangRapat = Room::create([
             'building_id' => $gedungRektorat->id,
+            'faculty_id' => $rektoratUnit->id,
             'code' => 'R-201',
             'name' => 'Ruang Rapat Senat Kampus',
             'floor_number' => 2,
@@ -147,6 +204,7 @@ class DatabaseSeeder extends Seeder
 
         $labJaringan = Room::create([
             'building_id' => $gedungLab->id,
+            'faculty_id' => $fakTeknik->id,
             'code' => 'LAB-101',
             'name' => 'Laboratorium Jaringan & Keamanan Siber',
             'floor_number' => 1,
@@ -158,6 +216,7 @@ class DatabaseSeeder extends Seeder
 
         $labMultimedia = Room::create([
             'building_id' => $gedungLab->id,
+            'faculty_id' => $fakKomputer->id,
             'code' => 'LAB-202',
             'name' => 'Laboratorium Multimedia & Studio Kreatif',
             'floor_number' => 2,
@@ -403,6 +462,49 @@ class DatabaseSeeder extends Seeder
             'status' => MaintenanceStatus::InProgress,
             'cost' => 450000,
             'resolution_notes' => 'Sedang Dikerjakan • Pipa distribusi blok B bocor dan sedang disambung ulang oleh Tim Internal Sarpras.',
+        ]);
+
+        // 8. Demo Peminjaman / Reservasi Ruangan Kampus
+        RoomBooking::create([
+            'booking_code' => 'RSRV-2026-0001',
+            'room_id' => $ruangRapat->id,
+            'user_id' => $dosen->id,
+            'approver_id' => $superAdmin->id,
+            'booking_date' => now()->toDateString(),
+            'start_time' => '09:00',
+            'end_time' => '12:00',
+            'purpose' => 'Seminar Proposal Skripsi dan Diskusi Ilmiah Dosen Teknik',
+            'attendees_count' => 35,
+            'status' => RoomBookingStatus::Approved,
+            'approval_notes' => 'Disetujui. Harap menghubungi petugas teknisi 15 menit sebelum acara untuk persiapan mic & sound.',
+        ]);
+
+        RoomBooking::create([
+            'booking_code' => 'RSRV-2026-0002',
+            'room_id' => $labJaringan->id,
+            'user_id' => $mahasiswa->id,
+            'approver_id' => null,
+            'booking_date' => now()->addDay()->toDateString(),
+            'start_time' => '13:00',
+            'end_time' => '16:00',
+            'purpose' => 'Workshop Persiapan Sertifikasi Cyber Security Himpunan Mahasiswa',
+            'attendees_count' => 25,
+            'status' => RoomBookingStatus::Pending,
+            'approval_notes' => null,
+        ]);
+
+        RoomBooking::create([
+            'booking_code' => 'RSRV-2026-0003',
+            'room_id' => $labMultimedia->id,
+            'user_id' => $adminFakultas->id,
+            'approver_id' => $superAdmin->id,
+            'booking_date' => now()->addDays(2)->toDateString(),
+            'start_time' => '10:00',
+            'end_time' => '14:00',
+            'purpose' => 'Pelatihan Pembuatan Media Pembelajaran Digital Interaktif Dosen',
+            'attendees_count' => 20,
+            'status' => RoomBookingStatus::Approved,
+            'approval_notes' => 'Disetujui. Perangkat workstation studio siap digunakan.',
         ]);
     }
 }

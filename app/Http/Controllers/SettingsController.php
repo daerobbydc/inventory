@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Models\Building;
 use App\Models\Campus;
 use App\Models\Category;
+use App\Models\Faculty;
 use App\Models\Room;
 use App\Models\User;
 use App\Models\Vendor;
@@ -22,12 +23,13 @@ class SettingsController extends Controller
     {
         abort_unless($request->user()->canManageSettings(), 403, 'Hanya Super Admin yang berwenang mengakses pengaturan sistem.');
 
+        $faculties = Faculty::withCount(['rooms', 'users'])->get();
         $campuses = Campus::withCount('buildings')->get();
         $buildings = Building::with(['campus', 'rooms'])->withCount('rooms')->get();
-        $rooms = Room::with(['building.campus', 'pic'])->withCount('assets')->get();
+        $rooms = Room::with(['building.campus', 'pic', 'faculty'])->withCount('assets')->get();
         $categories = Category::withCount('assets')->get();
         $vendors = Vendor::withCount('assets')->get();
-        $users = User::latest()->get();
+        $users = User::with('faculty')->latest()->get();
 
         $roles = collect(UserRole::cases())->map(fn ($r) => [
             'value' => $r->value,
@@ -35,6 +37,7 @@ class SettingsController extends Controller
         ]);
 
         $stats = [
+            'total_faculties' => $faculties->count(),
             'total_campuses' => $campuses->count(),
             'total_buildings' => $buildings->count(),
             'total_rooms' => $rooms->count(),
@@ -54,6 +57,7 @@ class SettingsController extends Controller
 
         return Inertia::render('Settings/Index', [
             'stats' => $stats,
+            'faculties' => $faculties,
             'campuses' => $campuses,
             'buildings' => $buildings,
             'rooms' => $rooms,
