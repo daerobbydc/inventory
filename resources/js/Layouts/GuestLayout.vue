@@ -13,7 +13,7 @@ import { ShieldCheck } from 'lucide-vue-next';
                 </div>
                 <div class="text-left">
                     <div class="text-xl font-extrabold tracking-tight text-[#168a42] leading-none">SIM-SARPRAS</div>
-                    <div class="text-xs font-semibold text-slate-500 mt-1">Universitas Indonesia Mandiri</div>
+                    <div class="text-xs font-semibold text-slate-500 mt-1">Universitas Al-Khairiyah</div>
                 </div>
             </Link>
         </div>
@@ -25,7 +25,7 @@ import { ShieldCheck } from 'lucide-vue-next';
 
         <!-- Footer -->
         <div class="mt-6 text-center text-xs text-slate-400">
-            &copy; {{ new Date().getFullYear() }} Biro Sarana & Prasarana • Universitas Indonesia Mandiri
+            &copy; {{ new Date().getFullYear() }} Biro Sarana & Prasarana • Universitas Al-Khairiyah
         </div>
     </div>
 </template>

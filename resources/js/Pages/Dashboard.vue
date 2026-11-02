@@ -64,7 +64,7 @@ const formatRupiah = (val) => {
                     </h1>
 
                     <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                        Pusat pemantauan inventaris terintegrasi, pemanfaatan ruang akademik, permohonan logistik, dan jadwal pemeliharaan fasilitas Universitas Indonesia Mandiri.
+                        Pusat pemantauan inventaris terintegrasi, pemanfaatan ruang akademik, permohonan logistik, dan jadwal pemeliharaan fasilitas Universitas Al-Khairiyah.
                     </p>
                 </div>
 

@@ -317,7 +317,7 @@ const getStatusBadge = (st) => {
                     <!-- Official Barcode Label Preview -->
                     <div class="bg-white rounded-2xl border border-slate-200/70 shadow-sm p-6 text-center">
                         <div class="border-b border-slate-200 pb-2 mb-3">
-                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42]">UNIVERSITAS INDONESIA MANDIRI</div>
+                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42]">UNIVERSITAS AL-KHAIRIYAH</div>
                             <div class="text-[9px] font-bold text-slate-500 tracking-tight">LABEL RESMI BARANG MILIK NEGARA (BMN)</div>
                         </div>
 

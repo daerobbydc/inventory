@@ -309,3 +309,4 @@ const triggerManualSync = () => {
         </div>
     </AuthenticatedLayout>
 </template>
+

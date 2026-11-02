@@ -51,7 +51,7 @@ const dismissFlash = ref(false);
                     </div>
                     <div>
                         <div class="text-base font-extrabold tracking-tight text-[#168a42] leading-none">SIM-SARPRAS</div>
-                        <div class="text-[11px] font-medium text-slate-400 mt-1">Univ. Indonesia Mandiri</div>
+                        <div class="text-[11px] font-medium text-slate-400 mt-1">Univ. Al-Khairiyah</div>
                     </div>
                 </div>
 

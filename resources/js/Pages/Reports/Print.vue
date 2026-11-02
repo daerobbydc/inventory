@@ -51,14 +51,14 @@ const triggerPrint = () => {
         <div class="max-w-5xl mx-auto bg-white p-8 sm:p-12 border border-slate-200 shadow-md print:border-none print:shadow-none print:p-0">
             <!-- Kop Surat Resmi -->
             <div class="border-b-2 border-slate-900 pb-4 mb-6 flex items-center gap-6">
-                <div class="w-16 h-16 rounded-xl bg-[#168a42] text-white flex items-center justify-center font-black text-2xl print:border print:border-slate-800">
-                    UIM
+                <div class="w-16 h-16 rounded-xl bg-[#168a42] text-white flex items-center justify-center font-black text-xs print:border print:border-slate-800">
+                    UNIVAL
                 </div>
                 <div class="flex-1 text-center pr-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-slate-600">KEMENTERIAN PENDIDIKAN TINGGI, SAINS, DAN TEKNOLOGI</h2>
-                    <h1 class="text-lg font-black uppercase text-slate-900 mt-0.5">UNIVERSITAS INDONESIA MANDIRI</h1>
+                    <h1 class="text-lg font-black uppercase text-slate-900 mt-0.5">UNIVERSITAS AL-KHAIRIYAH</h1>
                     <p class="text-xs font-extrabold text-[#168a42]">BIRO SARANA DAN PRASARANA (SIM-SARPRAS)</p>
-                    <p class="text-[10px] text-slate-500 mt-0.5">Jl. Kampus Mandiri No. 1, Kota Mandiri • Website: sarpras.uim.ac.id • Email: sarpras@kampus.ac.id</p>
+                    <p class="text-[10px] text-slate-500 mt-0.5">Jl. H. Enggus Arja No. 1, Citangkil, Kota Cilegon • Website: sarpras.unival.ac.id • Email: sarpras@unival.ac.id</p>
                 </div>
             </div>
 
@@ -128,7 +128,7 @@ const triggerPrint = () => {
                     <p class="text-[10px] text-slate-400">NIP 196805121994031001</p>
                 </div>
                 <div>
-                    <p class="text-slate-500">Kota Mandiri, {{ summary.generated_at.split(' ')[0] }} {{ summary.generated_at.split(' ')[1] }} {{ summary.generated_at.split(' ')[2] }}</p>
+                    <p class="text-slate-500">Kota Cilegon, {{ summary.generated_at.split(' ')[0] }} {{ summary.generated_at.split(' ')[1] }} {{ summary.generated_at.split(' ')[2] }}</p>
                     <p class="font-bold text-slate-800">Kepala Biro Sarana & Prasarana</p>
                     <div class="h-20"></div>
                     <p class="font-bold text-slate-900 underline">Ir. Bambang S., M.T.</p>
@@ -150,3 +150,4 @@ const triggerPrint = () => {
     }
 }
 </style>
+

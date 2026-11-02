@@ -357,7 +357,7 @@ const getStatusBadge = (st) => {
                     <div class="text-center">
                         <!-- University Header in Label -->
                         <div class="border-b border-slate-200 pb-2 mb-3">
-                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42]">UNIVERSITAS INDONESIA MANDIRI</div>
+                            <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#168a42]">UNIVERSITAS AL-KHAIRIYAH</div>
                             <div class="text-[9px] font-bold text-slate-500 tracking-tight">LABEL RESMI BARANG MILIK NEGARA (BMN)</div>
                         </div>
 

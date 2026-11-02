@@ -535,3 +535,4 @@ const getStatusBadgeClass = (status) => {
         </div>
     </AuthenticatedLayout>
 </template>
+

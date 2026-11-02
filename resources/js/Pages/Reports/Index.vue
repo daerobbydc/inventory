@@ -340,3 +340,4 @@ const formatRupiah = (val) => {
         </div>
     </AuthenticatedLayout>
 </template>
+

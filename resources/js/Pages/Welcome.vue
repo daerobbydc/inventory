@@ -53,7 +53,7 @@ const demoAccounts = [
 </script>
 
 <template>
-    <Head title="SIM-SARPRAS - Universitas Indonesia Mandiri" />
+    <Head title="SIM-SARPRAS - Universitas Al-Khairiyah" />
 
     <div class="min-h-screen bg-[#f4f7fa] text-slate-900 font-sans selection:bg-[#168a42] selection:text-white">
         <!-- Top Navbar -->
@@ -66,7 +66,7 @@ const demoAccounts = [
                     </div>
                     <div>
                         <div class="text-lg font-black tracking-tight text-[#168a42] leading-none">SIM-SARPRAS</div>
-                        <div class="text-xs font-semibold text-slate-400 mt-1">Universitas Indonesia Mandiri</div>
+                        <div class="text-xs font-semibold text-slate-400 mt-1">Universitas Al-Khairiyah</div>
                     </div>
                 </div>
 
@@ -237,7 +237,7 @@ const demoAccounts = [
                     <div class="w-6 h-6 rounded-lg bg-[#168a42] text-white flex items-center justify-center font-black text-xs">
                         U
                     </div>
-                    <span class="font-bold text-slate-700">SIM-SARPRAS Universitas Indonesia Mandiri</span>
+                    <span class="font-bold text-slate-700">SIM-SARPRAS Universitas Al-Khairiyah</span>
                 </div>
                 <div>
                     Terhubung dengan BMN Synchronizer (Kemdikbudristek) • Hak Cipta &copy; {{ new Date().getFullYear() }}
