@@ -397,7 +397,7 @@ const getStatusBadgeClass = (status) => {
                                     <div class="inline-flex items-center gap-2">
                                         <!-- Quick Dispatch Button -->
                                         <button
-                                            v-if="ticket.status?.value !== 'completed'"
+                                            v-if="ticket.status?.value !== 'completed' && $page.props.auth?.user?.can_update_maintenance"
                                             @click="openDispatch(ticket)"
                                             class="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#1e3a8a] border border-blue-200 text-[11px] font-bold transition flex items-center gap-1"
                                             title="Update & Dispatch"

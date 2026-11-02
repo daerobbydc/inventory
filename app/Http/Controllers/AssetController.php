@@ -65,8 +65,10 @@ class AssetController extends Controller
     /**
      * Show the form for creating a new asset.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
+        abort_unless($request->user()->canManageAssets(), 403, 'Anda tidak berwenang mendaftarkan aset baru.');
+
         $lastId = (Asset::max('id') ?? 0) + 1;
         $suggestedCode = 'AST/'.date('Y').'/'.str_pad((string) $lastId, 4, '0', STR_PAD_LEFT);
 
@@ -85,6 +87,8 @@ class AssetController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        abort_unless($request->user()->canManageAssets(), 403, 'Anda tidak berwenang mendaftarkan aset baru.');
+
         $validated = $request->validate([
             'asset_code' => ['required', 'string', 'max:255', 'unique:assets,asset_code'],
             'serial_number' => ['nullable', 'string', 'max:255'],
@@ -139,8 +143,10 @@ class AssetController extends Controller
     /**
      * Show the form for editing the specified asset.
      */
-    public function edit(Asset $asset): Response
+    public function edit(Request $request, Asset $asset): Response
     {
+        abort_unless($request->user()->canManageAssets(), 403, 'Anda tidak berwenang mengedit data aset.');
+
         return Inertia::render('Assets/Edit', [
             'asset' => $asset,
             'categories' => Category::where('is_consumable', false)->orderBy('name')->get(['id', 'name']),
@@ -156,6 +162,8 @@ class AssetController extends Controller
      */
     public function update(Request $request, Asset $asset): RedirectResponse
     {
+        abort_unless($request->user()->canManageAssets(), 403, 'Anda tidak berwenang memperbarui data aset.');
+
         $validated = $request->validate([
             'asset_code' => ['required', 'string', 'max:255', 'unique:assets,asset_code,'.$asset->id],
             'serial_number' => ['nullable', 'string', 'max:255'],
@@ -199,8 +207,10 @@ class AssetController extends Controller
     /**
      * Remove the specified asset from storage.
      */
-    public function destroy(Asset $asset): RedirectResponse
+    public function destroy(Request $request, Asset $asset): RedirectResponse
     {
+        abort_unless($request->user()->canManageAssets(), 403, 'Anda tidak berwenang menghapus aset.');
+
         $asset->delete();
 
         return redirect()->route('assets.index')

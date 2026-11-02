@@ -38,11 +38,18 @@ class DashboardController extends Controller
             ->with('category')
             ->get();
 
-        $pendingLoans = LoanTransaction::where('status', LoanStatus::Pending->value)
+        $user = $request->user();
+        $isStaff = $user ? $user->isStaff() : false;
+
+        $pendingLoansQuery = LoanTransaction::where('status', LoanStatus::Pending->value)
             ->with(['borrower', 'loanItems.asset.room.building'])
-            ->latest()
-            ->take(5)
-            ->get();
+            ->latest();
+
+        if (! $isStaff && $user) {
+            $pendingLoansQuery->where('borrower_id', $user->id);
+        }
+
+        $pendingLoans = $pendingLoansQuery->take(5)->get();
 
         $urgentTickets = MaintenanceTicket::whereNotIn('status', [
             MaintenanceStatus::Completed->value,

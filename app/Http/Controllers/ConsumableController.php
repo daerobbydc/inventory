@@ -81,6 +81,8 @@ class ConsumableController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        abort_unless($request->user()->canManageConsumables(), 403, 'Anda tidak berwenang mengelola persediaan barang habis pakai.');
+
         $validated = $request->validate([
             'item_code' => ['required', 'string', 'max:50', 'unique:consumables,item_code'],
             'name' => ['required', 'string', 'max:255'],
@@ -113,6 +115,8 @@ class ConsumableController extends Controller
      */
     public function update(Request $request, Consumable $consumable): RedirectResponse
     {
+        abort_unless($request->user()->canManageConsumables(), 403, 'Anda tidak berwenang mengelola persediaan barang habis pakai.');
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'category_id' => ['required', 'exists:categories,id'],
@@ -132,6 +136,8 @@ class ConsumableController extends Controller
      */
     public function transaction(Request $request, Consumable $consumable): RedirectResponse
     {
+        abort_unless($request->user()->canManageConsumables(), 403, 'Anda tidak berwenang mencatat transaksi persediaan barang habis pakai.');
+
         $validated = $request->validate([
             'type' => ['required', 'string', 'in:in,out'],
             'quantity' => ['required', 'integer', 'min:1'],

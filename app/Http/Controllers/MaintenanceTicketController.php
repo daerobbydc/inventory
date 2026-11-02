@@ -196,6 +196,8 @@ class MaintenanceTicketController extends Controller
      */
     public function update(Request $request, MaintenanceTicket $maintenance): RedirectResponse
     {
+        abort_unless($request->user()->canUpdateMaintenance(), 403, 'Hanya teknisi atau petugas Sarpras yang berwenang memperbarui progres tiket perbaikan.');
+
         $validated = $request->validate([
             'status' => ['required', 'string'],
             'technician_id' => ['nullable', 'exists:users,id'],

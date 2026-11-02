@@ -17,6 +17,8 @@ class AssetDisposalController extends Controller
      */
     public function index(Request $request): Response
     {
+        abort_unless($request->user()->canManageDisposals(), 403, 'Anda tidak berwenang mengelola penghapusan aset.');
+
         $disposedAssets = Asset::with(['category', 'room.building.campus'])
             ->where('status', AssetStatus::Disposed)
             ->latest('updated_at')
@@ -49,6 +51,8 @@ class AssetDisposalController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        abort_unless($request->user()->canManageDisposals(), 403, 'Anda tidak berwenang memproses penghapusan aset.');
+
         $validated = $request->validate([
             'asset_id' => ['required', 'exists:assets,id'],
             'disposal_method' => ['required', 'string', 'in:lelang,hibah,musnah,daur_ulang'],
@@ -77,8 +81,10 @@ class AssetDisposalController extends Controller
     /**
      * Official printable Berita Acara Penghapusan Aset.
      */
-    public function print(Asset $asset): Response
+    public function print(Request $request, Asset $asset): Response
     {
+        abort_unless($request->user()->canManageDisposals(), 403, 'Anda tidak berwenang mencetak berita acara penghapusan aset.');
+
         $asset->load(['category', 'room.building.campus']);
 
         return Inertia::render('Disposals/Print', [

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
 use App\Enums\LoanStatus;
-use App\Enums\UserRole;
 use App\Models\Asset;
 use App\Models\LoanItem;
 use App\Models\LoanTransaction;
@@ -26,11 +25,8 @@ class LoanController extends Controller
         $status = $request->input('status');
         $search = $request->input('search');
 
-        $isStaff = in_array($user->role, [
-            UserRole::SuperAdmin,
-            UserRole::AdminFakultas,
-            UserRole::PicRuangan,
-        ]);
+        $user = $request->user();
+        $isStaff = $user->isStaff();
 
         $loans = LoanTransaction::query()
             ->with(['borrower', 'approver', 'loanItems.asset'])
@@ -130,14 +126,15 @@ class LoanController extends Controller
      */
     public function show(Request $request, LoanTransaction $loan): Response
     {
-        $loan->load(['borrower', 'approver', 'loanItems.asset.room.building', 'loanItems.asset.category']);
-
         $user = $request->user();
-        $canManage = in_array($user->role, [
-            UserRole::SuperAdmin,
-            UserRole::AdminFakultas,
-            UserRole::PicRuangan,
-        ]);
+        $canManage = $user->canManageLoans();
+
+        // Non-staff can only view their own loan requests
+        if (! $canManage && $loan->borrower_id !== $user->id) {
+            abort(403, 'Anda tidak memiliki hak akses untuk melihat transaksi peminjaman ini.');
+        }
+
+        $loan->load(['borrower', 'approver', 'loanItems.asset.room.building', 'loanItems.asset.category']);
 
         return Inertia::render('Loans/Show', [
             'loan' => $loan,
@@ -154,6 +151,8 @@ class LoanController extends Controller
      */
     public function approve(Request $request, LoanTransaction $loan): RedirectResponse
     {
+        abort_unless($request->user()->canManageLoans(), 403, 'Hanya petugas Sarpras/PIC yang dapat menyetujui peminjaman.');
+
         $validated = $request->validate([
             'approval_notes' => ['nullable', 'string'],
         ]);
@@ -173,6 +172,8 @@ class LoanController extends Controller
      */
     public function reject(Request $request, LoanTransaction $loan): RedirectResponse
     {
+        abort_unless($request->user()->canManageLoans(), 403, 'Hanya petugas Sarpras/PIC yang dapat menolak peminjaman.');
+
         $validated = $request->validate([
             'approval_notes' => ['required', 'string', 'min:3'],
         ]);
@@ -190,8 +191,10 @@ class LoanController extends Controller
     /**
      * Confirm physical handover of the assets to the borrower.
      */
-    public function handover(LoanTransaction $loan): RedirectResponse
+    public function handover(Request $request, LoanTransaction $loan): RedirectResponse
     {
+        abort_unless($request->user()->canManageLoans(), 403, 'Hanya petugas Sarpras/PIC yang dapat memproses serah terima barang.');
+
         DB::transaction(function () use ($loan) {
             $loan->update([
                 'status' => LoanStatus::Borrowed,
@@ -214,6 +217,8 @@ class LoanController extends Controller
      */
     public function returnItems(Request $request, LoanTransaction $loan): RedirectResponse
     {
+        abort_unless($request->user()->canManageLoans(), 403, 'Hanya petugas Sarpras/PIC yang dapat memproses pengembalian barang.');
+
         $validated = $request->validate([
             'return_conditions' => ['required', 'array'],
             'return_conditions.*' => ['required', 'string'],

@@ -88,8 +88,9 @@ const dismissFlash = ref(false);
                         <span>Data Aset & Inventaris</span>
                     </Link>
 
-                    <!-- Barang Habis Pakai / ATK -->
+                    <!-- Barang Habis Pakai / ATK (Staff only) -->
                     <Link
+                        v-if="$page.props.auth?.user?.can_manage_consumables"
                         :href="route('consumables.index')"
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
@@ -116,8 +117,9 @@ const dismissFlash = ref(false);
                         <span>Peminjaman & Fasilitas</span>
                     </Link>
 
-                    <!-- Scanner QR Sensus -->
+                    <!-- Scanner QR Sensus (Staff & Teknisi) -->
                     <Link
+                        v-if="$page.props.auth?.user?.can_perform_audit"
                         :href="route('stock-opname.scanner')"
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
@@ -144,8 +146,9 @@ const dismissFlash = ref(false);
                         <span>Pemeliharaan & Servis</span>
                     </Link>
 
-                    <!-- Penghapusan Aset -->
+                    <!-- Penghapusan Aset (Staff only) -->
                     <Link
+                        v-if="$page.props.auth?.user?.can_manage_disposals"
                         :href="route('disposals.index')"
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
@@ -158,8 +161,9 @@ const dismissFlash = ref(false);
                         <span>Penghapusan Aset</span>
                     </Link>
 
-                    <!-- Laporan & Audit -->
+                    <!-- Laporan & Audit (Staff only) -->
                     <Link
+                        v-if="$page.props.auth?.user?.can_manage_assets"
                         :href="route('reports.index')"
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
@@ -172,12 +176,13 @@ const dismissFlash = ref(false);
                         <span>Laporan & Audit</span>
                     </Link>
 
-                    <!-- Pengaturan Sistem -->
+                    <!-- Pengaturan Sistem (Super Admin only) -->
                     <Link
+                        v-if="$page.props.auth?.user?.can_manage_settings"
                         :href="route('settings.index')"
                         :class="[
                             'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
-                            route().current('settings.*') || route().current('profile.*')
+                            route().current('settings.*')
                                 ? 'bg-[#1e3a8a] text-white shadow-sm shadow-blue-900/25' 
                                 : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                         ]"

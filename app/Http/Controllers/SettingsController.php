@@ -20,6 +20,8 @@ class SettingsController extends Controller
      */
     public function index(Request $request): Response
     {
+        abort_unless($request->user()->canManageSettings(), 403, 'Hanya Super Admin yang berwenang mengakses pengaturan sistem.');
+
         $campuses = Campus::withCount('buildings')->get();
         $buildings = Building::with(['campus', 'rooms'])->withCount('rooms')->get();
         $rooms = Room::with(['building.campus', 'pic'])->withCount('assets')->get();

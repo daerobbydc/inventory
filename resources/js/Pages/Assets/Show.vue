@@ -106,6 +106,7 @@ const getStatusBadge = (st) => {
 
                 <div class="flex items-center gap-2.5 print:hidden">
                     <button
+                        v-if="$page.props.auth?.user?.can_manage_assets"
                         @click="printLabel"
                         type="button"
                         class="inline-flex items-center gap-1.5 px-3.5 py-2.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition"
@@ -114,22 +115,24 @@ const getStatusBadge = (st) => {
                         Cetak Label Aset
                     </button>
 
-                    <Link
-                        :href="route('assets.edit', asset.id)"
-                        class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
-                    >
-                        <Edit class="w-4 h-4" />
-                        Ubah Data
-                    </Link>
+                    <template v-if="$page.props.auth?.user?.can_manage_assets">
+                        <Link
+                            :href="route('assets.edit', asset.id)"
+                            class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
+                        >
+                            <Edit class="w-4 h-4" />
+                            Ubah Data
+                        </Link>
 
-                    <button
-                        @click="deleteAsset"
-                        type="button"
-                        class="p-2.5 text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl transition"
-                        title="Hapus Aset"
-                    >
-                        <Trash2 class="w-4 h-4" />
-                    </button>
+                        <button
+                            @click="deleteAsset"
+                            type="button"
+                            class="p-2.5 text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl transition"
+                            title="Hapus Aset"
+                        >
+                            <Trash2 class="w-4 h-4" />
+                        </button>
+                    </template>
                 </div>
             </div>
 

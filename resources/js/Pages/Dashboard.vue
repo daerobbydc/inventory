@@ -70,8 +70,9 @@ const formatRupiah = (val) => {
 
                 <!-- Right Quick Action Buttons -->
                 <div class="flex flex-wrap sm:grid sm:grid-cols-2 gap-2.5 shrink-0">
-                    <!-- Registrasi Aset Baru -->
+                    <!-- Registrasi Aset Baru (Staff only) -->
                     <Link
+                        v-if="$page.props.auth?.user?.can_manage_assets"
                         :href="route('assets.create')"
                         class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
                     >
@@ -97,8 +98,9 @@ const formatRupiah = (val) => {
                         <span>Lapor Kerusakan</span>
                     </Link>
 
-                    <!-- Export Rekap -->
+                    <!-- Export Rekap (Staff only) -->
                     <Link
+                        v-if="$page.props.auth?.user?.can_manage_assets"
                         :href="route('reports.print')"
                         class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold shadow-sm transition"
                     >
@@ -401,7 +403,7 @@ const formatRupiah = (val) => {
                                             </span>
                                         </td>
                                         <td class="px-6 py-3.5 text-center">
-                                            <div class="inline-flex items-center gap-1.5">
+                                            <div v-if="$page.props.auth?.user?.can_manage_loans" class="inline-flex items-center gap-1.5">
                                                 <button class="w-7 h-7 rounded-lg bg-[#1e3a8a] hover:bg-[#172554] text-white flex items-center justify-center transition shadow-xs">
                                                     <Check class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
@@ -409,6 +411,9 @@ const formatRupiah = (val) => {
                                                     <X class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
                                             </div>
+                                            <span v-else class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                                Menunggu
+                                            </span>
                                         </td>
                                     </tr>
 
@@ -432,7 +437,7 @@ const formatRupiah = (val) => {
                                             </span>
                                         </td>
                                         <td class="px-6 py-3.5 text-center">
-                                            <div class="inline-flex items-center gap-1.5">
+                                            <div v-if="$page.props.auth?.user?.can_manage_loans" class="inline-flex items-center gap-1.5">
                                                 <button class="w-7 h-7 rounded-lg bg-[#1e3a8a] hover:bg-[#172554] text-white flex items-center justify-center transition shadow-xs">
                                                     <Check class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
@@ -440,6 +445,9 @@ const formatRupiah = (val) => {
                                                     <X class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
                                             </div>
+                                            <span v-else class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                                Menunggu
+                                            </span>
                                         </td>
                                     </tr>
 
@@ -463,7 +471,7 @@ const formatRupiah = (val) => {
                                             </span>
                                         </td>
                                         <td class="px-6 py-3.5 text-center">
-                                            <div class="inline-flex items-center gap-1.5">
+                                            <div v-if="$page.props.auth?.user?.can_manage_loans" class="inline-flex items-center gap-1.5">
                                                 <button class="w-7 h-7 rounded-lg bg-[#1e3a8a] hover:bg-[#172554] text-white flex items-center justify-center transition shadow-xs">
                                                     <Check class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
@@ -471,6 +479,9 @@ const formatRupiah = (val) => {
                                                     <X class="w-3.5 h-3.5 stroke-[3]" />
                                                 </button>
                                             </div>
+                                            <span v-else class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                                Menunggu
+                                            </span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -593,7 +604,7 @@ const formatRupiah = (val) => {
                     <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                         <span>8 Teknisi On-Duty di Kampus</span>
                         <Link :href="route('maintenance.index')" class="font-bold text-[#1e3a8a] hover:text-[#172554] flex items-center gap-1">
-                            Buka Dispatch Teknisi
+                            <span>{{ $page.props.auth?.user?.can_update_maintenance ? 'Buka Dispatch Teknisi' : 'Lihat Tiket Pemeliharaan' }}</span>
                             <ChevronRight class="w-4 h-4" />
                         </Link>
                     </div>

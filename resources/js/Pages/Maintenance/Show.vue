@@ -223,8 +223,8 @@ const isStepActive = (stepKey) => {
 
                 <!-- Right 1 Col: Quick Action Form & Personnel Info -->
                 <div class="space-y-6">
-                    <!-- Update Status & Dispatch Form -->
-                    <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm">
+                    <!-- Update Status & Dispatch Form (Teknisi & Staff only) -->
+                    <div v-if="$page.props.auth?.user?.can_update_maintenance" class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm">
                         <h3 class="text-sm font-extrabold text-slate-900 mb-4 flex items-center gap-2">
                             <Wrench class="w-4 h-4 text-[#1e3a8a]" />
                             <span>Update Progres Penanganan</span>

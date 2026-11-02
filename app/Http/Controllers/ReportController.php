@@ -21,6 +21,8 @@ class ReportController extends Controller
      */
     public function index(Request $request): Response
     {
+        abort_unless($request->user()->canManageAssets(), 403, 'Anda tidak berwenang mengakses laporan audit aset.');
+
         $assets = Asset::with(['category', 'room.building.campus'])->get();
 
         // 1. Depreciation & Valuation calculation
@@ -110,6 +112,8 @@ class ReportController extends Controller
      */
     public function print(Request $request): Response
     {
+        abort_unless($request->user()->canManageAssets(), 403, 'Anda tidak berwenang mencetak laporan buku induk aset.');
+
         $assets = Asset::with(['category', 'room.building.campus'])->orderBy('category_id')->get();
 
         $totalAcquisition = $assets->sum('purchase_cost');

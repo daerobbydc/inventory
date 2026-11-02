@@ -22,6 +22,8 @@ class StockOpnameController extends Controller
      */
     public function scanner(Request $request): Response
     {
+        abort_unless($request->user()->canPerformAudit(), 403, 'Anda tidak berwenang melakukan audit atau sensus aset.');
+
         // Get or create active session
         $session = StockOpnameSession::where('status', StockOpnameStatus::Ongoing)->first();
 
@@ -67,6 +69,8 @@ class StockOpnameController extends Controller
      */
     public function lookup(Request $request): JsonResponse
     {
+        abort_unless($request->user()->canPerformAudit(), 403, 'Anda tidak berwenang melakukan audit atau sensus aset.');
+
         $code = trim($request->query('code', ''));
 
         if (! $code) {
@@ -107,6 +111,8 @@ class StockOpnameController extends Controller
      */
     public function verify(Request $request): RedirectResponse
     {
+        abort_unless($request->user()->canPerformAudit(), 403, 'Anda tidak berwenang melakukan verifikasi sensus aset.');
+
         $validated = $request->validate([
             'stock_opname_session_id' => ['required', 'exists:stock_opname_sessions,id'],
             'asset_id' => ['required', 'exists:assets,id'],

@@ -94,4 +94,112 @@ class User extends Authenticatable
     {
         return $this->role === UserRole::SuperAdmin;
     }
+
+    /**
+     * Check if user is Admin Fakultas.
+     */
+    public function isAdminFakultas(): bool
+    {
+        return $this->role === UserRole::AdminFakultas;
+    }
+
+    /**
+     * Check if user is PIC Ruangan / Laboran.
+     */
+    public function isPicRuangan(): bool
+    {
+        return $this->role === UserRole::PicRuangan;
+    }
+
+    /**
+     * Check if user is Teknisi.
+     */
+    public function isTeknisi(): bool
+    {
+        return $this->role === UserRole::Teknisi;
+    }
+
+    /**
+     * Check if user is Dosen.
+     */
+    public function isDosen(): bool
+    {
+        return $this->role === UserRole::Dosen;
+    }
+
+    /**
+     * Check if user is Mahasiswa.
+     */
+    public function isMahasiswa(): bool
+    {
+        return $this->role === UserRole::Mahasiswa;
+    }
+
+    /**
+     * Check if user is Staff (Super Admin, Admin Fakultas, PIC Ruangan).
+     */
+    public function isStaff(): bool
+    {
+        return in_array($this->role, [
+            UserRole::SuperAdmin,
+            UserRole::AdminFakultas,
+            UserRole::PicRuangan,
+        ], true);
+    }
+
+    /**
+     * Determine if user can manage campus assets.
+     */
+    public function canManageAssets(): bool
+    {
+        return $this->isStaff();
+    }
+
+    /**
+     * Determine if user can manage/approve loan requests.
+     */
+    public function canManageLoans(): bool
+    {
+        return $this->isStaff();
+    }
+
+    /**
+     * Determine if user can manage consumables/ATK inventory.
+     */
+    public function canManageConsumables(): bool
+    {
+        return $this->isStaff();
+    }
+
+    /**
+     * Determine if user can manage asset disposals.
+     */
+    public function canManageDisposals(): bool
+    {
+        return $this->isStaff();
+    }
+
+    /**
+     * Determine if user can manage system settings and users.
+     */
+    public function canManageSettings(): bool
+    {
+        return $this->isSuperAdmin();
+    }
+
+    /**
+     * Determine if user can perform audit / stock opname scanner.
+     */
+    public function canPerformAudit(): bool
+    {
+        return $this->isStaff() || $this->isTeknisi();
+    }
+
+    /**
+     * Determine if user can update maintenance ticket progress & dispatch.
+     */
+    public function canUpdateMaintenance(): bool
+    {
+        return $this->isStaff() || $this->isTeknisi();
+    }
 }

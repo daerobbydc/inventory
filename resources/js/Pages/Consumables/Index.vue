@@ -132,7 +132,7 @@ const submitTransaction = () => {
                     </p>
                 </div>
 
-                <div class="flex items-center gap-2.5 shrink-0">
+                <div v-if="$page.props.auth?.user?.can_manage_consumables" class="flex items-center gap-2.5 shrink-0">
                     <button
                         @click="showCreateModal = true"
                         class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"
@@ -331,7 +331,7 @@ const submitTransaction = () => {
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <div v-if="$page.props.auth?.user?.can_manage_consumables" class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                         <!-- Minta Barang (Out) -->
                         <button
                             @click="openTransaction(item, 'out')"

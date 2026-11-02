@@ -15,6 +15,8 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        abort_unless($request->user()->canManageSettings(), 403, 'Hanya Super Admin yang berwenang menambahkan pengguna.');
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
@@ -44,6 +46,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): RedirectResponse
     {
+        abort_unless($request->user()->canManageSettings(), 403, 'Hanya Super Admin yang berwenang mengubah data pengguna.');
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
@@ -63,6 +67,8 @@ class UserController extends Controller
      */
     public function toggleStatus(Request $request, User $user): RedirectResponse
     {
+        abort_unless($request->user()->canManageSettings(), 403, 'Hanya Super Admin yang berwenang mengubah status akun.');
+
         if ($user->id === $request->user()->id) {
             return back()->with('error', 'Anda tidak dapat menonaktifkan akun Anda sendiri.');
         }
@@ -79,6 +85,8 @@ class UserController extends Controller
      */
     public function testWhatsApp(Request $request): RedirectResponse
     {
+        abort_unless($request->user()->canManageSettings(), 403, 'Hanya Super Admin yang berwenang menguji gateway WhatsApp.');
+
         $validated = $request->validate([
             'phone' => ['required', 'string'],
             'message' => ['required', 'string', 'max:500'],

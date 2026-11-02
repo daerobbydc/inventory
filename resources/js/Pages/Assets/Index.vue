@@ -144,7 +144,7 @@ const getStatusBadge = (st) => {
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2.5 shrink-0">
+                <div v-if="$page.props.auth?.user?.can_manage_assets" class="flex items-center gap-2.5 shrink-0">
                     <Link
                         :href="route('assets.create')"
                         class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1e3a8a] hover:bg-[#172554] text-white rounded-xl text-xs font-bold shadow-sm shadow-blue-900/25 transition"

@@ -42,6 +42,13 @@ class HandleInertiaRequests extends Middleware
                     'role_label' => $user->role?->label(),
                     'nip_nim' => $user->nip_nim,
                     'department' => $user->department,
+                    'can_manage_assets' => $user->canManageAssets(),
+                    'can_manage_loans' => $user->canManageLoans(),
+                    'can_manage_consumables' => $user->canManageConsumables(),
+                    'can_manage_disposals' => $user->canManageDisposals(),
+                    'can_manage_settings' => $user->canManageSettings(),
+                    'can_perform_audit' => $user->canPerformAudit(),
+                    'can_update_maintenance' => $user->canUpdateMaintenance(),
                 ] : null,
             ],
             'flash' => [
