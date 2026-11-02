@@ -26,7 +26,8 @@ import {
     Boxes,
     QrCode,
     ArchiveX,
-    DoorOpen
+    DoorOpen,
+    User
 } from 'lucide-vue-next';
 
 const showingSidebarMobile = ref(false);
@@ -36,49 +37,85 @@ const dismissFlash = ref(false);
 
 const notifications = computed(() => page.props.notifications || []);
 const unreadCount = computed(() => page.props.unread_notifications_count || notifications.value.length || 0);
+
+const currentRouteBreadcrumb = computed(() => {
+    if (route().current('dashboard')) return 'Dashboard';
+    if (route().current('assets.*')) return 'Data Aset & Inventaris';
+    if (route().current('consumables.*')) return 'Barang Habis Pakai';
+    if (route().current('loans.*')) return 'Peminjaman Aset';
+    if (route().current('room-bookings.*')) return 'Peminjaman Ruangan';
+    if (route().current('stock-opname.*')) return 'Sensus QR Code';
+    if (route().current('maintenance.*')) return 'Pemeliharaan Fasilitas';
+    if (route().current('disposals.*')) return 'Penghapusan Aset';
+    if (route().current('reports.*')) return 'Laporan & Audit';
+    if (route().current('settings.*')) return 'Pengaturan Sistem';
+    if (route().current('profile.*')) return 'Profil Pengguna';
+    return 'Halaman';
+});
+
+const currentRouteTitle = computed(() => {
+    if (route().current('dashboard')) return 'Dashboard';
+    if (route().current('assets.*')) return 'Katalog Aset & Inventaris';
+    if (route().current('consumables.*')) return 'Barang Habis Pakai (ATK)';
+    if (route().current('loans.*')) return 'Peminjaman Aset & Alat';
+    if (route().current('room-bookings.*')) return 'Peminjaman Ruangan Kampus';
+    if (route().current('stock-opname.*')) return 'Scanner QR Sensus';
+    if (route().current('maintenance.*')) return 'Pemeliharaan & Servis';
+    if (route().current('disposals.*')) return 'Penghapusan & Pemutihan Aset';
+    if (route().current('reports.*')) return 'Laporan & Audit Kampus';
+    if (route().current('settings.*')) return 'Pengaturan Sistem & Master Data';
+    if (route().current('profile.*')) return 'Pengaturan Akun Pengguna';
+    return 'SIM-SARPRAS';
+});
 </script>
 
 <template>
-    <div class="min-h-screen bg-[#eef2f6] flex text-slate-900 font-sans">
+    <div class="min-h-screen bg-[#f0f2f5] text-slate-800 font-sans antialiased">
         <!-- Backdrop for Mobile Sidebar -->
         <div 
             v-if="showingSidebarMobile" 
             @click="showingSidebarMobile = false"
-            class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm md:hidden"
+            class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-xs md:hidden"
         ></div>
 
-        <!-- Left Sidebar Navigation -->
+        <!-- Material Floating Dark Sidenav -->
         <aside 
             :class="[
-                'fixed md:sticky top-0 z-50 h-screen w-64 bg-[#0a1628] border-r border-[#152438] flex flex-col justify-between transition-transform duration-300 ease-in-out select-none',
-                showingSidebarMobile ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+                'fixed top-0 bottom-0 left-0 z-50 my-4 ml-4 w-64 rounded-2xl bg-gradient-to-b from-[#1a2035] via-[#161c2e] to-[#0f1422] text-white shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-in-out select-none border border-white/5',
+                showingSidebarMobile ? 'translate-x-0' : '-translate-x-80 md:translate-x-0'
             ]"
         >
-            <div>
+            <div class="overflow-y-auto px-3 py-4 flex-1">
                 <!-- Brand Header -->
-                <div class="h-20 px-6 flex items-center gap-3 border-b border-white/[0.08] bg-[#07101d]">
-                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-[#1e3a8a] flex items-center justify-center text-white shadow-lg shadow-blue-500/25 ring-1 ring-white/20">
-                        <ShieldCheck class="h-6 w-6 stroke-[2.2]" />
+                <div class="px-3 py-2 flex items-center gap-3">
+                    <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/30">
+                        <ShieldCheck class="h-5 w-5 stroke-[2.2]" />
                     </div>
                     <div>
-                        <div class="text-base font-extrabold tracking-tight text-white leading-none">SIM-SARPRAS</div>
-                        <div class="text-[11px] font-semibold text-blue-300/80 mt-1">Univ. Al-Khairiyah</div>
+                        <div class="text-sm font-extrabold tracking-tight text-white leading-tight">SIM-SARPRAS</div>
+                        <div class="text-[11px] font-medium text-slate-400">Univ. Al-Khairiyah</div>
                     </div>
                 </div>
 
-                <!-- Nav Menu Links -->
-                <nav class="p-3.5 space-y-1">
+                <hr class="my-3 border-t border-white/10 mx-1" />
+
+                <!-- Menu Utama -->
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 py-1.5">
+                    Menu Utama
+                </div>
+
+                <nav class="space-y-1">
                     <!-- Dashboard -->
                     <Link
                         :href="route('dashboard')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('dashboard') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <LayoutDashboard :class="['w-4 h-4 shrink-0 transition', route().current('dashboard') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <LayoutDashboard class="w-4 h-4 shrink-0" />
                         <span>Dashboard</span>
                     </Link>
 
@@ -86,71 +123,78 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                     <Link
                         :href="route('assets.index')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('assets.*') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <Layers :class="['w-4 h-4 shrink-0 transition', route().current('assets.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <Layers class="w-4 h-4 shrink-0" />
                         <span>Data Aset & Inventaris</span>
                     </Link>
 
-                    <!-- Barang Habis Pakai / ATK (Staff only) -->
+                    <!-- Barang Habis Pakai / ATK -->
                     <Link
                         v-if="$page.props.auth?.user?.can_manage_consumables"
                         :href="route('consumables.index')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('consumables.*') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <Boxes :class="['w-4 h-4 shrink-0 transition', route().current('consumables.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <Boxes class="w-4 h-4 shrink-0" />
                         <span>Barang Habis Pakai (ATK)</span>
                     </Link>
 
-                    <!-- Peminjaman & Fasilitas -->
+                    <!-- Peminjaman Aset (Alat) -->
                     <Link
                         :href="route('loans.index')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('loans.*') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <Repeat :class="['w-4 h-4 shrink-0 transition', route().current('loans.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <Repeat class="w-4 h-4 shrink-0" />
                         <span>Peminjaman Aset (Alat)</span>
                     </Link>
 
-                    <!-- Peminjaman Ruangan & Aula -->
+                    <!-- Peminjaman Ruangan -->
                     <Link
                         :href="route('room-bookings.index')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('room-bookings.*') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <DoorOpen :class="['w-4 h-4 shrink-0 transition', route().current('room-bookings.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <DoorOpen class="w-4 h-4 shrink-0" />
                         <span>Peminjaman Ruangan</span>
                     </Link>
+                </nav>
 
-                    <!-- Scanner QR Sensus (Staff & Teknisi) -->
+                <!-- Fasilitas & Operasional -->
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 pt-4 pb-1.5">
+                    Fasilitas & Operasional
+                </div>
+
+                <nav class="space-y-1">
+                    <!-- Scanner QR Sensus -->
                     <Link
                         v-if="$page.props.auth?.user?.can_perform_audit"
                         :href="route('stock-opname.scanner')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('stock-opname.*') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <QrCode :class="['w-4 h-4 shrink-0 transition', route().current('stock-opname.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <QrCode class="w-4 h-4 shrink-0" />
                         <span>Scanner QR Sensus</span>
                     </Link>
 
@@ -158,84 +202,79 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                     <Link
                         :href="route('maintenance.index')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('maintenance.*') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <Wrench :class="['w-4 h-4 shrink-0 transition', route().current('maintenance.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <Wrench class="w-4 h-4 shrink-0" />
                         <span>Pemeliharaan & Servis</span>
                     </Link>
 
-                    <!-- Penghapusan Aset (Staff only) -->
+                    <!-- Penghapusan Aset -->
                     <Link
                         v-if="$page.props.auth?.user?.can_manage_disposals"
                         :href="route('disposals.index')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('disposals.*') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <ArchiveX :class="['w-4 h-4 shrink-0 transition', route().current('disposals.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <ArchiveX class="w-4 h-4 shrink-0" />
                         <span>Penghapusan Aset</span>
                     </Link>
 
-                    <!-- Laporan & Audit (Staff only) -->
+                    <!-- Laporan & Audit -->
                     <Link
                         v-if="$page.props.auth?.user?.can_manage_assets"
                         :href="route('reports.index')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('reports.*') 
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <FileText :class="['w-4 h-4 shrink-0 transition', route().current('reports.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <FileText class="w-4 h-4 shrink-0" />
                         <span>Laporan & Audit</span>
                     </Link>
 
-                    <!-- Pengaturan Sistem (Super Admin only) -->
+                    <!-- Pengaturan Sistem -->
                     <Link
                         v-if="$page.props.auth?.user?.can_manage_settings"
                         :href="route('settings.index')"
                         :class="[
-                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition',
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('settings.*')
-                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
-                                : 'text-slate-300 hover:bg-white/[0.08] hover:text-white font-medium'
+                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
-                        <Settings :class="['w-4 h-4 shrink-0 transition', route().current('settings.*') ? 'text-white' : 'text-slate-400 group-hover:text-white']" />
+                        <Settings class="w-4 h-4 shrink-0" />
                         <span>Pengaturan Sistem</span>
                     </Link>
                 </nav>
             </div>
 
-            <!-- Bottom System Status Card in Sidebar -->
-            <div class="p-4 border-t border-white/[0.08]">
-                <div class="p-3 bg-white/[0.05] rounded-xl border border-white/[0.08] backdrop-blur-sm">
-                    <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-blue-300/70 mb-1">
-                        <span>Status Sistem</span>
-                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50 animate-pulse"></span>
-                    </div>
-                    <div class="text-xs font-semibold text-white leading-tight">
-                        Sinkronisasi Terpadu Aktif
-                    </div>
-                    <div class="text-[10px] text-blue-200/50 mt-0.5">(Biro Sarpras Unival)</div>
-                </div>
+            <!-- Bottom Action Button (Material Dashboard Upgrade to Pro Signature) -->
+            <div class="p-3 mx-2 mb-2">
+                <Link
+                    :href="route('loans.create')"
+                    class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-black text-xs shadow-lg shadow-emerald-600/30 uppercase tracking-wider hover:brightness-105 transition"
+                >
+                    <span>AJUKAN PEMINJAMAN</span>
+                </Link>
             </div>
         </aside>
 
-        <!-- Main Wrapper -->
-        <div class="flex-1 flex flex-col min-w-0">
-            <!-- Top Header Bar -->
-            <header class="h-16 bg-white border-b border-slate-200/80 sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between gap-4">
-                <div class="flex items-center gap-3 flex-1 max-w-xl">
-                    <!-- Mobile Menu Hamburger -->
+        <!-- Main Wrapper with Material Layout -->
+        <div class="flex-1 flex flex-col min-w-0 md:ml-72 transition-all duration-300">
+            <!-- Top Material Header Bar -->
+            <header class="sticky top-4 z-40 mx-4 sm:mx-6 lg:mx-8 mb-6 py-2.5 px-4 bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
                     <button 
                         @click="showingSidebarMobile = !showingSidebarMobile"
                         class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg md:hidden"
@@ -243,20 +282,30 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                         <Menu class="w-5 h-5" />
                     </button>
 
-                    <!-- Search Bar with Pill Input -->
-                    <div class="relative w-full max-w-md hidden sm:block">
-                        <Search class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-                        <input
-                            type="text"
-                            placeholder="Cari aset, ruangan, kode inventaris..."
-                            class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
-                        />
+                    <!-- Breadcrumbs & Page Title -->
+                    <div>
+                        <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
+                            <Link :href="route('dashboard')" class="hover:text-slate-700">Pages</Link>
+                            <span>/</span>
+                            <span class="text-slate-600 font-medium">{{ currentRouteBreadcrumb }}</span>
+                        </div>
+                        <h1 class="text-sm font-bold text-slate-900 mt-0.5 leading-tight">{{ currentRouteTitle }}</h1>
                     </div>
                 </div>
 
                 <!-- Right Top Tools -->
-                <div class="flex items-center gap-3">
-                    <!-- Notification Bell with Interactive Dropdown -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Search Input -->
+                    <div class="relative hidden sm:block">
+                        <Search class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                        <input
+                            type="text"
+                            placeholder="Search here"
+                            class="w-40 lg:w-56 pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
+                        />
+                    </div>
+
+                    <!-- Notification Bell with Dropdown -->
                     <div class="relative">
                         <button 
                             @click="showingNotifications = !showingNotifications"
@@ -292,7 +341,6 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                                 v-show="showingNotifications" 
                                 class="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200/90 z-50 overflow-hidden"
                             >
-                                <!-- Header -->
                                 <div class="px-4 py-3 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <Bell class="w-4 h-4 text-[#1e3a8a]" />
@@ -303,7 +351,6 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                                     </span>
                                 </div>
 
-                                <!-- Notification Items List -->
                                 <div class="max-h-80 overflow-y-auto divide-y divide-slate-100">
                                     <div 
                                         v-if="notifications.length > 0"
@@ -344,7 +391,6 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                                         </Link>
                                     </div>
 
-                                    <!-- Empty State -->
                                     <div v-else class="p-8 text-center">
                                         <div class="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center mx-auto mb-2">
                                             <Bell class="w-5 h-5 text-slate-300" />
@@ -354,7 +400,6 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                                     </div>
                                 </div>
 
-                                <!-- Footer -->
                                 <div class="px-4 py-2 bg-slate-50/60 border-t border-slate-100 text-center">
                                     <span class="text-[10px] text-slate-400 font-medium">
                                         SIM-SARPRAS Universitas Al-Khairiyah
@@ -367,15 +412,14 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
                     <!-- User Profile Dropdown -->
                     <Dropdown align="right" width="48">
                         <template #trigger>
-                            <button class="flex items-center gap-2 pl-2 pr-1 py-1 rounded-full hover:bg-slate-50 transition">
-                                <div class="w-8 h-8 rounded-full bg-blue-100 text-[#1e3a8a] border border-blue-200 flex items-center justify-center font-bold text-xs">
-                                    {{ $page.props.auth?.user?.name?.charAt(0) || 'B' }}
+                            <button class="flex items-center gap-2 p-1.5 rounded-full hover:bg-slate-100 transition">
+                                <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                                    {{ $page.props.auth?.user?.name?.charAt(0) || 'U' }}
                                 </div>
-                                <div class="hidden sm:block text-left text-xs leading-tight">
-                                    <div class="font-bold text-slate-800">{{ $page.props.auth?.user?.name || 'Ir. Bambang S., M.T.' }}</div>
-                                    <div class="text-[10px] text-slate-400">{{ $page.props.auth?.user?.department || 'Biro Sarana & Prasarana' }}</div>
+                                <div class="hidden lg:block text-left text-xs leading-tight pr-1">
+                                    <div class="font-bold text-slate-800">{{ $page.props.auth?.user?.name }}</div>
+                                    <div class="text-[10px] text-slate-400">{{ $page.props.auth?.user?.role_label || 'Civitas' }}</div>
                                 </div>
-                                <ChevronDown class="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
                             </button>
                         </template>
 
@@ -396,34 +440,44 @@ const unreadCount = computed(() => page.props.unread_notifications_count || noti
             </header>
 
             <!-- Flash Notification Messages -->
-            <div v-if="!dismissFlash && $page.props.flash?.success" class="bg-emerald-50 border-b border-emerald-200 px-6 py-3">
-                <div class="max-w-7xl mx-auto flex items-center justify-between">
-                    <div class="flex items-center gap-2 text-emerald-800 text-sm font-medium">
-                        <CheckCircle2 class="w-5 h-5 text-emerald-600 shrink-0" />
+            <div v-if="!dismissFlash && $page.props.flash?.success" class="mx-4 sm:mx-6 lg:mx-8 mb-4 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 shadow-xs">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-emerald-800 text-xs font-medium">
+                        <CheckCircle2 class="w-4 h-4 text-emerald-600 shrink-0" />
                         <span>{{ $page.props.flash.success }}</span>
                     </div>
                     <button @click="dismissFlash = true" class="text-emerald-600 hover:text-emerald-800">
-                        <X class="w-4 h-4" />
+                        <X class="w-3.5 h-3.5" />
                     </button>
                 </div>
             </div>
 
-            <div v-if="!dismissFlash && $page.props.flash?.error" class="bg-rose-50 border-b border-rose-200 px-6 py-3">
-                <div class="max-w-7xl mx-auto flex items-center justify-between">
-                    <div class="flex items-center gap-2 text-rose-800 text-sm font-medium">
-                        <AlertCircle class="w-5 h-5 text-rose-600 shrink-0" />
+            <div v-if="!dismissFlash && $page.props.flash?.error" class="mx-4 sm:mx-6 lg:mx-8 mb-4 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3 shadow-xs">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-rose-800 text-xs font-medium">
+                        <AlertCircle class="w-4 h-4 text-rose-600 shrink-0" />
                         <span>{{ $page.props.flash.error }}</span>
                     </div>
                     <button @click="dismissFlash = true" class="text-rose-600 hover:text-rose-800">
-                        <X class="w-4 h-4" />
+                        <X class="w-3.5 h-3.5" />
                     </button>
                 </div>
             </div>
 
             <!-- Page Body Slot -->
-            <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+            <main class="flex-1 px-4 sm:px-6 lg:px-8 pb-12 w-full">
                 <slot />
             </main>
+
+            <!-- Floating Settings Gear Wheel Button at Bottom-Right (Material Dashboard Signature) -->
+            <Link
+                v-if="$page.props.auth?.user?.can_manage_settings"
+                :href="route('settings.index')"
+                class="fixed bottom-6 right-6 w-11 h-11 bg-white text-slate-700 rounded-full shadow-xl border border-slate-200 flex items-center justify-center hover:text-[#1e3a8a] hover:rotate-90 transition duration-300 z-40"
+                title="Pengaturan Sistem"
+            >
+                <Settings class="w-5 h-5 stroke-[2.2]" />
+            </Link>
         </div>
     </div>
 </template>

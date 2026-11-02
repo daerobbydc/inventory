@@ -134,89 +134,81 @@ const getStatusBadge = (st) => {
             </div>
         </div>
 
-        <!-- 2. Four Metric Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Tugas Ditugaskan ke Saya -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-blue-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Tugas Servis Saya</span>
-                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
-                        <Wrench class="w-4 h-4" />
+        <!-- 2. Four Overhanging Metric Cards (Signature Material Dashboard 2 Style) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+            <!-- Tugas Ditugaskan ke Saya (Blue / Cyan Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#0284c7] to-[#0369a1] shadow-lg shadow-blue-500/30 flex items-center justify-center text-white">
+                    <Wrench class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Tugas Servis Saya</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ teknisiData.metrics?.assignedCount || 0 }} Tiket
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-slate-900">
-                        {{ teknisiData.metrics?.assignedCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-slate-500">tiket aktif</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Perlu penanganan Anda</span>
-                    <a href="#my-tasks" class="text-blue-700 font-bold hover:underline inline-flex items-center gap-1">
-                        Lihat Antrean <ChevronRight class="w-3 h-3" />
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Perlu penanganan Anda</span>
+                    <a href="#my-tasks" class="text-blue-600 font-bold hover:underline inline-flex items-center gap-0.5">
+                        Antrean <ChevronRight class="w-3 h-3" />
                     </a>
                 </div>
             </div>
 
-            <!-- Tiket Urgent / Kritis -->
-            <div class="bg-white rounded-2xl p-5 border border-rose-200/80 border-t-4 border-t-rose-600 bg-rose-50/30 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-rose-700">Prioritas Darurat / Urgent</span>
-                    <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center">
-                        <AlertTriangle class="w-4 h-4" />
+            <!-- Tiket Urgent / Kritis (Hot Pink / Rose Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ec4899] to-[#e11d48] shadow-lg shadow-pink-500/30 flex items-center justify-center text-white">
+                    <AlertTriangle class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-rose-600">Prioritas Darurat</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ teknisiData.metrics?.urgentCount || 0 }} Tiket
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-rose-700">
-                        {{ teknisiData.metrics?.urgentCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-rose-700/80">tiket darurat</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-rose-200 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Fasilitas vital kampus</span>
-                    <span class="text-rose-700 font-extrabold text-[11px]">Butuh respon cepat</span>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Fasilitas vital kampus</span>
+                    <span class="text-rose-600 font-bold text-[11px]">Respon Cepat</span>
                 </div>
             </div>
 
-            <!-- Menunggu Suku Cadang -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-purple-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Menunggu Suku Cadang</span>
-                    <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center">
-                        <Package class="w-4 h-4" />
+            <!-- Menunggu Suku Cadang (Dark Charcoal Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1e293b] to-[#0f172a] shadow-lg shadow-slate-900/30 flex items-center justify-center text-white">
+                    <Package class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Menunggu Sparepart</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ teknisiData.metrics?.waitingPartsCount || 0 }} Tiket
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-slate-900">
-                        {{ teknisiData.metrics?.waitingPartsCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-slate-500">tiket tertunda part</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Pengadaan / PO logistik</span>
-                    <Link :href="route('consumables.index')" class="text-purple-700 font-bold hover:underline inline-flex items-center gap-1">
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Pengadaan logistik</span>
+                    <Link :href="route('consumables.index')" class="text-slate-800 font-bold hover:underline inline-flex items-center gap-0.5">
                         Cek Stok <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
-            <!-- Selesai Bulan Ini -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-emerald-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Selesai Bulan Ini</span>
-                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                        <CheckCircle2 class="w-4 h-4" />
+            <!-- Selesai Bulan Ini (Emerald Green Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#10b981] to-[#059669] shadow-lg shadow-emerald-500/30 flex items-center justify-center text-white">
+                    <CheckCircle2 class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Selesai Bulan Ini</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ teknisiData.metrics?.completedThisMonth || 0 }} Unit
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-emerald-700">
-                        {{ teknisiData.metrics?.completedThisMonth || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-emerald-600/80">tiket terselesaikan</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Kinerja teknisi bulan berjalan</span>
-                    <span class="text-emerald-700 font-bold text-[11px]">Kerja Baik!</span>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span class="text-emerald-600 font-bold">100% Tercatat</span>
+                    <span class="text-slate-400 text-[11px]">Kinerja Baik</span>
                 </div>
             </div>
         </div>

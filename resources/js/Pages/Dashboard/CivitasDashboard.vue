@@ -167,91 +167,83 @@ const getTicketStatusBadge = (st) => {
             </div>
         </div>
 
-        <!-- 2. Four Metric Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Peminjaman Aktif -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-blue-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Peminjaman Aset Saya</span>
-                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
-                        <Layers class="w-4 h-4" />
+        <!-- 2. Four Overhanging Metric Cards (Signature Material Dashboard 2 Style) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+            <!-- Card 1: Peminjaman Aset Saya (Charcoal / Dark Slate Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1e293b] to-[#0f172a] shadow-lg shadow-slate-900/30 flex items-center justify-center text-white">
+                    <Layers class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Peminjaman Aset</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ civitasData.activeLoansCount || 0 }} Unit
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-slate-900">
-                        {{ civitasData.activeLoansCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-slate-500">transaksi aktif</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Barang sedang Anda bawa</span>
-                    <Link :href="route('loans.index')" class="text-blue-700 font-bold hover:underline inline-flex items-center gap-1">
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Sedang Anda gunakan</span>
+                    <Link :href="route('loans.index')" class="text-blue-600 font-bold hover:underline inline-flex items-center gap-0.5">
                         Riwayat <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
-            <!-- Reservasi Ruangan Aktif -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-emerald-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Reservasi Ruangan</span>
-                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                        <Calendar class="w-4 h-4" />
+            <!-- Card 2: Reservasi Ruangan (Emerald Green Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#10b981] to-[#059669] shadow-lg shadow-emerald-500/30 flex items-center justify-center text-white">
+                    <Calendar class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Reservasi Ruangan</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ civitasData.activeBookingsCount || 0 }} Sesi
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-slate-900">
-                        {{ civitasData.activeBookingsCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-slate-500">jadwal disetujui/pending</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Ruangan kelas & lab</span>
-                    <Link :href="route('room-bookings.index')" class="text-emerald-700 font-bold hover:underline inline-flex items-center gap-1">
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Jadwal aktif kuliah/lab</span>
+                    <Link :href="route('room-bookings.index')" class="text-emerald-600 font-bold hover:underline inline-flex items-center gap-0.5">
                         Jadwal Saya <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
-            <!-- Laporan Kerusakan -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-amber-500 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Laporan Kerusakan Saya</span>
-                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
-                        <Wrench class="w-4 h-4" />
+            <!-- Card 3: Laporan Kerusakan (Hot Pink / Rose Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ec4899] to-[#e11d48] shadow-lg shadow-pink-500/30 flex items-center justify-center text-white">
+                    <Wrench class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Laporan Kerusakan</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ civitasData.activeTicketsCount || 0 }} Tiket
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-slate-900">
-                        {{ civitasData.activeTicketsCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-slate-500">tiket dalam proses</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Penanganan oleh teknisi</span>
-                    <Link :href="route('maintenance.index')" class="text-amber-700 font-bold hover:underline inline-flex items-center gap-1">
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Proses teknisi kampus</span>
+                    <Link :href="route('maintenance.index')" class="text-rose-600 font-bold hover:underline inline-flex items-center gap-0.5">
                         Cek Status <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
-            <!-- Ruang Kampus Siap Pakai -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-indigo-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Fasilitas Ruang Kampus</span>
-                    <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
-                        <Building2 class="w-4 h-4" />
+            <!-- Card 4: Fasilitas Ruang Kampus (Blue / Cyan Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#0284c7] to-[#0369a1] shadow-lg shadow-blue-500/30 flex items-center justify-center text-white">
+                    <Building2 class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Ruangan Terdaftar</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ civitasData.availableRoomsCount || 0 }} Ruang
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-slate-900">
-                        {{ civitasData.availableRoomsCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-slate-500">ruang terdaftar</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Terbuka untuk kegiatan</span>
-                    <Link :href="route('room-bookings.index')" class="text-indigo-700 font-bold hover:underline inline-flex items-center gap-1">
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Fasilitas siap pakai</span>
+                    <Link :href="route('room-bookings.index')" class="text-blue-600 font-bold hover:underline inline-flex items-center gap-0.5">
                         Pesan Ruang <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>

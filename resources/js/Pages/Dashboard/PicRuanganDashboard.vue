@@ -108,89 +108,81 @@ const formatTimeRange = (start, end) => {
             </div>
         </div>
 
-        <!-- 2. Four Metric Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Ruangan Dikelola -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-blue-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Ruangan Dikelola</span>
-                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
-                        <DoorOpen class="w-4 h-4" />
+        <!-- 2. Four Overhanging Metric Cards (Signature Material Dashboard 2 Style) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+            <!-- Ruangan Dikelola (Blue / Cyan Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#0284c7] to-[#0369a1] shadow-lg shadow-blue-500/30 flex items-center justify-center text-white">
+                    <DoorOpen class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Ruangan Dikelola</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ picData.metrics?.roomsCount || 0 }} Ruang
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-slate-900">
-                        {{ picData.metrics?.roomsCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-slate-500">ruang binaan</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Tanggung jawab Anda</span>
-                    <span class="text-blue-700 font-bold text-[11px]">Laboratorium & Kelas</span>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Laboratorium & Kelas</span>
+                    <span class="text-blue-600 font-bold text-[11px]">Tanggung Jawab Anda</span>
                 </div>
             </div>
 
-            <!-- Total Aset di Ruangan -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-indigo-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-slate-500">Aset di Ruang Anda</span>
-                    <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
-                        <Layers class="w-4 h-4" />
+            <!-- Total Aset di Ruangan (Dark Charcoal Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1e293b] to-[#0f172a] shadow-lg shadow-slate-900/30 flex items-center justify-center text-white">
+                    <Layers class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Aset di Ruang Anda</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ picData.metrics?.totalAssets || 0 }} Unit
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-slate-900">
-                        {{ picData.metrics?.totalAssets || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-slate-500">unit aset</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Terdata di SIM-SARPRAS</span>
-                    <Link :href="route('assets.index')" class="text-indigo-700 font-bold hover:underline inline-flex items-center gap-1">
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Terdaftar di SIM-SARPRAS</span>
+                    <Link :href="route('assets.index')" class="text-slate-800 font-bold hover:underline inline-flex items-center gap-0.5">
                         Katalog <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>
             </div>
 
-            <!-- Menunggu Persetujuan -->
-            <div class="bg-white rounded-2xl p-5 border border-amber-200/80 border-t-4 border-t-amber-500 bg-amber-50/20 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-amber-700">Menunggu Persetujuan</span>
-                    <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
-                        <Clock class="w-4 h-4" />
+            <!-- Menunggu Persetujuan (Emerald Green Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#10b981] to-[#059669] shadow-lg shadow-emerald-500/30 flex items-center justify-center text-white">
+                    <Clock class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Menunggu Persetujuan</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ picData.metrics?.pendingApprovals || 0 }} Berkas
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-amber-700">
-                        {{ picData.metrics?.pendingApprovals || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-amber-700/80">permohonan baru</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-amber-200 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Alat & reservasi ruang</span>
-                    <a href="#pending-approvals" class="text-amber-700 font-extrabold hover:underline inline-flex items-center gap-1">
-                        Verifikasi Segera <ChevronRight class="w-3 h-3" />
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Alat & ruangan</span>
+                    <a href="#pending-approvals" class="text-emerald-600 font-bold hover:underline inline-flex items-center gap-0.5">
+                        Verifikasi <ChevronRight class="w-3 h-3" />
                     </a>
                 </div>
             </div>
 
-            <!-- Aset Rusak / Perlu Servis -->
-            <div class="bg-white rounded-2xl p-5 border border-slate-200/80 border-t-4 border-t-rose-600 shadow-sm flex flex-col justify-between">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold text-rose-600">Aset Rusak / Servis</span>
-                    <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
-                        <AlertTriangle class="w-4 h-4" />
+            <!-- Aset Rusak / Perlu Servis (Hot Pink / Rose Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ec4899] to-[#e11d48] shadow-lg shadow-pink-500/30 flex items-center justify-center text-white">
+                    <AlertTriangle class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-rose-600">Aset Rusak</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ picData.metrics?.damagedAssetsCount || 0 }} Unit
                     </div>
                 </div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-extrabold text-rose-600">
-                        {{ picData.metrics?.damagedAssetsCount || 0 }}
-                    </span>
-                    <span class="text-xs font-medium text-rose-600/80">unit butuh perbaikan</span>
-                </div>
-                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Kerusakan ringan/berat</span>
-                    <Link :href="route('maintenance.index')" class="text-rose-600 font-bold hover:underline inline-flex items-center gap-1">
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center justify-between">
+                    <span>Butuh perbaikan</span>
+                    <Link :href="route('maintenance.index')" class="text-rose-600 font-bold hover:underline inline-flex items-center gap-0.5">
                         Cek Servis <ChevronRight class="w-3 h-3" />
                     </Link>
                 </div>

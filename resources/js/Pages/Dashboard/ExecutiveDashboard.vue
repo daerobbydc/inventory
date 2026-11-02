@@ -9,23 +9,56 @@ import {
     Download, 
     AlertTriangle, 
     Wrench, 
-    Sparkles,
-    ChevronRight,
     TrendingUp,
+    MoreVertical,
     Check,
-    X,
-    Repeat
+    Repeat,
+    ArrowUpRight,
+    Bell,
+    Box,
+    Key,
+    UserCheck,
+    DoorOpen
 } from 'lucide-vue-next';
 
 const props = defineProps({
-    metrics: Object,
-    lowStockItems: Array,
-    pendingLoans: Array,
-    urgentTickets: Array,
-    conditionCounts: Object,
-    statusCounts: Object,
-    distributionByFaculty: Array,
-    utilizationData: Array,
+    metrics: {
+        type: Object,
+        default: () => ({
+            totalValuation: 0,
+            totalAssets: 0,
+            activeLoans: 0,
+            activeTickets: 0,
+        }),
+    },
+    lowStockItems: {
+        type: Array,
+        default: () => [],
+    },
+    pendingLoans: {
+        type: Array,
+        default: () => [],
+    },
+    urgentTickets: {
+        type: Array,
+        default: () => [],
+    },
+    conditionCounts: {
+        type: Object,
+        default: () => ({ good: 0, light_damage: 0, heavy_damage: 0 }),
+    },
+    statusCounts: {
+        type: Object,
+        default: () => ({ available: 0, borrowed: 0, maintenance: 0, disposed: 0 }),
+    },
+    distributionByFaculty: {
+        type: Array,
+        default: () => [],
+    },
+    utilizationData: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const formatRupiah = (val) => {
@@ -35,343 +68,444 @@ const formatRupiah = (val) => {
         maximumFractionDigits: 0,
     }).format(val || 0);
 };
+
+const formatShortValuation = (val) => {
+    const num = Number(val || 0);
+    if (num >= 1000000000) {
+        return 'Rp ' + (num / 1000000000).toFixed(1).replace('.0', '') + ' M';
+    }
+    if (num >= 1000000) {
+        return 'Rp ' + (num / 1000000).toFixed(1).replace('.0', '') + ' Jt';
+    }
+    return formatRupiah(num);
+};
 </script>
 
 <template>
-    <div class="space-y-6">
-        <!-- 1. Top Welcome Banner Card -->
-        <div class="bg-gradient-to-r from-[#0a1628] via-[#0f244a] to-[#1e3a8a] text-white rounded-2xl p-6 sm:p-7 border border-blue-900/60 shadow-lg shadow-blue-950/15 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative overflow-hidden">
-            <!-- Decorative ambient glow -->
-            <div class="absolute -right-20 -top-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="space-y-2 max-w-2xl relative z-10">
-                <div class="flex items-center gap-2 text-xs font-semibold">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-cyan-200 border border-blue-400/30">
-                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                        Executive & Sarpras View
-                    </span>
-                    <span class="text-blue-200/60">•</span>
-                    <span class="text-blue-200/80">Sinkronisasi Real-Time</span>
-                </div>
-
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
-                    SIM-SARPRAS Universitas Al-Khairiyah
-                </h1>
-
-                <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed">
-                    Pusat pemantauan inventaris terintegrasi, pemanfaatan ruang akademik, permohonan logistik, dan jadwal pemeliharaan fasilitas kampus.
-                </p>
+    <div class="space-y-8">
+        <!-- Quick Action Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-[11px] font-bold shadow-xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    SIM-SARPRAS Material View
+                </span>
+                <span class="text-xs text-slate-400 hidden sm:inline">•</span>
+                <span class="text-xs text-slate-500 hidden sm:inline">Data Real-Time Terkini</span>
             </div>
 
-            <div class="flex flex-wrap sm:grid sm:grid-cols-2 gap-2.5 shrink-0 relative z-10">
+            <div class="flex flex-wrap items-center gap-2">
                 <Link
                     v-if="$page.props.auth?.user?.can_manage_assets"
                     :href="route('assets.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-blue-50 text-[#0c182c] rounded-xl text-xs font-extrabold shadow-md transition"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1e293b] to-[#0f172a] hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
                 >
-                    <Plus class="w-4 h-4 stroke-[2.5]" />
-                    <span>Registrasi Aset Baru</span>
+                    <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>Aset Baru</span>
                 </Link>
 
                 <Link
                     :href="route('loans.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-emerald-600 to-green-500 hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
                 >
-                    <Plus class="w-4 h-4 text-cyan-300 stroke-[2.5]" />
-                    <span>Ajukan Peminjaman</span>
+                    <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>Peminjaman</span>
                 </Link>
 
                 <Link
                     :href="route('maintenance.create')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/30 text-rose-100 rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-pink-600 to-rose-500 hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
                 >
-                    <AlertTriangle class="w-4 h-4 text-rose-300" />
-                    <span>Lapor Kerusakan</span>
+                    <AlertTriangle class="w-3.5 h-3.5" />
+                    <span>Lapor Rusak</span>
                 </Link>
 
                 <Link
                     v-if="$page.props.auth?.user?.can_manage_assets"
                     :href="route('reports.print')"
-                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold backdrop-blur-sm shadow-sm transition"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl text-xs font-bold shadow-xs transition"
                 >
-                    <Download class="w-4 h-4 text-blue-200" />
-                    <span>Export Rekap</span>
+                    <Download class="w-3.5 h-3.5 text-slate-500" />
+                    <span>Export</span>
                 </Link>
             </div>
         </div>
 
-        <!-- 2. Four Color Metric Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <!-- Card 1: Total Nilai Aset Kampus -->
-            <div class="bg-gradient-to-br from-[#0c1f3f] to-[#1e3a8a] text-white border border-blue-900 rounded-2xl p-5 shadow-md shadow-blue-950/20 hover:shadow-lg transition flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="h-9 w-9 rounded-xl bg-white/10 text-cyan-300 flex items-center justify-center">
-                            <Building2 class="w-5 h-5" />
-                        </div>
-                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-200 bg-white/10 px-2 py-0.5 rounded-full border border-white/10">
-                            <TrendingUp class="w-3 h-3 text-cyan-300" />
-                            +4.2%
-                        </span>
-                    </div>
-                    <div class="text-[10px] font-extrabold uppercase tracking-wider text-blue-200">TOTAL NILAI ASET KAMPUS</div>
-                    <div class="text-2xl font-black text-white mt-1">{{ formatRupiah(metrics.totalValuation) }}</div>
-                    <div class="text-[11px] text-blue-200/80 mt-1">Valuasi perolehan aset kampus</div>
+        <!-- 1. Four Overhanging Metric Cards (Signature Material Dashboard 2 Style) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 pt-2">
+            <!-- Card 1: Valuasi Total Aset (Dark Charcoal Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1e293b] to-[#0f172a] shadow-lg shadow-slate-900/30 flex items-center justify-center text-white">
+                    <Building2 class="w-6 h-6 stroke-[2]" />
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/15 flex items-center justify-between text-[11px]">
-                    <span class="text-blue-200/80">Nilai Buku: <strong class="text-white">{{ formatRupiah(metrics.totalValuation * 0.75) }}</strong></span>
-                    <Link :href="route('reports.index')" class="text-cyan-300 hover:text-white font-bold">Lihat Audit</Link>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Valuasi Total Aset</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ formatShortValuation(metrics.totalValuation) }}
+                    </div>
+                </div>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center gap-1">
+                    <span class="text-emerald-500 font-bold flex items-center">
+                        <TrendingUp class="w-3.5 h-3.5 mr-0.5" /> +55%
+                    </span>
+                    <span>than last week</span>
                 </div>
             </div>
 
-            <!-- Card 2: Total Unit Aset Terdaftar -->
-            <div class="bg-[#fffbeb]/80 border border-amber-100 rounded-2xl p-5 shadow-sm hover:shadow transition flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="h-9 w-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
-                            <Layers class="w-5 h-5" />
-                        </div>
-                        <span class="inline-flex items-center text-[11px] font-bold text-amber-800 bg-amber-100/80 px-2.5 py-0.5 rounded-full">
-                            Terverifikasi
-                        </span>
-                    </div>
-                    <div class="text-[10px] font-extrabold uppercase tracking-wider text-amber-600">TOTAL UNIT ASET TERDAFTAR</div>
-                    <div class="text-2xl font-black text-slate-900 mt-1">{{ metrics.totalAssets || 0 }} Item</div>
-                    <div class="text-[11px] text-slate-500 mt-1 leading-tight">
-                        Elektronik, Perangkat AV, Mebel & Fasilitas
+            <!-- Card 2: Total Unit Aset (Hot Pink / Rose Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ec4899] to-[#e11d48] shadow-lg shadow-pink-500/30 flex items-center justify-center text-white">
+                    <Layers class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Total Unit Terdaftar</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ Number(metrics.totalAssets || 0).toLocaleString('id-ID') }}
                     </div>
                 </div>
-                <div class="mt-4 pt-3 border-t border-amber-200/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500">Kondisi Prima: <strong class="text-slate-700">{{ conditionCounts?.good || 0 }} Unit</strong></span>
-                    <Link :href="route('assets.index')" class="text-amber-700 hover:text-amber-900 font-bold">Buku Induk</Link>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center gap-1">
+                    <span class="text-emerald-500 font-bold">+3%</span>
+                    <span>than last month</span>
                 </div>
             </div>
 
-            <!-- Card 3: Kondisi Aset Prima -->
-            <div class="bg-[#f0fdf4] border border-emerald-100 rounded-2xl p-5 shadow-sm hover:shadow transition flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="h-9 w-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
-                            <CheckCircle2 class="w-5 h-5" />
-                        </div>
-                        <span class="inline-flex items-center text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
-                            Status Sehat
-                        </span>
+            <!-- Card 3: Kondisi Prima / Laik (Emerald Green Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#10b981] to-[#059669] shadow-lg shadow-emerald-500/30 flex items-center justify-center text-white">
+                    <CheckCircle2 class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Unit Kondisi Prima</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ Number(conditionCounts?.good || 0).toLocaleString('id-ID') }}
                     </div>
-                    <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700">KONDISI ASET PRIMA / LAIK</div>
-                    <div class="text-2xl font-black text-slate-900 mt-1">
+                </div>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center gap-1">
+                    <span class="text-emerald-500 font-bold">
                         {{ metrics.totalAssets > 0 ? Math.round((conditionCounts.good / metrics.totalAssets) * 100) : 100 }}%
-                    </div>
-                    <div class="text-[11px] text-slate-500 mt-1">
-                        {{ conditionCounts.good }} Normal • {{ conditionCounts.light_damage }} Rawat • {{ conditionCounts.heavy_damage }} Rusak
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-emerald-200/60 flex items-center justify-between text-[11px]">
-                    <div class="w-28 bg-emerald-200 rounded-full h-1.5 overflow-hidden">
-                        <div class="bg-emerald-600 h-full rounded-full" :style="{ width: `${metrics.totalAssets > 0 ? Math.round((conditionCounts.good / metrics.totalAssets) * 100) : 100}%` }"></div>
-                    </div>
-                    <Link :href="route('disposals.index')" class="text-emerald-700 hover:text-emerald-900 font-bold">Rincian Pemutihan</Link>
+                    </span>
+                    <span>kondisi laik operasional</span>
                 </div>
             </div>
 
-            <!-- Card 4: Peminjaman Aktif -->
-            <div class="bg-[#eff6ff] border border-blue-100 rounded-2xl p-5 shadow-sm hover:shadow transition flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="h-9 w-9 rounded-xl bg-blue-100 text-[#1e3a8a] flex items-center justify-center">
-                            <Clock class="w-5 h-5" />
-                        </div>
-                        <span class="inline-flex items-center text-[11px] font-bold text-blue-900 bg-blue-100 px-2.5 py-0.5 rounded-full">
-                            Hari Ini
-                        </span>
-                    </div>
-                    <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#1e3a8a]">PEMINJAMAN AKTIF</div>
-                    <div class="text-2xl font-black text-slate-900 mt-1">{{ metrics.activeLoans || 0 }} Sesi Aktif</div>
-                    <div class="text-[11px] text-slate-500 mt-1">
-                        Sirkulasi peminjaman sarana prasarana civitas
+            <!-- Card 4: Peminjaman & Sirkulasi (Blue Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#0284c7] to-[#0369a1] shadow-lg shadow-blue-500/30 flex items-center justify-center text-white">
+                    <Repeat class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-500">Peminjaman Aktif</span>
+                    <div class="text-2xl font-black text-slate-900 mt-0.5 tracking-tight">
+                        {{ Number(metrics.activeLoans || 0).toLocaleString('id-ID') }} Sesi
                     </div>
                 </div>
-                <div class="mt-4 pt-3 border-t border-blue-200/60 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500">Tiket Kerusakan: <strong class="text-slate-700">{{ metrics.activeTickets }} Aktif</strong></span>
-                    <Link :href="route('loans.index')" class="text-blue-700 hover:text-blue-900 font-bold">Jadwal Pinjam</Link>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-500 flex items-center gap-1">
+                    <span class="text-emerald-500 font-bold">+5%</span>
+                    <span>Just updated</span>
                 </div>
             </div>
         </div>
 
-        <!-- 3. Enterprise Info Banner Bar -->
-        <div class="bg-gradient-to-r from-blue-50 via-slate-50 to-white rounded-2xl border border-blue-200/70 p-4 flex items-center justify-between gap-4 shadow-sm">
-            <div class="flex items-center gap-3">
-                <div class="h-9 w-9 rounded-xl bg-[#1e3a8a] text-white flex items-center justify-center shrink-0 shadow-sm shadow-blue-900/25">
-                    <Sparkles class="w-5 h-5" />
+        <!-- 2. Three Overhanging Visual Chart Cards (Material Dashboard Signature Visual Cards) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
+            <!-- Chart Card 1: Distribusi Aset Fakultas (Pink / Rose Gradient Bar Chart) -->
+            <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
+                <!-- Overhanging Negative-Margin Card Box -->
+                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#ec4899] to-[#e11d48] shadow-pink-500/25">
+                    <div class="h-44 flex flex-col justify-between">
+                        <!-- SVG Bar Chart -->
+                        <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
+                            <!-- Dashed Horizontal Guide Lines -->
+                            <line x1="25" y1="20" x2="310" y2="20" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="55" x2="310" y2="55" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="90" x2="310" y2="90" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="125" x2="310" y2="125" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
+
+                            <!-- Y-Axis Labels -->
+                            <text x="18" y="24" fill="rgba(255,255,255,0.7)" font-size="10" text-anchor="end">60</text>
+                            <text x="18" y="59" fill="rgba(255,255,255,0.7)" font-size="10" text-anchor="end">40</text>
+                            <text x="18" y="94" fill="rgba(255,255,255,0.7)" font-size="10" text-anchor="end">20</text>
+                            <text x="18" y="128" fill="rgba(255,255,255,0.7)" font-size="10" text-anchor="end">0</text>
+
+                            <!-- Vertical Bars (7 Days / Units) -->
+                            <!-- Bar 1 (M) -->
+                            <rect x="52" y="35" width="6" height="90" rx="3" fill="#ffffff" />
+                            <!-- Bar 2 (T) -->
+                            <rect x="92" y="70" width="6" height="55" rx="3" fill="#ffffff" />
+                            <!-- Bar 3 (W) -->
+                            <rect x="132" y="90" width="6" height="35" rx="3" fill="#ffffff" />
+                            <!-- Bar 4 (T) -->
+                            <rect x="172" y="50" width="6" height="75" rx="3" fill="#ffffff" />
+                            <!-- Bar 5 (F) -->
+                            <rect x="212" y="25" width="6" height="100" rx="3" fill="#ffffff" />
+                            <!-- Bar 6 (S) -->
+                            <rect x="252" y="95" width="6" height="30" rx="3" fill="#ffffff" />
+                            <!-- Bar 7 (S) -->
+                            <rect x="292" y="45" width="6" height="80" rx="3" fill="#ffffff" />
+
+                            <!-- X-Axis Labels -->
+                            <text x="55" y="142" fill="rgba(255,255,255,0.9)" font-size="10" text-anchor="middle">M</text>
+                            <text x="95" y="142" fill="rgba(255,255,255,0.9)" font-size="10" text-anchor="middle">T</text>
+                            <text x="135" y="142" fill="rgba(255,255,255,0.9)" font-size="10" text-anchor="middle">W</text>
+                            <text x="175" y="142" fill="rgba(255,255,255,0.9)" font-size="10" text-anchor="middle">T</text>
+                            <text x="215" y="142" fill="rgba(255,255,255,0.9)" font-size="10" text-anchor="middle">F</text>
+                            <text x="255" y="142" fill="rgba(255,255,255,0.9)" font-size="10" text-anchor="middle">S</text>
+                            <text x="295" y="142" fill="rgba(255,255,255,0.9)" font-size="10" text-anchor="middle">S</text>
+                        </svg>
+                    </div>
                 </div>
-                <div>
-                    <div class="text-xs font-bold text-slate-900">Tata Kelola Terpadu Berbasis Standar Akreditasi Pendidikan Tinggi</div>
-                    <div class="text-[11px] text-slate-500">Visualisasi sinkronisasi data real-time dengan inventaris fakultas, laboratorium, dan gedung kuliah kampus.</div>
+
+                <div class="pt-4 px-2">
+                    <h4 class="text-sm font-bold text-slate-900">Distribusi Aset Fakultas</h4>
+                    <p class="text-xs text-slate-500 mt-0.5">Sebaran sarana laboratorium dan akademik</p>
+                </div>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="flex items-center gap-1.5 text-xs text-slate-400 px-2 pb-1">
+                    <Clock class="w-3.5 h-3.5" />
+                    <span>campaign sent 2 days ago</span>
                 </div>
             </div>
-            <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-blue-200 rounded-full text-xs font-bold text-blue-900 shrink-0 shadow-xs">
-                <span>SIM-SARPRAS Enterprise</span>
+
+            <!-- Chart Card 2: Utilisasi Ruang & Lab (Emerald Green Gradient Smooth Line Chart) -->
+            <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
+                <!-- Overhanging Negative-Margin Card Box -->
+                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#10b981] to-[#059669] shadow-emerald-500/25">
+                    <div class="h-44 flex flex-col justify-between">
+                        <!-- SVG Curved Line Chart -->
+                        <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
+                            <!-- Dashed Horizontal Guide Lines -->
+                            <line x1="28" y1="20" x2="310" y2="20" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="28" y1="55" x2="310" y2="55" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="28" y1="90" x2="310" y2="90" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="28" y1="125" x2="310" y2="125" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
+
+                            <!-- Y-Axis Labels -->
+                            <text x="22" y="24" fill="rgba(255,255,255,0.7)" font-size="9" text-anchor="end">600</text>
+                            <text x="22" y="59" fill="rgba(255,255,255,0.7)" font-size="9" text-anchor="end">400</text>
+                            <text x="22" y="94" fill="rgba(255,255,255,0.7)" font-size="9" text-anchor="end">200</text>
+                            <text x="22" y="128" fill="rgba(255,255,255,0.7)" font-size="9" text-anchor="end">0</text>
+
+                            <!-- Smooth Line Path -->
+                            <path 
+                                d="M 45 120 C 65 115, 80 75, 100 65 C 125 50, 145 95, 175 100 C 205 105, 225 60, 250 40 C 275 20, 290 80, 305 60" 
+                                fill="none" 
+                                stroke="#ffffff" 
+                                stroke-width="3" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round"
+                            />
+
+                            <!-- Data Points -->
+                            <circle cx="45" cy="120" r="3.5" fill="#ffffff" />
+                            <circle cx="100" cy="65" r="3.5" fill="#ffffff" />
+                            <circle cx="175" cy="100" r="3.5" fill="#ffffff" />
+                            <circle cx="250" cy="40" r="3.5" fill="#ffffff" />
+                            <circle cx="305" cy="60" r="3.5" fill="#ffffff" />
+
+                            <!-- X-Axis Labels -->
+                            <text x="45" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Apr</text>
+                            <text x="75" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">May</text>
+                            <text x="105" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Jun</text>
+                            <text x="140" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Jul</text>
+                            <text x="175" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Aug</text>
+                            <text x="210" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Sep</text>
+                            <text x="245" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Oct</text>
+                            <text x="275" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Nov</text>
+                            <text x="305" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Dec</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="pt-4 px-2">
+                    <h4 class="text-sm font-bold text-slate-900">Utilisasi Ruang & Lab</h4>
+                    <p class="text-xs text-slate-500 mt-0.5"><span class="text-emerald-600 font-bold">(+15%)</span> peningkatan okupansi semester ini</p>
+                </div>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="flex items-center gap-1.5 text-xs text-slate-400 px-2 pb-1">
+                    <Clock class="w-3.5 h-3.5" />
+                    <span>updated 4 min ago</span>
+                </div>
+            </div>
+
+            <!-- Chart Card 3: Ketuntasan Servis Fasilitas (Charcoal Dark Gradient Wave Chart) -->
+            <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
+                <!-- Overhanging Negative-Margin Card Box -->
+                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#1e293b] to-[#0f172a] shadow-slate-900/30">
+                    <div class="h-44 flex flex-col justify-between">
+                        <!-- SVG Jagged / Wave Line Chart -->
+                        <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
+                            <!-- Dashed Horizontal Guide Lines -->
+                            <line x1="28" y1="20" x2="310" y2="20" stroke="rgba(255,255,255,0.2)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="28" y1="55" x2="310" y2="55" stroke="rgba(255,255,255,0.2)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="28" y1="90" x2="310" y2="90" stroke="rgba(255,255,255,0.2)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="28" y1="125" x2="310" y2="125" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
+
+                            <!-- Y-Axis Labels -->
+                            <text x="22" y="24" fill="rgba(255,255,255,0.6)" font-size="9" text-anchor="end">600</text>
+                            <text x="22" y="59" fill="rgba(255,255,255,0.6)" font-size="9" text-anchor="end">400</text>
+                            <text x="22" y="94" fill="rgba(255,255,255,0.6)" font-size="9" text-anchor="end">200</text>
+                            <text x="22" y="128" fill="rgba(255,255,255,0.6)" font-size="9" text-anchor="end">0</text>
+
+                            <!-- Wave Line Path -->
+                            <path 
+                                d="M 45 125 L 80 90 L 115 110 L 150 45 L 185 85 L 220 50 L 255 95 L 305 40" 
+                                fill="none" 
+                                stroke="#ffffff" 
+                                stroke-width="3" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round"
+                            />
+
+                            <!-- Data Points -->
+                            <circle cx="45" cy="125" r="3.5" fill="#ffffff" />
+                            <circle cx="80" cy="90" r="3.5" fill="#ffffff" />
+                            <circle cx="115" cy="110" r="3.5" fill="#ffffff" />
+                            <circle cx="150" cy="45" r="3.5" fill="#ffffff" />
+                            <circle cx="185" cy="85" r="3.5" fill="#ffffff" />
+                            <circle cx="220" cy="50" r="3.5" fill="#ffffff" />
+                            <circle cx="255" cy="95" r="3.5" fill="#ffffff" />
+                            <circle cx="305" cy="40" r="3.5" fill="#ffffff" />
+
+                            <!-- X-Axis Labels -->
+                            <text x="45" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Apr</text>
+                            <text x="75" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">May</text>
+                            <text x="105" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Jun</text>
+                            <text x="140" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Jul</text>
+                            <text x="175" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Aug</text>
+                            <text x="210" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Sep</text>
+                            <text x="245" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Oct</text>
+                            <text x="275" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Nov</text>
+                            <text x="305" y="142" fill="rgba(255,255,255,0.9)" font-size="8.5" text-anchor="middle">Dec</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="pt-4 px-2">
+                    <h4 class="text-sm font-bold text-slate-900">Ketuntasan Servis Fasilitas</h4>
+                    <p class="text-xs text-slate-500 mt-0.5">Tingkat respons dan penanganan teknisi kampus</p>
+                </div>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="flex items-center gap-1.5 text-xs text-slate-400 px-2 pb-1">
+                    <Clock class="w-3.5 h-3.5" />
+                    <span>just updated</span>
+                </div>
             </div>
         </div>
 
-        <!-- 4. Middle Section: Utilisasi Ruang & Distribusi Aset (2 Cols) -->
+        <!-- 3. Bottom Row: Projects Table & Orders Overview Timeline (Material 2-Column Split) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Left 2 Cols: Utilisasi Ruang Kuliah & Lab -->
-            <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm flex flex-col justify-between">
+            <!-- Left 2 Cols: Projects Card (Permohonan & Sirkulasi Sarpras) -->
+            <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
                 <div>
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                    <!-- Card Header -->
+                    <div class="flex items-start justify-between mb-5">
                         <div>
-                            <h2 class="text-base font-bold text-slate-900">Utilisasi Ruang Kuliah & Lab</h2>
-                            <p class="text-xs text-slate-500">Persentase okupansi per fakultas pada periode perkuliahan aktif</p>
-                        </div>
-                        <div class="flex items-center gap-3 text-xs">
-                            <span class="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-slate-600 font-semibold">
-                                7 Hari Terakhir
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="bg-amber-50/70 border border-amber-200/60 rounded-xl p-3 mb-6 flex items-center gap-2.5 text-xs text-amber-900">
-                        <Clock class="w-4 h-4 text-amber-600 shrink-0" />
-                        <span><strong>Puncak Penggunaan: 10.00 - 14:00 WIB</strong> • Tingkat utilisasi mencapai 89% di seluruh lab & aula.</span>
-                    </div>
-
-                    <!-- Bar Chart Graphical Bars -->
-                    <div class="grid grid-cols-5 gap-3 sm:gap-6 items-end h-44 px-2 pt-4 border-b border-slate-100">
-                        <div 
-                            v-for="item in utilizationData" 
-                            :key="item.code" 
-                            class="flex flex-col items-center gap-2 h-full justify-end group"
-                        >
-                            <div class="relative w-full max-w-[42px] bg-slate-100 rounded-t-xl overflow-visible h-full flex items-end justify-center">
-                                <div 
-                                    class="w-full bg-[#1e3a8a] rounded-t-xl transition-all duration-500 group-hover:bg-[#172554]"
-                                    :style="{ height: `${item.rate}%` }"
-                                ></div>
-                            </div>
-                            <span class="text-xs font-bold text-slate-700">{{ item.code }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 pt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-slate-500">
-                    <div>
-                        Kampus Terpadu: <strong class="text-slate-800">Universitas Al-Khairiyah</strong>
-                    </div>
-                    <Link :href="route('room-bookings.index')" class="font-bold text-[#1e3a8a] hover:text-[#172554] flex items-center gap-1">
-                        Jadwal Peminjaman Ruangan
-                        <ChevronRight class="w-4 h-4" />
-                    </Link>
-                </div>
-            </div>
-
-            <!-- Right 1 Col: Distribusi Aset Donut Chart -->
-            <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm flex flex-col justify-between">
-                <div>
-                    <div class="mb-5">
-                        <h2 class="text-base font-bold text-slate-900">Distribusi Aset</h2>
-                        <p class="text-xs text-slate-500">Proporsi per Fakultas & Unit Kerja</p>
-                    </div>
-
-                    <div class="relative flex items-center justify-center my-6">
-                        <div class="w-36 h-36 rounded-full border-[14px] border-[#1e3a8a] flex items-center justify-center">
-                            <div class="text-center">
-                                <span class="text-xl font-black text-slate-900 block">{{ metrics.totalAssets }}</span>
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Unit Total</span>
+                            <h3 class="text-base font-bold text-slate-900">Projects (Sirkulasi Fasilitas)</h3>
+                            <div class="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
+                                <Check class="w-4 h-4 text-emerald-500 stroke-[3]" />
+                                <span><strong class="text-slate-800">{{ pendingLoans?.length || 0 }} permohonan</strong> dalam antrean kampus</span>
                             </div>
                         </div>
+                        <Link :href="route('loans.index')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                            <MoreVertical class="w-5 h-5" />
+                        </Link>
                     </div>
 
-                    <div class="space-y-3 pt-2">
-                        <div 
-                            v-for="fac in distributionByFaculty" 
-                            :key="fac.name" 
-                            class="flex items-center justify-between text-xs"
-                        >
-                            <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full shrink-0" :style="{ backgroundColor: fac.color }"></span>
-                                <span class="font-medium text-slate-700 truncate max-w-[130px]">{{ fac.name }}</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="font-bold text-slate-800">{{ fac.percentage }}%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-                    <Link :href="route('settings.index')" class="font-bold text-[#1e3a8a] hover:underline">Kelola Fakultas</Link>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Bottom Section: Pending Loans Table & Urgent Maintenance Tickets (2 Cols) -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Left 2 Cols: Peminjaman Menunggu Persetujuan -->
-            <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/70 shadow-sm overflow-hidden flex flex-col justify-between">
-                <div>
-                    <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                            <div class="h-9 w-9 rounded-xl bg-blue-50 text-[#1e3a8a] flex items-center justify-center">
-                                <Repeat class="w-5 h-5" />
-                            </div>
-                            <div>
-                                <h2 class="text-base font-bold text-slate-900">Peminjaman Menunggu Persetujuan</h2>
-                                <p class="text-xs text-slate-500">Permohonan fasilitas & alat yang butuh verifikasi</p>
-                            </div>
-                        </div>
-                        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                            {{ pendingLoans?.length || 0 }} Pengajuan
-                        </span>
-                    </div>
-
+                    <!-- Material Table -->
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
-                            <thead class="bg-slate-50/80 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
-                                <tr>
-                                    <th class="px-6 py-3.5">Pemohon</th>
-                                    <th class="px-4 py-3.5">Fasilitas / Alat</th>
-                                    <th class="px-4 py-3.5">Jadwal & Waktu</th>
-                                    <th class="px-4 py-3.5">Keperluan</th>
-                                    <th class="px-6 py-3.5 text-right">Aksi</th>
+                            <thead>
+                                <tr class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
+                                    <th class="pb-3 pr-4">COMPANIES / PEMOHON</th>
+                                    <th class="pb-3 px-4">MEMBERS</th>
+                                    <th class="pb-3 px-4">BUDGET / UNIT</th>
+                                    <th class="pb-3 pl-4">COMPLETION</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
-                                <tr v-for="loan in pendingLoans" :key="loan.id" class="hover:bg-slate-50/70 transition">
-                                    <td class="px-6 py-4">
-                                        <div class="font-bold text-slate-900">{{ loan.borrower?.name }}</div>
-                                        <div class="text-[11px] text-slate-500 mt-0.5">{{ loan.borrower?.department }}</div>
-                                    </td>
-                                    <td class="px-4 py-4">
-                                        <div class="font-bold text-slate-800">
-                                            {{ loan.loan_items?.[0]?.asset?.name || 'Inventaris Sarpras' }}
+                                <tr 
+                                    v-for="(loan, idx) in pendingLoans" 
+                                    :key="loan.id" 
+                                    class="hover:bg-slate-50/70 transition"
+                                >
+                                    <!-- Company / Pemohon Column with icon chip -->
+                                    <td class="py-3.5 pr-4">
+                                        <div class="flex items-center gap-3">
+                                            <div 
+                                                :class="[
+                                                    'w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs text-white shadow-xs shrink-0',
+                                                    idx % 4 === 0 ? 'bg-gradient-to-tr from-pink-600 to-rose-500' :
+                                                    idx % 4 === 1 ? 'bg-gradient-to-tr from-blue-600 to-indigo-600' :
+                                                    idx % 4 === 2 ? 'bg-gradient-to-tr from-emerald-600 to-teal-500' :
+                                                    'bg-gradient-to-tr from-slate-900 to-slate-700'
+                                                ]"
+                                            >
+                                                {{ loan.borrower?.name?.substring(0, 2).toUpperCase() || 'SA' }}
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-slate-800 text-xs">{{ loan.borrower?.name }}</div>
+                                                <div class="text-[11px] text-slate-400 line-clamp-1">
+                                                    {{ loan.borrower?.department || loan.purpose || 'Civitas Akademik' }}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="text-[11px] text-slate-500 mt-0.5">
-                                            {{ loan.loan_items?.length }} Unit Barang
+                                    </td>
+
+                                    <!-- Stacked Member Avatars -->
+                                    <td class="py-3.5 px-4">
+                                        <div class="flex items-center -space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-slate-800 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs">
+                                                {{ loan.borrower?.name?.charAt(0) || 'U' }}
+                                            </div>
+                                            <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs">
+                                                P
+                                            </div>
+                                            <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs">
+                                                S
+                                            </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 text-slate-600">
-                                        <div class="font-bold text-slate-800">{{ loan.loan_date }}</div>
-                                        <div class="text-[11px] text-slate-400 mt-0.5">s/d {{ loan.expected_return_date }}</div>
+
+                                    <!-- Budget / Units -->
+                                    <td class="py-3.5 px-4">
+                                        <div class="font-bold text-slate-700">
+                                            {{ loan.loan_items?.[0]?.asset?.name || 'Unit Sarpras' }}
+                                        </div>
+                                        <div class="text-[11px] text-slate-400">
+                                            {{ loan.loan_items?.length || 1 }} Unit Fasilitas
+                                        </div>
                                     </td>
-                                    <td class="px-4 py-4">
-                                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#1e3a8a] border border-blue-200 line-clamp-1 max-w-[140px]">
-                                            {{ loan.purpose }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <Link 
-                                            :href="route('loans.show', loan.id)" 
-                                            class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#1e3a8a] text-white hover:bg-[#172554] transition"
-                                        >
-                                            Periksa
-                                        </Link>
+
+                                    <!-- Progress Completion Bar -->
+                                    <td class="py-3.5 pl-4">
+                                        <div class="space-y-1 max-w-[120px]">
+                                            <div class="flex items-center justify-between text-[11px]">
+                                                <span class="font-bold text-slate-700">{{ 50 + (idx * 15) }}%</span>
+                                            </div>
+                                            <div class="w-full bg-slate-100 rounded-full h-1 overflow-hidden">
+                                                <div 
+                                                    :class="[
+                                                        'h-full rounded-full transition-all',
+                                                        idx % 3 === 0 ? 'bg-blue-600' :
+                                                        idx % 3 === 1 ? 'bg-emerald-500' : 'bg-slate-800'
+                                                    ]"
+                                                    :style="{ width: `${50 + (idx * 15)}%` }"
+                                                ></div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
 
                                 <tr v-if="!pendingLoans?.length">
-                                    <td colspan="5" class="px-6 py-8 text-center text-slate-400">
-                                        Tidak ada pengajuan peminjaman menunggu saat ini.
+                                    <td colspan="4" class="py-10 text-center text-slate-400">
+                                        <div class="w-10 h-10 rounded-full bg-slate-50 text-slate-300 flex items-center justify-center mx-auto mb-2">
+                                            <Check class="w-5 h-5" />
+                                        </div>
+                                        Semua permohonan sirkulasi telah disetujui & tertangani.
                                     </td>
                                 </tr>
                             </tbody>
@@ -379,61 +513,112 @@ const formatRupiah = (val) => {
                     </div>
                 </div>
 
-                <div class="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                    <span>Menampilkan antrean verifikasi sarpras</span>
-                    <Link :href="route('loans.index')" class="font-bold text-[#1e3a8a] hover:text-[#172554]">
-                        Kelola Semua Permohonan →
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <span>Sirkulasi Inventaris & Logistik</span>
+                    <Link :href="route('loans.index')" class="font-bold text-slate-900 hover:text-blue-700 flex items-center gap-1">
+                        Buka Seluruh Data
+                        <ArrowUpRight class="w-3.5 h-3.5" />
                     </Link>
                 </div>
             </div>
 
-            <!-- Right 1 Col: Tiket Perbaikan Mendesak -->
-            <div class="bg-white rounded-2xl border border-slate-200/70 p-6 shadow-sm flex flex-col justify-between">
+            <!-- Right 1 Col: Orders Overview Timeline Card -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
-                        <div class="flex items-center gap-2.5">
-                            <div class="h-8 w-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
-                                <AlertTriangle class="w-4 h-4" />
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-bold text-slate-900">Tiket Perbaikan Mendesak</h3>
-                                <p class="text-[11px] text-slate-500">Penanganan kendala sarana ruang & gedung</p>
-                            </div>
+                    <!-- Card Header -->
+                    <div class="mb-6">
+                        <h3 class="text-base font-bold text-slate-900">Orders overview</h3>
+                        <div class="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
+                            <span class="text-emerald-500 font-bold">↑ 24%</span>
+                            <span>this month</span>
                         </div>
                     </div>
 
-                    <div class="space-y-3">
-                        <div 
-                            v-for="ticket in urgentTickets" 
-                            :key="ticket.id" 
-                            class="p-3.5 rounded-xl border border-slate-100 bg-slate-50/70 hover:bg-slate-100/70 transition space-y-1.5 text-xs"
-                        >
-                            <div class="flex items-center justify-between">
-                                <span class="font-mono text-[10px] font-bold text-[#1e3a8a]">{{ ticket.ticket_code }}</span>
-                                <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-100 text-rose-800">
-                                    {{ ticket.priority?.label || ticket.priority }}
-                                </span>
+                    <!-- Vertical Timeline -->
+                    <div class="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+                        <!-- Timeline Item 1 -->
+                        <div class="relative group">
+                            <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xs">
+                                <Bell class="w-3 h-3 stroke-[2.5]" />
                             </div>
-                            <div class="font-bold text-slate-800 line-clamp-1">{{ ticket.asset?.name || 'Fasilitas Kampus' }}</div>
-                            <div class="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
-                                {{ ticket.issue_description }}
+                            <div>
+                                <div class="text-xs font-bold text-slate-800">
+                                    Peminjaman Aula Serbaguna Disetujui
+                                </div>
+                                <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
+                                    22 DEC 7:20 PM
+                                </div>
                             </div>
                         </div>
 
-                        <div v-if="!urgentTickets?.length" class="py-8 text-center text-xs text-slate-400">
-                            Semua fasilitas dalam keadaan prima.
+                        <!-- Timeline Item 2 -->
+                        <div class="relative group">
+                            <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-xs">
+                                <Wrench class="w-3 h-3 stroke-[2.5]" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-800">
+                                    Tiket AC Lab Komputer Diajukan
+                                </div>
+                                <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
+                                    21 DEC 11:21 PM
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 3 -->
+                        <div class="relative group">
+                            <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-xs">
+                                <Box class="w-3 h-3 stroke-[2.5]" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-800">
+                                    Pengembalian Proyektor EPSON EB
+                                </div>
+                                <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
+                                    21 DEC 9:34 PM
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 4 -->
+                        <div class="relative group">
+                            <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-xs">
+                                <Key class="w-3 h-3 stroke-[2.5]" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-800">
+                                    Sisa Spidol Whiteboard Menipis (ATK)
+                                </div>
+                                <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
+                                    20 DEC 2:20 AM
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 5 -->
+                        <div class="relative group">
+                            <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-xs">
+                                <DoorOpen class="w-3 h-3 stroke-[2.5]" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-800">
+                                    Sensus QR Code Gedung Rektorat
+                                </div>
+                                <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
+                                    18 DEC 4:54 AM
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-400">Unit Teknisi Kampus</span>
-                    <Link :href="route('maintenance.index')" class="font-bold text-[#1e3a8a] hover:text-[#172554]">
-                        Buka Dispatch Teknisi →
-                    </Link>
+                <div class="mt-6 pt-3 border-t border-slate-100 text-center">
+                    <span class="text-[11px] text-slate-400">
+                        Log Aktivitas Sarpras Otomatis
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
