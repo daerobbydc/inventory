@@ -6,12 +6,14 @@ use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
 use App\Enums\LoanStatus;
 use App\Enums\MaintenanceStatus;
+use App\Enums\RoomBookingStatus;
 use App\Models\Asset;
 use App\Models\Consumable;
 use App\Models\Faculty;
 use App\Models\LoanTransaction;
 use App\Models\MaintenanceTicket;
 use App\Models\Room;
+use App\Models\RoomBooking;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,10 +21,151 @@ use Inertia\Response;
 class DashboardController extends Controller
 {
     /**
-     * Display the main system dashboard with live analytics matching SIM-SARPRAS design.
+     * Display role-specific dashboard for optimal user experience.
      */
     public function index(Request $request): Response
     {
+        $user = $request->user();
+
+        // 1. Dashboard Mahasiswa / Dosen / Tendik (Civitas Academic Portal)
+        if ($user && $user->isCivitas()) {
+            $myLoans = LoanTransaction::where('borrower_id', $user->id)
+                ->with(['loanItems.asset.room.building'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $activeLoansCount = LoanTransaction::where('borrower_id', $user->id)
+                ->whereIn('status', [LoanStatus::Borrowed->value, LoanStatus::Approved->value])
+                ->count();
+
+            $myBookings = RoomBooking::where('user_id', $user->id)
+                ->with(['room.building', 'room.faculty'])
+                ->latest('booking_date')
+                ->take(5)
+                ->get();
+
+            $activeBookingsCount = RoomBooking::where('user_id', $user->id)
+                ->whereIn('status', [RoomBookingStatus::Approved->value, RoomBookingStatus::Pending->value])
+                ->count();
+
+            $myTickets = MaintenanceTicket::where('reporter_id', $user->id)
+                ->with(['asset.room.building', 'technician'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $activeTicketsCount = MaintenanceTicket::where('reporter_id', $user->id)
+                ->whereNotIn('status', [MaintenanceStatus::Completed->value, MaintenanceStatus::Cancelled->value])
+                ->count();
+
+            $availableRoomsCount = Room::count();
+
+            return Inertia::render('Dashboard', [
+                'dashboardType' => 'civitas',
+                'civitasData' => [
+                    'myLoans' => $myLoans,
+                    'activeLoansCount' => $activeLoansCount,
+                    'myBookings' => $myBookings,
+                    'activeBookingsCount' => $activeBookingsCount,
+                    'myTickets' => $myTickets,
+                    'activeTicketsCount' => $activeTicketsCount,
+                    'availableRoomsCount' => $availableRoomsCount,
+                ],
+            ]);
+        }
+
+        // 2. Dashboard Teknisi (Maintenance & Field Queue)
+        if ($user && $user->isTeknisi()) {
+            $myAssignedTickets = MaintenanceTicket::where('technician_id', $user->id)
+                ->whereNotIn('status', [MaintenanceStatus::Completed->value, MaintenanceStatus::Cancelled->value])
+                ->with(['asset.room.building', 'reporter'])
+                ->latest()
+                ->get();
+
+            $urgentTickets = MaintenanceTicket::whereIn('priority', ['critical', 'high'])
+                ->whereNotIn('status', [MaintenanceStatus::Completed->value, MaintenanceStatus::Cancelled->value])
+                ->with(['asset.room.building', 'reporter', 'technician'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $completedThisMonth = MaintenanceTicket::where('technician_id', $user->id)
+                ->where('status', MaintenanceStatus::Completed->value)
+                ->whereMonth('completed_at', now()->month)
+                ->count();
+
+            $waitingPartsCount = MaintenanceTicket::where('technician_id', $user->id)
+                ->where('status', MaintenanceStatus::WaitingParts->value)
+                ->count();
+
+            return Inertia::render('Dashboard', [
+                'dashboardType' => 'teknisi',
+                'teknisiData' => [
+                    'myAssignedTickets' => $myAssignedTickets,
+                    'urgentTickets' => $urgentTickets,
+                    'metrics' => [
+                        'assignedCount' => $myAssignedTickets->count(),
+                        'urgentCount' => $urgentTickets->count(),
+                        'waitingPartsCount' => $waitingPartsCount,
+                        'completedThisMonth' => $completedThisMonth,
+                    ],
+                ],
+            ]);
+        }
+
+        // 3. Dashboard PIC Ruangan / Laboran
+        if ($user && $user->isPicRuangan()) {
+            $myRooms = Room::where('pic_user_id', $user->id)
+                ->with('building.campus')
+                ->withCount('assets')
+                ->get();
+
+            $myRoomIds = $myRooms->pluck('id')->all();
+
+            $pendingLoans = LoanTransaction::where('status', LoanStatus::Pending->value)
+                ->whereHas('loanItems.asset', fn ($q) => $q->whereIn('room_id', $myRoomIds))
+                ->with(['borrower', 'loanItems.asset.room'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $pendingBookings = RoomBooking::where('status', RoomBookingStatus::Pending->value)
+                ->whereIn('room_id', $myRoomIds)
+                ->with(['user', 'room'])
+                ->latest()
+                ->take(5)
+                ->get();
+
+            $todayBookings = RoomBooking::whereIn('room_id', $myRoomIds)
+                ->whereDate('booking_date', now()->toDateString())
+                ->with(['user', 'room'])
+                ->orderBy('start_time')
+                ->get();
+
+            $totalAssetsInRooms = Asset::whereIn('room_id', $myRoomIds)->count();
+            $damagedAssetsCount = Asset::whereIn('room_id', $myRoomIds)
+                ->whereIn('condition', [AssetCondition::LightDamage->value, AssetCondition::HeavyDamage->value])
+                ->count();
+
+            return Inertia::render('Dashboard', [
+                'dashboardType' => 'pic_ruangan',
+                'picData' => [
+                    'myRooms' => $myRooms,
+                    'pendingLoans' => $pendingLoans,
+                    'pendingBookings' => $pendingBookings,
+                    'todayBookings' => $todayBookings,
+                    'metrics' => [
+                        'roomsCount' => $myRooms->count(),
+                        'totalAssets' => $totalAssetsInRooms,
+                        'pendingApprovals' => $pendingLoans->count() + $pendingBookings->count(),
+                        'damagedAssetsCount' => $damagedAssetsCount,
+                    ],
+                ],
+            ]);
+        }
+
+        // 4. Dashboard Eksekutif & Biro Sarpras (Super Admin & Admin Fakultas)
         $totalAssetsCount = Asset::count();
         $totalAssetValuation = (float) Asset::sum('purchase_cost');
 
@@ -40,18 +183,11 @@ class DashboardController extends Controller
             ->with('category')
             ->get();
 
-        $user = $request->user();
-        $isStaff = $user ? $user->isStaff() : false;
-
-        $pendingLoansQuery = LoanTransaction::where('status', LoanStatus::Pending->value)
+        $pendingLoans = LoanTransaction::where('status', LoanStatus::Pending->value)
             ->with(['borrower', 'loanItems.asset.room.building'])
-            ->latest();
-
-        if (! $isStaff && $user) {
-            $pendingLoansQuery->where('borrower_id', $user->id);
-        }
-
-        $pendingLoans = $pendingLoansQuery->take(5)->get();
+            ->latest()
+            ->take(5)
+            ->get();
 
         $urgentTickets = MaintenanceTicket::whereNotIn('status', [
             MaintenanceStatus::Completed->value,
@@ -116,6 +252,7 @@ class DashboardController extends Controller
         }
 
         return Inertia::render('Dashboard', [
+            'dashboardType' => 'executive',
             'metrics' => [
                 'totalAssets' => $totalAssetsCount,
                 'totalValuation' => $totalAssetValuation,

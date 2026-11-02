@@ -138,6 +138,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user is Tenaga Kependidikan (Tendik).
+     */
+    public function isTendik(): bool
+    {
+        return $this->role === UserRole::Tendik;
+    }
+
+    /**
+     * Check if user is Civitas (Mahasiswa, Dosen, Tendik).
+     */
+    public function isCivitas(): bool
+    {
+        return in_array($this->role, [
+            UserRole::Mahasiswa,
+            UserRole::Dosen,
+            UserRole::Tendik,
+        ], true);
+    }
+
+    /**
      * Check if user is Staff (Super Admin, Admin Fakultas, PIC Ruangan).
      */
     public function isStaff(): bool

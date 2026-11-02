@@ -353,3 +353,4 @@ const formatTimeRange = (start, end) => {
         </div>
     </AuthenticatedLayout>
 </template>
+
