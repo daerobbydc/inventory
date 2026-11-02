@@ -98,7 +98,7 @@ const formatShortValuation = (val) => {
                 <Link
                     v-if="$page.props.auth?.user?.can_manage_assets"
                     :href="route('assets.create')"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1e293b] to-[#0f172a] hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
                 >
                     <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
                     <span>Aset Baru</span>
@@ -106,7 +106,7 @@ const formatShortValuation = (val) => {
 
                 <Link
                     :href="route('loans.create')"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-emerald-600 to-green-500 hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1e293b] to-[#0f172a] hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
                 >
                     <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
                     <span>Peminjaman</span>
@@ -153,9 +153,9 @@ const formatShortValuation = (val) => {
                 </div>
             </div>
 
-            <!-- Card 2: Total Unit Aset (Hot Pink / Rose Gradient) -->
+            <!-- Card 2: Total Unit Aset (Vibrant Blue Gradient) -->
             <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
-                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ec4899] to-[#e11d48] shadow-lg shadow-pink-500/30 flex items-center justify-center text-white">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] shadow-lg shadow-blue-500/30 flex items-center justify-center text-white">
                     <Layers class="w-6 h-6 stroke-[2]" />
                 </div>
                 <div class="pt-4 text-right">
@@ -191,9 +191,9 @@ const formatShortValuation = (val) => {
                 </div>
             </div>
 
-            <!-- Card 4: Peminjaman & Sirkulasi (Blue Gradient) -->
+            <!-- Card 4: Peminjaman & Sirkulasi (Hot Pink / Rose Gradient) -->
             <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
-                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#0284c7] to-[#0369a1] shadow-lg shadow-blue-500/30 flex items-center justify-center text-white">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ec4899] to-[#e11d48] shadow-lg shadow-pink-500/30 flex items-center justify-center text-white">
                     <Repeat class="w-6 h-6 stroke-[2]" />
                 </div>
                 <div class="pt-4 text-right">
@@ -212,10 +212,10 @@ const formatShortValuation = (val) => {
 
         <!-- 2. Three Overhanging Visual Chart Cards (Material Dashboard Signature Visual Cards) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
-            <!-- Chart Card 1: Distribusi Aset Fakultas (Pink / Rose Gradient Bar Chart) -->
+            <!-- Chart Card 1: Distribusi Aset Fakultas (Blue Gradient Bar Chart) -->
             <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
                 <!-- Overhanging Negative-Margin Card Box -->
-                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#ec4899] to-[#e11d48] shadow-pink-500/25">
+                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] shadow-blue-500/30">
                     <div class="h-44 flex flex-col justify-between">
                         <!-- SVG Bar Chart -->
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">

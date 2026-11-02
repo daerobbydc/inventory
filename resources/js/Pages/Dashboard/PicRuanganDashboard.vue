@@ -110,9 +110,9 @@ const formatTimeRange = (start, end) => {
 
         <!-- 2. Four Overhanging Metric Cards (Signature Material Dashboard 2 Style) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
-            <!-- Ruangan Dikelola (Blue / Cyan Gradient) -->
+            <!-- Ruangan Dikelola (Vibrant Blue Gradient) -->
             <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
-                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#0284c7] to-[#0369a1] shadow-lg shadow-blue-500/30 flex items-center justify-center text-white">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] shadow-lg shadow-blue-500/30 flex items-center justify-center text-white">
                     <DoorOpen class="w-6 h-6 stroke-[2]" />
                 </div>
                 <div class="pt-4 text-right">

@@ -27,7 +27,8 @@ import {
     QrCode,
     ArchiveX,
     DoorOpen,
-    User
+    User,
+    Home
 } from 'lucide-vue-next';
 
 const showingSidebarMobile = ref(false);
@@ -111,7 +112,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('dashboard') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -125,7 +126,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('assets.*') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -140,7 +141,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('consumables.*') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -154,7 +155,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('loans.*') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -168,7 +169,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('room-bookings.*') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -190,7 +191,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('stock-opname.*') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -204,7 +205,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('maintenance.*') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -219,7 +220,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('disposals.*') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -234,7 +235,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('reports.*') 
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -249,7 +250,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('settings.*')
-                                ? 'bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-bold shadow-lg shadow-emerald-600/30' 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -263,7 +264,7 @@ const currentRouteTitle = computed(() => {
             <div class="p-3 mx-2 mb-2">
                 <Link
                     :href="route('loans.create')"
-                    class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-600 text-white font-black text-xs shadow-lg shadow-emerald-600/30 uppercase tracking-wider hover:brightness-105 transition"
+                    class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-black text-xs shadow-lg shadow-blue-500/30 uppercase tracking-wider hover:brightness-105 transition"
                 >
                     <span>AJUKAN PEMINJAMAN</span>
                 </Link>
@@ -285,7 +286,9 @@ const currentRouteTitle = computed(() => {
                     <!-- Breadcrumbs & Page Title -->
                     <div>
                         <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
-                            <Link :href="route('dashboard')" class="hover:text-slate-700">Pages</Link>
+                            <Link :href="route('dashboard')" class="text-slate-400 hover:text-slate-700 flex items-center">
+                                <Home class="w-3.5 h-3.5" />
+                            </Link>
                             <span>/</span>
                             <span class="text-slate-600 font-medium">{{ currentRouteBreadcrumb }}</span>
                         </div>
