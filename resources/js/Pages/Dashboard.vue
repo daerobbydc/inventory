@@ -151,7 +151,7 @@ const formatRupiah = (val) => {
                     </div>
                     <div class="mt-4 pt-3 border-t border-amber-200/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Terlabel Barcode/RFID: <strong class="text-slate-700">98%</strong></span>
-                        <Link :href="route('assets.index')" class="text-amber-700 hover:text-amber-900 font-bold">Cek Kategori</Link>
+                        <Link :href="route('stock-opname.scanner')" class="text-amber-700 hover:text-amber-900 font-bold">Scan Fisik BMN</Link>
                     </div>
                 </div>
 
@@ -176,7 +176,7 @@ const formatRupiah = (val) => {
                         <div class="w-28 bg-emerald-200 rounded-full h-1.5 overflow-hidden">
                             <div class="bg-emerald-600 h-full w-[94.2%] rounded-full"></div>
                         </div>
-                        <a href="#rusak" class="text-emerald-700 hover:text-emerald-900 font-bold">Rincian Rusak</a>
+                        <Link :href="route('disposals.index')" class="text-emerald-700 hover:text-emerald-900 font-bold">Rincian Pemutihan</Link>
                     </div>
                 </div>
 

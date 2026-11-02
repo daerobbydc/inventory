@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Models\Building;
 use App\Models\Campus;
 use App\Models\Category;
@@ -24,6 +25,12 @@ class SettingsController extends Controller
         $rooms = Room::with(['building.campus', 'pic'])->withCount('assets')->get();
         $categories = Category::withCount('assets')->get();
         $vendors = Vendor::withCount('assets')->get();
+        $users = User::latest()->get();
+
+        $roles = collect(UserRole::cases())->map(fn ($r) => [
+            'value' => $r->value,
+            'label' => $r->label(),
+        ]);
 
         $stats = [
             'total_campuses' => $campuses->count(),
@@ -31,7 +38,7 @@ class SettingsController extends Controller
             'total_rooms' => $rooms->count(),
             'total_categories' => $categories->count(),
             'total_vendors' => $vendors->count(),
-            'total_users' => User::count(),
+            'total_users' => $users->count(),
         ];
 
         $syncStatus = [
@@ -50,8 +57,9 @@ class SettingsController extends Controller
             'rooms' => $rooms,
             'categories' => $categories,
             'vendors' => $vendors,
+            'users' => $users,
+            'roles' => $roles,
             'syncStatus' => $syncStatus,
         ]);
     }
 }
-

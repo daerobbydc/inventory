@@ -19,7 +19,10 @@ import {
     X,
     Menu,
     ChevronDown,
-    ShieldCheck
+    ShieldCheck,
+    Boxes,
+    QrCode,
+    ArchiveX
 } from 'lucide-vue-next';
 
 const showingSidebarMobile = ref(false);
@@ -85,6 +88,20 @@ const dismissFlash = ref(false);
                         <span>Data Aset & Inventaris</span>
                     </Link>
 
+                    <!-- Barang Habis Pakai / ATK -->
+                    <Link
+                        :href="route('consumables.index')"
+                        :class="[
+                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            route().current('consumables.*') 
+                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        ]"
+                    >
+                        <Boxes class="w-4 h-4 shrink-0" />
+                        <span>Barang Habis Pakai (ATK)</span>
+                    </Link>
+
                     <!-- Peminjaman & Fasilitas -->
                     <Link
                         :href="route('loans.index')"
@@ -99,6 +116,20 @@ const dismissFlash = ref(false);
                         <span>Peminjaman & Fasilitas</span>
                     </Link>
 
+                    <!-- Scanner QR Sensus -->
+                    <Link
+                        :href="route('stock-opname.scanner')"
+                        :class="[
+                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            route().current('stock-opname.*') 
+                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        ]"
+                    >
+                        <QrCode class="w-4 h-4 shrink-0" />
+                        <span>Scanner QR Sensus</span>
+                    </Link>
+
                     <!-- Pemeliharaan & Servis -->
                     <Link
                         :href="route('maintenance.index')"
@@ -111,6 +142,20 @@ const dismissFlash = ref(false);
                     >
                         <Wrench class="w-4 h-4 shrink-0" />
                         <span>Pemeliharaan & Servis</span>
+                    </Link>
+
+                    <!-- Pemutihan BMN -->
+                    <Link
+                        :href="route('disposals.index')"
+                        :class="[
+                            'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition',
+                            route().current('disposals.*') 
+                                ? 'bg-[#168a42] text-white shadow-sm shadow-emerald-700/20' 
+                                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        ]"
+                    >
+                        <ArchiveX class="w-4 h-4 shrink-0" />
+                        <span>Pemutihan BMN</span>
                     </Link>
 
                     <!-- Laporan & Audit -->
