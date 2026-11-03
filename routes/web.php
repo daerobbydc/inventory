@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MaintenanceTicketController;
+use App\Http\Controllers\ProcurementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoomBookingController;
@@ -82,6 +83,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     // Peminjaman & Pengembalian Aset - Permohonan & Riwayat oleh Peminjam
     Route::resource('loans', LoanController::class)->only(['index', 'create', 'store', 'show']);
+
+    // Usulan & Pengadaan Aset Antar-Fakultas
+    Route::middleware(['role:super_admin,admin_fakultas,pic_ruangan'])->group(function () {
+        Route::get('procurements/create', [ProcurementController::class, 'create'])->name('procurements.create');
+        Route::post('procurements', [ProcurementController::class, 'store'])->name('procurements.store');
+        Route::post('procurements/{procurement}/purchase', [ProcurementController::class, 'updatePurchase'])->name('procurements.purchase');
+        Route::delete('procurements/{procurement}', [ProcurementController::class, 'destroy'])->name('procurements.destroy');
+    });
+
+    Route::middleware(['role:super_admin'])->group(function () {
+        Route::post('procurements/{procurement}/status', [ProcurementController::class, 'updateStatus'])->name('procurements.status');
+        Route::post('procurements/{procurement}/convert-to-assets', [ProcurementController::class, 'convertToAssets'])->name('procurements.convert-to-assets');
+    });
+
+    Route::resource('procurements', ProcurementController::class)->only(['index', 'show']);
 
     // Peminjaman / Reservasi Ruangan Kampus
     Route::middleware(['role:super_admin,admin_fakultas,pic_ruangan'])->group(function () {

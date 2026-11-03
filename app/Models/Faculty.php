@@ -48,4 +48,12 @@ class Faculty extends Model
     {
         return $this->hasManyThrough(Asset::class, Room::class);
     }
+
+    /**
+     * Procurement requests initiated by this faculty.
+     */
+    public function procurementRequests(): HasMany
+    {
+        return $this->hasMany(ProcurementRequest::class);
+    }
 }

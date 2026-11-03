@@ -28,7 +28,8 @@ import {
     ArchiveX,
     DoorOpen,
     User,
-    Home
+    Home,
+    ClipboardList
 } from 'lucide-vue-next';
 
 const showingSidebarMobile = ref(false);
@@ -45,6 +46,7 @@ const currentRouteBreadcrumb = computed(() => {
     if (route().current('consumables.*')) return 'Barang Habis Pakai';
     if (route().current('loans.*')) return 'Peminjaman Aset';
     if (route().current('room-bookings.*')) return 'Peminjaman Ruangan';
+    if (route().current('procurements.*')) return 'Usulan Pengadaan';
     if (route().current('stock-opname.*')) return 'Sensus QR Code';
     if (route().current('maintenance.*')) return 'Pemeliharaan Fasilitas';
     if (route().current('disposals.*')) return 'Penghapusan Aset';
@@ -60,6 +62,7 @@ const currentRouteTitle = computed(() => {
     if (route().current('consumables.*')) return 'Barang Habis Pakai (ATK)';
     if (route().current('loans.*')) return 'Peminjaman Aset & Alat';
     if (route().current('room-bookings.*')) return 'Peminjaman Ruangan Kampus';
+    if (route().current('procurements.*')) return 'Usulan Pengadaan Aset Antar-Fakultas';
     if (route().current('stock-opname.*')) return 'Scanner QR Sensus';
     if (route().current('maintenance.*')) return 'Pemeliharaan & Servis';
     if (route().current('disposals.*')) return 'Penghapusan & Pemutihan Aset';
@@ -175,6 +178,20 @@ const currentRouteTitle = computed(() => {
                     >
                         <DoorOpen class="w-4 h-4 shrink-0" />
                         <span>Peminjaman Ruangan</span>
+                    </Link>
+
+                    <!-- Usulan Pengadaan Aset -->
+                    <Link
+                        :href="route('procurements.index')"
+                        :class="[
+                            'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
+                            route().current('procurements.*') 
+                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
+                        ]"
+                    >
+                        <ClipboardList class="w-4 h-4 shrink-0" />
+                        <span>Usulan Pengadaan</span>
                     </Link>
                 </nav>
 

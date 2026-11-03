@@ -248,4 +248,28 @@ class User extends Authenticatable
     {
         return $this->isStaff() || $this->isTeknisi();
     }
+
+    /**
+     * Determine if user can create asset procurement proposals.
+     */
+    public function canCreateProcurement(): bool
+    {
+        return $this->isStaff();
+    }
+
+    /**
+     * Determine if user can approve/review procurement proposals.
+     */
+    public function canManageProcurements(): bool
+    {
+        return $this->isSuperAdmin();
+    }
+
+    /**
+     * Procurement requests submitted by this user.
+     */
+    public function procurementRequests(): HasMany
+    {
+        return $this->hasMany(ProcurementRequest::class);
+    }
 }
