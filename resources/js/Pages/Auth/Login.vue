@@ -10,13 +10,8 @@ import {
     Mail, 
     Eye, 
     EyeOff, 
-    KeyRound, 
-    ChevronDown, 
     Check, 
-    UserCheck,
-    Shield,
-    Sparkles,
-    HelpCircle
+    Shield
 } from 'lucide-vue-next';
 
 defineProps({
@@ -35,59 +30,6 @@ const form = useForm({
 });
 
 const showPassword = ref(false);
-const showDemoAccounts = ref(false);
-const selectedDemo = ref(null);
-
-const demoAccounts = [
-    {
-        role: 'Super Admin',
-        badge: 'Biro Sarpras',
-        email: 'sarpras@kampus.ac.id',
-        desc: 'Akses penuh seluruh modul, aset, & konfigurasi',
-        color: 'from-blue-600 to-indigo-700',
-    },
-    {
-        role: 'Admin Fakultas',
-        badge: 'Fak. Teknik',
-        email: 'fakultas.teknik@kampus.ac.id',
-        desc: 'Kelola aset & persetujuan unit fakultas',
-        color: 'from-cyan-600 to-blue-700',
-    },
-    {
-        role: 'PIC Ruangan',
-        badge: 'Laboran',
-        email: 'laboran.komputer@kampus.ac.id',
-        desc: 'Validasi peminjaman ruang & inventaris lab',
-        color: 'from-emerald-600 to-teal-700',
-    },
-    {
-        role: 'Teknisi Servis',
-        badge: 'Pemeliharaan',
-        email: 'teknisi@kampus.ac.id',
-        desc: 'Pengerjaan tiket perbaikan & pemeliharaan',
-        color: 'from-rose-600 to-pink-700',
-    },
-    {
-        role: 'Dosen Pengajar',
-        badge: 'Akademik',
-        email: 'dosen@kampus.ac.id',
-        desc: 'Peminjaman ruang kuliah & alat praktikum',
-        color: 'from-amber-600 to-orange-700',
-    },
-    {
-        role: 'Mahasiswa / BEM',
-        badge: 'Civitas',
-        email: 'mahasiswa@kampus.ac.id',
-        desc: 'Reservasi ruang kegiatan ormawa & sarana',
-        color: 'from-violet-600 to-purple-700',
-    },
-];
-
-const fillDemo = (item) => {
-    form.email = item.email;
-    form.password = 'password';
-    selectedDemo.value = item.role;
-};
 
 const submit = () => {
     form.post(route('login'), {
@@ -206,68 +148,15 @@ const submit = () => {
             </button>
         </form>
 
-        <!-- Discreet Collapsible Reviewer / Demo Accounts Drawer -->
-        <div class="mt-6 pt-5 border-t border-slate-100">
-            <button
-                type="button"
-                @click="showDemoAccounts = !showDemoAccounts"
-                class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 text-xs font-bold text-slate-700 transition"
-            >
-                <div class="flex items-center gap-2">
-                    <KeyRound class="w-4 h-4 text-blue-600" />
-                    <span>Akses Cepat Penguji / Reviewer Mode</span>
-                    <span class="text-[10px] font-extrabold px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded-md">
-                        6 Role
-                    </span>
-                </div>
-                <ChevronDown 
-                    :class="['w-4 h-4 text-slate-400 transition-transform duration-200', showDemoAccounts ? 'rotate-180 text-blue-600' : '']" 
-                />
-            </button>
-
-            <!-- Collapsible Grid of Roles -->
-            <div 
-                v-show="showDemoAccounts" 
-                class="mt-3 p-3 bg-slate-50/80 rounded-2xl border border-slate-200/80 space-y-2 animate-in fade-in duration-150"
-            >
-                <div class="text-[11px] text-slate-500 font-medium px-1 flex items-center justify-between">
-                    <span>Pilih salah satu role untuk mengisi otomatis:</span>
-                    <span v-if="selectedDemo" class="text-blue-700 font-bold flex items-center gap-1">
-                        <Check class="w-3 h-3" /> {{ selectedDemo }} dipilih
-                    </span>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                    <button
-                        v-for="item in demoAccounts"
-                        :key="item.role"
-                        type="button"
-                        @click="fillDemo(item)"
-                        :class="[
-                            'p-2.5 text-left rounded-xl border transition flex flex-col justify-between group',
-                            selectedDemo === item.role 
-                                ? 'bg-blue-50/80 border-blue-400 shadow-xs ring-1 ring-blue-400/40' 
-                                : 'bg-white hover:bg-blue-50/50 hover:border-blue-300 border-slate-200'
-                        ]"
-                    >
-                        <div class="flex items-center justify-between gap-1 w-full">
-                            <span class="font-bold text-slate-800 text-[11px] group-hover:text-blue-700 transition">
-                                {{ item.role }}
-                            </span>
-                            <span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
-                                {{ item.badge }}
-                            </span>
-                        </div>
-                        <div class="text-[10px] text-slate-400 truncate mt-1">
-                            {{ item.email }}
-                        </div>
-                    </button>
-                </div>
-            </div>
+        <!-- Institutional Security Notice -->
+        <div class="mt-6 pt-5 text-center text-xs text-slate-400 border-t border-slate-100 space-y-2">
+            <p class="text-[11px] leading-relaxed">
+                Akses sistem ini terbatas khusus civitas akademika dan staf pengelola Universitas Al-Khairiyah. Seluruh aktivitas login diawasi dan tercatat dalam sistem audit keamanan.
+            </p>
         </div>
 
         <!-- Registration Link -->
-        <div class="mt-6 pt-5 text-center text-xs text-slate-500 border-t border-slate-100">
+        <div class="mt-4 pt-4 text-center text-xs text-slate-500 border-t border-slate-100">
             Belum memiliki akun civitas terdaftar?
             <Link :href="route('register')" class="text-blue-700 font-extrabold hover:underline ml-1">
                 Registrasi Akun Baru
