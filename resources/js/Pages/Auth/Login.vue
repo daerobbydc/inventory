@@ -57,6 +57,14 @@ const submit = () => {
                 </button>
                 <button
                     type="button"
+                    @click="fillDemo('fakultas.teknik@kampus.ac.id')"
+                    class="p-2 text-left bg-white hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-lg transition"
+                >
+                    <div class="font-bold text-slate-800">Admin Fakultas</div>
+                    <div class="text-[10px] text-slate-400 truncate">fakultas.teknik@...</div>
+                </button>
+                <button
+                    type="button"
                     @click="fillDemo('laboran.komputer@kampus.ac.id')"
                     class="p-2 text-left bg-white hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-lg transition"
                 >
@@ -70,6 +78,14 @@ const submit = () => {
                 >
                     <div class="font-bold text-slate-800">Teknisi Servis</div>
                     <div class="text-[10px] text-slate-400 truncate">teknisi@...</div>
+                </button>
+                <button
+                    type="button"
+                    @click="fillDemo('dosen@kampus.ac.id')"
+                    class="p-2 text-left bg-white hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-lg transition"
+                >
+                    <div class="font-bold text-slate-800">Dosen Pengajar</div>
+                    <div class="text-[10px] text-slate-400 truncate">dosen@...</div>
                 </button>
                 <button
                     type="button"

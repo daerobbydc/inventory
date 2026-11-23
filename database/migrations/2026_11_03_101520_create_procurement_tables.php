@@ -17,12 +17,12 @@ return new class extends Migration
             $table->foreignId('faculty_id')->nullable()->constrained('faculties')->nullOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
-            $table->string('fiscal_year', 20)->default('2026');
+            $table->string('fiscal_year', 20)->default('2026')->index();
             $table->string('budget_source')->default('Dana Yayasan Al-Khairiyah');
             $table->string('urgency', 20)->default('reguler'); // reguler, urgent, critical
             $table->decimal('total_estimated_cost', 15, 2)->default(0);
             $table->text('justification')->nullable();
-            $table->string('status', 30)->default('submitted'); // draft, submitted, under_review, approved, rejected, ordered, received, completed
+            $table->string('status', 30)->default('submitted')->index(); // draft, submitted, under_review, approved, rejected, ordered, received, completed
             $table->foreignId('approver_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamp('approved_at')->nullable();
             $table->text('approval_notes')->nullable();

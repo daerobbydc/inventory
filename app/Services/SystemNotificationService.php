@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Enums\LoanStatus;
 use App\Enums\MaintenanceStatus;
+use App\Enums\ProcurementStatus;
 use App\Enums\RoomBookingStatus;
 use App\Models\Consumable;
 use App\Models\LoanTransaction;
 use App\Models\MaintenanceTicket;
+use App\Models\ProcurementRequest;
 use App\Models\Room;
 use App\Models\RoomBooking;
 use App\Models\User;
@@ -240,6 +242,46 @@ class SystemNotificationService
                     'type' => 'danger',
                     'time' => 'Perhatian Stok',
                 ];
+            }
+
+            // Usulan Pengadaan Aset Menunggu Persetujuan (Super Admin)
+            if ($user->isSuperAdmin()) {
+                $pendingProcurements = ProcurementRequest::where('status', ProcurementStatus::Submitted->value)
+                    ->with('faculty')
+                    ->latest()
+                    ->take(2)
+                    ->get();
+
+                foreach ($pendingProcurements as $pr) {
+                    $notifications[] = [
+                        'id' => 'procurement_sub_'.$pr->id,
+                        'title' => 'Usulan Pengadaan Baru',
+                        'message' => "Usulan {$pr->request_number} dari ".($pr->faculty?->name ?? 'Fakultas').' menunggu telaah/persetujuan.',
+                        'url' => route('procurements.show', $pr->id),
+                        'type' => 'info',
+                        'time' => $pr->created_at?->diffForHumans() ?? 'Baru saja',
+                    ];
+                }
+            }
+
+            // Update Pengadaan bagi Admin Fakultas
+            if ($user->isAdminFakultas() && $user->faculty_id) {
+                $facultyProcurements = ProcurementRequest::where('faculty_id', $user->faculty_id)
+                    ->whereIn('status', [ProcurementStatus::Approved->value, ProcurementStatus::Received->value])
+                    ->latest()
+                    ->take(2)
+                    ->get();
+
+                foreach ($facultyProcurements as $pr) {
+                    $notifications[] = [
+                        'id' => 'procurement_fac_'.$pr->id,
+                        'title' => 'Update Usulan Pengadaan',
+                        'message' => "Usulan {$pr->request_number} saat ini berstatus: {$pr->status->label()}.",
+                        'url' => route('procurements.show', $pr->id),
+                        'type' => 'success',
+                        'time' => $pr->updated_at?->diffForHumans() ?? 'Baru saja',
+                    ];
+                }
             }
         }
 

@@ -8,6 +8,7 @@ use App\Enums\ConsumableTransactionType;
 use App\Enums\LoanStatus;
 use App\Enums\MaintenancePriority;
 use App\Enums\MaintenanceStatus;
+use App\Enums\ProcurementStatus;
 use App\Enums\RoomBookingStatus;
 use App\Enums\UserRole;
 use App\Models\Asset;
@@ -20,6 +21,8 @@ use App\Models\Faculty;
 use App\Models\LoanItem;
 use App\Models\LoanTransaction;
 use App\Models\MaintenanceTicket;
+use App\Models\ProcurementItem;
+use App\Models\ProcurementRequest;
 use App\Models\Room;
 use App\Models\RoomBooking;
 use App\Models\User;
@@ -505,6 +508,137 @@ class DatabaseSeeder extends Seeder
             'attendees_count' => 20,
             'status' => RoomBookingStatus::Approved,
             'approval_notes' => 'Disetujui. Perangkat workstation studio siap digunakan.',
+        ]);
+
+        // 9. Demo Manajemen Usulan / Pengadaan Aset Antar-Fakultas
+        $procurement1 = ProcurementRequest::create([
+            'request_number' => 'PR/FT/2026/0001',
+            'faculty_id' => $fakTeknik->id,
+            'user_id' => $adminFakultas->id,
+            'title' => 'Peremajaan Workstation Komputer Lab Jaringan & Keamanan Siber',
+            'fiscal_year' => '2026',
+            'budget_source' => 'Dana Hibah Kompetitif Akademik FT',
+            'urgency' => 'urgent',
+            'total_estimated_cost' => 62500000,
+            'justification' => 'Perangkat PC existing sudah berusia lebih dari 5 tahun dan tidak memenuhi spesifikasi minimum praktikum komputasi awan & kriptografi kurikulum baru.',
+            'status' => ProcurementStatus::Approved,
+            'approver_id' => $superAdmin->id,
+            'approved_at' => now()->subDays(3),
+            'approval_notes' => 'Disetujui untuk kuota 5 Unit PC Workstation dan 1 Switch Core. Anggaran dibebankan pada pos pengembangan lab 2026.',
+            'vendor_id' => $vendor1->id,
+            'purchase_order_number' => 'PO/2026/FT-LAB/014',
+            'invoice_number' => 'INV-GSI-2026-8812',
+            'receipt_date' => null,
+        ]);
+
+        ProcurementItem::create([
+            'procurement_request_id' => $procurement1->id,
+            'category_id' => $catHardware->id,
+            'item_name' => 'Dell OptiPlex 7010 Tower (Core i7, 32GB RAM, 1TB NVMe)',
+            'brand' => 'Dell',
+            'model' => 'OptiPlex 7010 Tower MT',
+            'specifications' => 'Intel Core i7-13700, 32GB DDR5, 1TB SSD NVMe, GPU GeForce RTX 3060 12GB, Monitor 24 inch IPS 75Hz',
+            'quantity' => 3,
+            'unit_price_estimate' => 17500000,
+            'total_price_estimate' => 52500000,
+            'target_room_id' => $labJaringan->id,
+            'is_converted_to_asset' => false,
+        ]);
+
+        ProcurementItem::create([
+            'procurement_request_id' => $procurement1->id,
+            'category_id' => $catHardware->id,
+            'item_name' => 'MikroTik Cloud Router Switch CRS328-24P-4S+RM',
+            'brand' => 'MikroTik',
+            'model' => 'CRS328-24P-4S+RM',
+            'specifications' => '24 Port Gigabit RJ45 PoE+, 4 SFP+ 10Gbps, Dual Power Supply Redundant',
+            'quantity' => 2,
+            'unit_price_estimate' => 5000000,
+            'total_price_estimate' => 10000000,
+            'target_room_id' => $labJaringan->id,
+            'is_converted_to_asset' => false,
+        ]);
+
+        $procurement2 = ProcurementRequest::create([
+            'request_number' => 'PR/FIK/2026/0002',
+            'faculty_id' => $fakKomputer->id,
+            'user_id' => $laboran->id,
+            'title' => 'Pengadaan Proyektor High-Lumen dan Sound System Studio Multimedia',
+            'fiscal_year' => '2026',
+            'budget_source' => 'Dana Operasional Fakultas Ilmu Komputer',
+            'urgency' => 'reguler',
+            'total_estimated_cost' => 23500000,
+            'justification' => 'Dibutuhkan sarana display berdaya sorot tinggi untuk ruang studio editing dan presentasi hasil karya multimedia mahasiswa.',
+            'status' => ProcurementStatus::UnderReview,
+            'approver_id' => null,
+            'approved_at' => null,
+            'approval_notes' => 'Sedang dalam review verifikasi kesesuaian spek daya proyektor dan instalasi kelistrikan gedung.',
+            'vendor_id' => $vendor2->id,
+            'purchase_order_number' => null,
+            'invoice_number' => null,
+            'receipt_date' => null,
+        ]);
+
+        ProcurementItem::create([
+            'procurement_request_id' => $procurement2->id,
+            'category_id' => $catAudioVisual->id,
+            'item_name' => 'Epson EB-2250U Full HD 5000 Lumens Projector',
+            'brand' => 'Epson',
+            'model' => 'EB-2250U',
+            'specifications' => 'WUXGA 1920x1200, 5000 ANSI Lumens, Kontras 15.000:1, Screen Mirroring Miracast',
+            'quantity' => 1,
+            'unit_price_estimate' => 18500000,
+            'total_price_estimate' => 18500000,
+            'target_room_id' => $labMultimedia->id,
+            'is_converted_to_asset' => false,
+        ]);
+
+        ProcurementItem::create([
+            'procurement_request_id' => $procurement2->id,
+            'category_id' => $catAudioVisual->id,
+            'item_name' => 'Yamaha StagePas 400BT Portable PA System',
+            'brand' => 'Yamaha',
+            'model' => 'StagePas 400BT',
+            'specifications' => '400W Portable PA with 8-channel powered mixer, Bluetooth audio streaming',
+            'quantity' => 1,
+            'unit_price_estimate' => 5000000,
+            'total_price_estimate' => 5000000,
+            'target_room_id' => $labMultimedia->id,
+            'is_converted_to_asset' => false,
+        ]);
+
+        $procurement3 = ProcurementRequest::create([
+            'request_number' => 'PR/FEB/2026/0003',
+            'faculty_id' => $fakEkonomi->id,
+            'user_id' => $superAdmin->id,
+            'title' => 'Pengadaan Fasilitas Kursi Ergonomis & Meja Rapat Ruang Senat',
+            'fiscal_year' => '2026',
+            'budget_source' => 'Dana Yayasan Al-Khairiyah',
+            'urgency' => 'critical',
+            'total_estimated_cost' => 32000000,
+            'justification' => 'Pergantian total kursi senat yang rusak untuk persiapan visitasi akreditasi internasional.',
+            'status' => ProcurementStatus::Completed,
+            'approver_id' => $superAdmin->id,
+            'approved_at' => now()->subWeeks(2),
+            'approval_notes' => 'Selesai diverifikasi, barang telah tiba dalam kondisi prima dan diinventarisasi.',
+            'vendor_id' => $vendor2->id,
+            'purchase_order_number' => 'PO/2026/FEB/003',
+            'invoice_number' => 'INV-CSN-2026-4401',
+            'receipt_date' => now()->subWeek()->toDateString(),
+        ]);
+
+        ProcurementItem::create([
+            'procurement_request_id' => $procurement3->id,
+            'category_id' => $catFurniture->id,
+            'item_name' => 'Kursi Ergonomis Pimpinan High-Back Mesh',
+            'brand' => 'Indachi',
+            'model' => 'D-3001 AL',
+            'specifications' => 'Kaki aluminium alloy, sandaran jaring breathable, hidrolik heavy duty garansi 2 tahun',
+            'quantity' => 16,
+            'unit_price_estimate' => 2000000,
+            'total_price_estimate' => 32000000,
+            'target_room_id' => $ruangRapat->id,
+            'is_converted_to_asset' => true,
         ]);
     }
 }

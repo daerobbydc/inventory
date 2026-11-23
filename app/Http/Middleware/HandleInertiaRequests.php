@@ -51,6 +51,8 @@ class HandleInertiaRequests extends Middleware
                     'can_manage_settings' => $user->canManageSettings(),
                     'can_perform_audit' => $user->canPerformAudit(),
                     'can_update_maintenance' => $user->canUpdateMaintenance(),
+                    'can_manage_procurements' => $user->canManageProcurements(),
+                    'can_create_procurement' => $user->canCreateProcurement(),
                 ] : null,
             ],
             'flash' => [
