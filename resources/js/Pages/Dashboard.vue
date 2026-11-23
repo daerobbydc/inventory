@@ -39,6 +39,10 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    pendingBookings: {
+        type: Array,
+        default: () => [],
+    },
     recentCirculations: {
         type: Array,
         default: () => [],
@@ -60,6 +64,14 @@ const props = defineProps({
         default: () => [],
     },
     utilizationData: {
+        type: Array,
+        default: () => [],
+    },
+    weeklyActivity: {
+        type: Array,
+        default: () => [],
+    },
+    serviceTrend: {
         type: Array,
         default: () => [],
     },
@@ -94,12 +106,15 @@ const props = defineProps({
             :metrics="metrics"
             :low-stock-items="lowStockItems"
             :pending-loans="pendingLoans"
+            :pending-bookings="pendingBookings"
             :recent-circulations="recentCirculations"
             :urgent-tickets="urgentTickets"
             :condition-counts="conditionCounts"
             :status-counts="statusCounts"
             :distribution-by-faculty="distributionByFaculty"
             :utilization-data="utilizationData"
+            :weekly-activity="weeklyActivity"
+            :service-trend="serviceTrend"
         />
     </AuthenticatedLayout>
 </template>

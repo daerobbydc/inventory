@@ -96,20 +96,20 @@ const currentRouteTitle = computed(() => {
             <div class="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-emerald-950 via-slate-900 to-transparent"></div>
 
             <div class="overflow-y-auto px-3 py-4 flex-1 relative z-10">
-                <!-- Brand Header (Creative Tim Style) -->
+                <!-- Brand Header (Creative Tim Style with University Sarpras Identity) -->
                 <div class="px-3 py-2 flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="h-8 w-8 rounded-full bg-white text-slate-900 flex items-center justify-center font-black text-xs shadow-xs">
-                            CT
+                        <div class="h-8 w-8 rounded-full bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white flex items-center justify-center font-black text-xs shadow-md shadow-green-500/30">
+                            AK
                         </div>
                         <div>
-                            <div class="text-xs font-black tracking-wider text-white uppercase leading-tight">CREATIVE TIM</div>
-                            <div class="text-[10px] font-medium text-slate-400">SIM-SARPRAS UNIVAL</div>
+                            <div class="text-xs font-black tracking-wider text-white uppercase leading-tight">SIM-SARPRAS</div>
+                            <div class="text-[10px] font-medium text-slate-400">Univ. Al-Khairiyah</div>
                         </div>
                     </div>
-                    <button type="button" class="text-slate-400 hover:text-white transition">
+                    <Link :href="route('settings.index')" class="text-slate-400 hover:text-white transition" title="Pengaturan Sistem">
                         <MoreVertical class="w-4 h-4" />
-                    </button>
+                    </Link>
                 </div>
 
                 <hr class="my-2.5 border-t border-white/10 mx-1" />
@@ -350,9 +350,10 @@ const currentRouteTitle = computed(() => {
                         >
                             <Bell class="w-4 h-4" />
                             <span 
+                                v-if="unreadCount > 0"
                                 class="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-bold text-[9px] flex items-center justify-center shadow-xs"
                             >
-                                {{ unreadCount > 0 ? (unreadCount > 9 ? '9+' : unreadCount) : '5' }}
+                                {{ unreadCount > 9 ? '9+' : unreadCount }}
                             </span>
                         </button>
 

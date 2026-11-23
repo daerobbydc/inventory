@@ -189,6 +189,12 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $pendingBookings = RoomBooking::where('status', RoomBookingStatus::Pending->value)
+            ->with(['user', 'room.building'])
+            ->latest()
+            ->take(5)
+            ->get();
+
         $recentCirculations = LoanTransaction::with(['borrower', 'loanItems.asset.room.building'])
             ->latest()
             ->take(6)
@@ -216,43 +222,61 @@ class DashboardController extends Controller
             'disposed' => Asset::where('status', AssetStatus::Disposed->value)->count(),
         ];
 
-        // Faculty Distribution dynamic or fallback breakdown
+        // Faculty Distribution with real asset counts from database
         $faculties = Faculty::withCount('rooms')->get();
+        $totalAssetsCount = Asset::count();
 
-        if ($faculties->isNotEmpty()) {
-            $colors = ['#1e3a8a', '#0f766e', '#16a34a', '#d97706', '#84cc16'];
-            $totalRooms = Room::count() ?: 1;
-            $distributionByFaculty = $faculties->map(function ($fac, $idx) use ($colors, $totalRooms) {
-                $pct = round(($fac->rooms_count / $totalRooms) * 100);
+        $distributionByFaculty = $faculties->map(function ($fac) use ($totalAssetsCount) {
+            $assetsCount = Asset::whereHas('room', function ($q) use ($fac) {
+                $q->where('faculty_id', $fac->id);
+            })->count();
 
-                return [
-                    'name' => $fac->name,
-                    'percentage' => max(10, $pct),
-                    'items' => $fac->rooms_count * 1500 ?: 2000,
-                    'color' => $colors[$idx % count($colors)],
-                ];
-            })->values()->all();
+            $pct = $totalAssetsCount > 0 ? round(($assetsCount / $totalAssetsCount) * 100) : 0;
 
-            $utilizationData = $faculties->map(fn ($f, $i) => [
-                'code' => $f->code,
-                'name' => $f->name,
-                'rate' => 65 + (($i * 7) % 25),
-                'peak' => 80 + (($i * 5) % 18),
-            ])->values()->all();
-        } else {
-            $distributionByFaculty = [
-                ['name' => 'Fakultas Teknik', 'percentage' => 32, 'items' => 4742, 'color' => '#1e3a8a'],
-                ['name' => 'Fakultas Ekonomi & Bisnis', 'percentage' => 28, 'items' => 4150, 'color' => '#0f766e'],
-                ['name' => 'Rektorat & Layanan', 'percentage' => 18, 'items' => 2668, 'color' => '#d97706'],
-                ['name' => 'Fakultas Lain & Lab', 'percentage' => 22, 'items' => 3260, 'color' => '#16a34a'],
+            $code = $fac->code ?: strtoupper(substr($fac->name, 0, 4));
+            if ($code === 'REKTORAT') {
+                $code = 'REK';
+            }
+
+            return [
+                'id' => $fac->id,
+                'code' => $code,
+                'name' => $fac->name,
+                'rooms_count' => $fac->rooms_count,
+                'assets_count' => $assetsCount,
+                'items' => $assetsCount,
+                'percentage' => $pct,
             ];
+        })->values()->all();
 
-            $utilizationData = [
-                ['code' => 'FT', 'name' => 'Fakultas Teknik', 'rate' => 84, 'peak' => 95],
-                ['code' => 'FEB', 'name' => 'Fakultas Ekonomi & Bisnis', 'rate' => 82, 'peak' => 91],
-                ['code' => 'FAI', 'name' => 'Fakultas Agama Islam', 'rate' => 76, 'peak' => 88],
-                ['code' => 'FIK', 'name' => 'Fakultas Ilmu Komputer', 'rate' => 78, 'peak' => 89],
-                ['code' => 'REK', 'name' => 'Rektorat & Unit', 'rate' => 68, 'peak' => 79],
+        // Weekly activity for room bookings and asset loans (Monday to Sunday)
+        $startOfWeek = now()->startOfWeek();
+        $weeklyActivity = [];
+        $dayLabels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+        for ($i = 0; $i < 7; $i++) {
+            $date = $startOfWeek->copy()->addDays($i)->toDateString();
+            $bookingCount = RoomBooking::whereDate('booking_date', $date)->count();
+            $loanCount = LoanTransaction::whereDate('loan_date', $date)->count();
+            $weeklyActivity[] = [
+                'day' => $dayLabels[$i],
+                'date' => $date,
+                'total' => $bookingCount + $loanCount,
+                'bookings' => $bookingCount,
+                'loans' => $loanCount,
+            ];
+        }
+
+        // Service resolution over the last 7 days
+        $serviceTrend = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i)->toDateString();
+            $completedCount = MaintenanceTicket::whereDate('completed_at', $date)->count();
+            $createdCount = MaintenanceTicket::whereDate('created_at', $date)->count();
+            $serviceTrend[] = [
+                'label' => $i === 0 ? 'Hari Ini' : 'H-'.$i,
+                'date' => $date,
+                'completed' => $completedCount,
+                'incoming' => $createdCount,
             ];
         }
 
@@ -267,12 +291,15 @@ class DashboardController extends Controller
             ],
             'lowStockItems' => $lowStockConsumables,
             'pendingLoans' => $pendingLoans,
+            'pendingBookings' => $pendingBookings,
             'recentCirculations' => $recentCirculations,
             'urgentTickets' => $urgentTickets,
             'conditionCounts' => $conditionCounts,
             'statusCounts' => $statusCounts,
             'distributionByFaculty' => $distributionByFaculty,
-            'utilizationData' => $utilizationData,
+            'utilizationData' => $weeklyActivity,
+            'weeklyActivity' => $weeklyActivity,
+            'serviceTrend' => $serviceTrend,
         ]);
     }
 }

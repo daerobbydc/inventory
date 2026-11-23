@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { 
     Building2, 
@@ -8,18 +8,16 @@ import {
     Clock, 
     TrendingUp,
     Repeat,
-    BarChart3,
-    Twitter,
-    Store,
-    Tag,
     Calendar,
     AlertTriangle,
-    Bug,
-    Code,
-    Cloud,
-    Pencil,
-    X,
-    Check
+    Wrench,
+    Boxes,
+    DoorOpen,
+    Eye,
+    Tag,
+    ChevronRight,
+    ArrowUpRight,
+    AlertCircle
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -37,6 +35,10 @@ const props = defineProps({
         default: () => [],
     },
     pendingLoans: {
+        type: Array,
+        default: () => [],
+    },
+    pendingBookings: {
         type: Array,
         default: () => [],
     },
@@ -64,6 +66,14 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    weeklyActivity: {
+        type: Array,
+        default: () => [],
+    },
+    serviceTrend: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const formatRupiah = (val) => {
@@ -77,268 +87,363 @@ const formatRupiah = (val) => {
 const formatShortValuation = (val) => {
     const num = Number(val || 0);
     if (num >= 1000000000) {
-        return 'Rp ' + (num / 1000000000).toFixed(1).replace('.0', '') + ' M';
+        return 'Rp ' + (num / 1000000000).toFixed(1).replace('.0', '') + ' Miliar';
     }
     if (num >= 1000000) {
-        return 'Rp ' + (num / 1000000).toFixed(1).replace('.0', '') + ' Jt';
+        return 'Rp ' + (num / 1000000).toFixed(1).replace('.0', '') + ' Juta';
     }
     return formatRupiah(num);
 };
 
-// Active Tab in Tasks Card
-const activeTaskTab = ref('website');
+// Active Tab in the Tasks / Operational Card
+const activeTaskTab = ref('loans');
 
-// Interactive Checklist Tasks
-const tasks = ref([
-    {
-        id: 1,
-        title: 'Sign contract for "What are conference organizers afraid of?"',
-        subtitle: 'Persetujuan Peminjaman Proyektor R. Kuliah Bersama FT',
-        completed: true,
-    },
-    {
-        id: 2,
-        title: 'Lines From Great Russian Literature? Or E-mails From My Boss?',
-        subtitle: 'Pemeriksaan Berkala Filter AC Lab Jaringan Gedung C',
-        completed: false,
-    },
-    {
-        id: 3,
-        title: 'Flooded: One year later, assessing what was lost and what was found',
-        subtitle: 'Verifikasi Sensus Barcode QR 32 Aset Gedung Rektorat',
-        completed: false,
-    },
-    {
-        id: 4,
-        title: 'Create 4 Invisible User Experiences you Never Knew About',
-        subtitle: 'Pengajuan Usulan Pengadaan 5 PC Workstation FT',
-        completed: true,
-    },
-]);
-
-const toggleTask = (index) => {
-    tasks.value[index].completed = !tasks.value[index].completed;
+const getLoanBadge = (status) => {
+    const val = typeof status === 'object' ? status?.value : status;
+    switch (val) {
+        case 'borrowed':
+            return { label: 'Sedang Dipakai', class: 'bg-blue-50 text-blue-700 border-blue-200' };
+        case 'approved':
+            return { label: 'Siap Diambil', class: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+        case 'pending':
+            return { label: 'Menunggu Review', class: 'bg-amber-50 text-amber-700 border-amber-200' };
+        case 'returned':
+            return { label: 'Telah Kembali', class: 'bg-slate-100 text-slate-700 border-slate-200' };
+        default:
+            return { label: val || 'Tercatat', class: 'bg-slate-50 text-slate-600 border-slate-200' };
+    }
 };
 
-const removeTask = (index) => {
-    tasks.value.splice(index, 1);
+const formatDate = (dateStr) => {
+    if (!dateStr) return '-';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
 };
 
-// Employees Stats Table Data matching Creative Tim Spec
-const employees = ref([
-    {
-        id: 1,
-        name: "Noelia O'Kon",
-        faculty: 'Niger',
-        role: 'Mahasiswa TI',
-        salary: '13098.00',
-        asset: 'Sony Alpha A7 IV',
-    },
-    {
-        id: 2,
-        name: 'Mr. Enid Von PhD',
-        faculty: 'Curaçao',
-        role: 'Dosen Teknik',
-        salary: '35978.00',
-        asset: 'Proyektor Epson EB-X500',
-    },
-    {
-        id: 3,
-        name: 'Colton',
-        faculty: 'Netherlands',
-        role: 'Admin Fakultas',
-        salary: '28650.00',
-        asset: 'Server CBT All-in-One',
-    },
-    {
-        id: 4,
-        name: 'Dakota',
-        faculty: 'Indonesia',
-        role: 'Laboran Multimedia',
-        salary: '37800.00',
-        asset: 'MikroTik Cloud Router',
-    },
-]);
+// --- Chart 1: Dynamic Sebaran Sarana per Fakultas (Pink Bar Chart) ---
+const maxAssetInFaculty = computed(() => {
+    const list = props.distributionByFaculty || [];
+    if (list.length === 0) return 5;
+    const max = Math.max(...list.map(f => f.assets_count ?? f.items ?? 0));
+    return max > 0 ? max : 5;
+});
+
+const facultyBars = computed(() => {
+    const list = props.distributionByFaculty || [];
+    if (list.length === 0) {
+        return [
+            { id: 1, code: 'FT', assets_count: 0, x: 55, y: 120, width: 20, height: 5 },
+            { id: 2, code: 'FEB', assets_count: 0, x: 110, y: 120, width: 20, height: 5 },
+            { id: 3, code: 'FAI', assets_count: 0, x: 165, y: 120, width: 20, height: 5 },
+            { id: 4, code: 'FIK', assets_count: 0, x: 220, y: 120, width: 20, height: 5 },
+            { id: 5, code: 'REK', assets_count: 0, x: 275, y: 120, width: 20, height: 5 },
+        ];
+    }
+    const count = list.length;
+    const barWidth = 20;
+    const startX = 45;
+    const availableWidth = 250;
+    const step = count > 1 ? availableWidth / (count - 1) : 0;
+    const maxVal = maxAssetInFaculty.value;
+    const maxHeight = 85;
+    const baseY = 125;
+
+    return list.map((item, i) => {
+        const val = item.assets_count ?? item.items ?? 0;
+        const height = val > 0 ? Math.max(10, Math.round((val / maxVal) * maxHeight)) : 5;
+        const x = count > 1 ? Math.round(startX + (i * step) - (barWidth / 2)) : 150;
+        const y = baseY - height;
+
+        return {
+            ...item,
+            x,
+            y,
+            width: barWidth,
+            height,
+            val,
+        };
+    });
+});
+
+// --- Chart 2: Dynamic Aktivitas Peminjaman & Okupansi (Green Line Chart) ---
+const maxWeeklyActivity = computed(() => {
+    const list = props.weeklyActivity || [];
+    if (list.length === 0) return 5;
+    const max = Math.max(...list.map(d => d.total || 0));
+    return max > 0 ? max : 5;
+});
+
+const totalWeeklySessions = computed(() => {
+    const list = props.weeklyActivity || [];
+    return list.reduce((acc, curr) => acc + (curr.total || 0), 0);
+});
+
+const weeklyPoints = computed(() => {
+    const list = props.weeklyActivity || [];
+    const dayFallbacks = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+    const activeList = list.length === 7 ? list : dayFallbacks.map((d, i) => ({ day: d, total: 0 }));
+    
+    const startX = 40;
+    const stepX = 43;
+    const baseY = 125;
+    const maxHeight = 85;
+    const maxVal = maxWeeklyActivity.value;
+
+    return activeList.map((item, i) => {
+        const val = item.total || 0;
+        const height = val > 0 ? Math.round((val / maxVal) * maxHeight) : 0;
+        const x = startX + (i * stepX);
+        const y = baseY - height;
+        return {
+            ...item,
+            x,
+            y,
+            val,
+        };
+    });
+});
+
+const weeklyPathD = computed(() => {
+    const pts = weeklyPoints.value;
+    if (pts.length === 0) return '';
+    return pts.reduce((acc, pt, i) => {
+        if (i === 0) return `M ${pt.x} ${pt.y}`;
+        const prev = pts[i - 1];
+        const cp1x = prev.x + (pt.x - prev.x) / 2;
+        const cp1y = prev.y;
+        const cp2x = prev.x + (pt.x - prev.x) / 2;
+        const cp2y = pt.y;
+        return `${acc} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${pt.x} ${pt.y}`;
+    }, '');
+});
+
+// --- Chart 3: Dynamic Ketuntasan Servis Fasilitas (Cyan Peak Wave Chart) ---
+const maxServiceTrend = computed(() => {
+    const list = props.serviceTrend || [];
+    if (list.length === 0) return 5;
+    const max = Math.max(...list.map(d => Math.max(d.completed || 0, d.incoming || 0)));
+    return max > 0 ? max : 5;
+});
+
+const servicePoints = computed(() => {
+    const list = props.serviceTrend || [];
+    const fallbackLabels = ['H-6', 'H-5', 'H-4', 'H-3', 'H-2', 'H-1', 'Hari Ini'];
+    const activeList = list.length === 7 ? list : fallbackLabels.map(l => ({ label: l, completed: 0, incoming: 0 }));
+
+    const startX = 40;
+    const stepX = 43;
+    const baseY = 125;
+    const maxHeight = 85;
+    const maxVal = maxServiceTrend.value;
+
+    return activeList.map((item, i) => {
+        const val = (item.completed || 0) + (item.incoming || 0);
+        const height = val > 0 ? Math.round((val / maxVal) * maxHeight) : 0;
+        const x = startX + (i * stepX);
+        const y = baseY - height;
+        return {
+            ...item,
+            x,
+            y,
+            val,
+        };
+    });
+});
+
+const servicePathD = computed(() => {
+    const pts = servicePoints.value;
+    if (pts.length === 0) return '';
+    return pts.reduce((acc, pt, i) => {
+        return i === 0 ? `M ${pt.x} ${pt.y}` : `${acc} L ${pt.x} ${pt.y}`;
+    }, '');
+});
 </script>
 
 <template>
     <div class="space-y-8 pt-2">
-        <!-- 1. Four Overhanging Metric Cards (Creative Tim Material Vue Theme) -->
+        <!-- 1. Four Overhanging Metric Cards (Creative Tim Material Style with Real University Sarpras Data) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 pt-3">
-            <!-- Card 1: Followers (Cyan / Sky Blue Gradient) -->
+            <!-- Card 1: Valuasi Total Aset (Cyan / Sky Blue Gradient) -->
             <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
                 <div class="absolute -top-4 left-4 w-14 h-14 rounded-xl bg-gradient-to-tr from-[#00bcd4] to-[#26c6da] shadow-lg shadow-cyan-500/40 flex items-center justify-center text-white">
-                    <Twitter class="w-6 h-6 stroke-[2]" />
-                </div>
-                <div class="pt-4 text-right">
-                    <span class="text-xs font-semibold text-slate-400">Followers</span>
-                    <div class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">
-                        +245
-                    </div>
-                    <div class="text-[10px] text-slate-400">
-                        Valuasi: {{ formatShortValuation(metrics.totalValuation) }}
-                    </div>
-                </div>
-                <hr class="border-t border-slate-100 my-3" />
-                <div class="text-xs text-slate-400 flex items-center gap-1.5">
-                    <Clock class="w-3.5 h-3.5" />
-                    <span>Just Updated</span>
-                </div>
-            </div>
-
-            <!-- Card 2: Website Visits (Hot Pink / Magenta Gradient) -->
-            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
-                <div class="absolute -top-4 left-4 w-14 h-14 rounded-xl bg-gradient-to-tr from-[#e91e63] to-[#ec407a] shadow-lg shadow-pink-500/40 flex items-center justify-center text-white">
-                    <BarChart3 class="w-6 h-6 stroke-[2]" />
-                </div>
-                <div class="pt-4 text-right">
-                    <span class="text-xs font-semibold text-slate-400">Website Visits</span>
-                    <div class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">
-                        75.521
-                    </div>
-                    <div class="text-[10px] text-slate-400">
-                        Total: {{ Number(metrics.totalAssets || 0).toLocaleString('id-ID') }} Aset Kampus
-                    </div>
-                </div>
-                <hr class="border-t border-slate-100 my-3" />
-                <div class="text-xs text-slate-400 flex items-center gap-1.5">
-                    <Tag class="w-3.5 h-3.5" />
-                    <span>Tracked from Google Analytics</span>
-                </div>
-            </div>
-
-            <!-- Card 3: Revenue (Emerald Green Gradient) -->
-            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
-                <div class="absolute -top-4 left-4 w-14 h-14 rounded-xl bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] shadow-lg shadow-emerald-500/40 flex items-center justify-center text-white">
-                    <Store class="w-6 h-6 stroke-[2]" />
-                </div>
-                <div class="pt-4 text-right">
-                    <span class="text-xs font-semibold text-slate-400">Revenue</span>
-                    <div class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">
-                        $ 34.245
-                    </div>
-                    <div class="text-[10px] text-slate-400">
-                        {{ Number(conditionCounts?.good || 0).toLocaleString('id-ID') }} Unit Kondisi Prima
-                    </div>
-                </div>
-                <hr class="border-t border-slate-100 my-3" />
-                <div class="text-xs text-slate-400 flex items-center gap-1.5">
-                    <Calendar class="w-3.5 h-3.5" />
-                    <span>Last 24 Hours</span>
-                </div>
-            </div>
-
-            <!-- Card 4: Bookings (Orange / Amber Gradient) -->
-            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
-                <div class="absolute -top-4 left-4 w-14 h-14 rounded-xl bg-gradient-to-tr from-[#ffa726] to-[#fb8c00] shadow-lg shadow-orange-500/40 flex items-center justify-center text-white">
                     <Building2 class="w-6 h-6 stroke-[2]" />
                 </div>
                 <div class="pt-4 text-right">
-                    <span class="text-xs font-semibold text-slate-400">Bookings</span>
+                    <span class="text-xs font-semibold text-slate-400">Valuasi Total Aset</span>
                     <div class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">
-                        184
+                        {{ formatShortValuation(metrics.totalValuation) }}
                     </div>
                     <div class="text-[10px] text-slate-400">
-                        {{ Number(metrics.activeLoans || 0).toLocaleString('id-ID') }} Sesi Peminjaman
+                        {{ formatRupiah(metrics.totalValuation) }}
                     </div>
                 </div>
                 <hr class="border-t border-slate-100 my-3" />
-                <div class="text-xs text-rose-500 font-semibold flex items-center gap-1.5">
+                <div class="text-xs text-slate-400 flex items-center gap-1.5">
+                    <Clock class="w-3.5 h-3.5 text-cyan-600" />
+                    <span>Akumulasi nilai inventaris aktif</span>
+                </div>
+            </div>
+
+            <!-- Card 2: Total Unit Aset (Hot Pink / Magenta Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-xl bg-gradient-to-tr from-[#e91e63] to-[#ec407a] shadow-lg shadow-pink-500/40 flex items-center justify-center text-white">
+                    <Layers class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-400">Total Unit Terdaftar</span>
+                    <div class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">
+                        {{ Number(metrics.totalAssets || 0).toLocaleString('id-ID') }} Unit
+                    </div>
+                    <div class="text-[10px] text-slate-400">
+                        Terdata dengan Token Barcode QR
+                    </div>
+                </div>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-400 flex items-center gap-1.5">
+                    <Tag class="w-3.5 h-3.5 text-pink-600" />
+                    <span>Tersebar di {{ distributionByFaculty?.length || 5 }} Fakultas & Unit</span>
+                </div>
+            </div>
+
+            <!-- Card 3: Aset Kondisi Prima (Emerald Green Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-xl bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] shadow-lg shadow-emerald-500/40 flex items-center justify-center text-white">
+                    <CheckCircle2 class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-400">Unit Kondisi Prima</span>
+                    <div class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">
+                        {{ Number(conditionCounts?.good || 0).toLocaleString('id-ID') }} Unit
+                    </div>
+                    <div class="text-[10px] text-emerald-600 font-bold">
+                        {{ metrics.totalAssets > 0 ? Math.round((conditionCounts.good / metrics.totalAssets) * 100) : 100 }}% Laik Operasional
+                    </div>
+                </div>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-slate-400 flex items-center gap-1.5">
+                    <Calendar class="w-3.5 h-3.5 text-emerald-600" />
+                    <span>{{ Number(conditionCounts?.light_damage || 0) + Number(conditionCounts?.heavy_damage || 0) }} unit butuh pemeliharaan</span>
+                </div>
+            </div>
+
+            <!-- Card 4: Peminjaman & Sirkulasi (Orange / Amber Gradient) -->
+            <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
+                <div class="absolute -top-4 left-4 w-14 h-14 rounded-xl bg-gradient-to-tr from-[#ffa726] to-[#fb8c00] shadow-lg shadow-orange-500/40 flex items-center justify-center text-white">
+                    <Repeat class="w-6 h-6 stroke-[2]" />
+                </div>
+                <div class="pt-4 text-right">
+                    <span class="text-xs font-semibold text-slate-400">Peminjaman Aktif</span>
+                    <div class="text-2xl font-black text-slate-800 mt-0.5 tracking-tight">
+                        {{ Number(metrics.activeLoans || 0).toLocaleString('id-ID') }} Sesi
+                    </div>
+                    <div class="text-[10px] text-slate-400">
+                        {{ pendingLoans?.length || 0 }} usulan menunggu review
+                    </div>
+                </div>
+                <hr class="border-t border-slate-100 my-3" />
+                <div class="text-xs text-amber-600 font-semibold flex items-center gap-1.5">
                     <AlertTriangle class="w-3.5 h-3.5" />
-                    <span>Get More Space...</span>
+                    <span>{{ metrics.activeTickets || 0 }} tiket servis dalam pengerjaan</span>
                 </div>
             </div>
         </div>
 
-        <!-- 2. Three Overhanging Visual Chart Cards (Creative Tim Exact 3 Visual Charts) -->
+        <!-- 2. Three Overhanging Visual Chart Cards (Sebaran Fakultas, Utilisasi Ruang, Ketuntasan Servis) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
-            <!-- Chart Card 1: Website Views (Pink / Rose Gradient Bar Chart) -->
+            <!-- Chart Card 1: Sebaran Sarana per Fakultas (Pink Gradient Dynamic Bar Chart) -->
             <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
-                <!-- Overhanging Negative-Margin Card Box -->
                 <div class="relative -mt-6 mx-2 rounded-xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#e91e63] to-[#f06292] shadow-pink-500/35">
                     <div class="h-44 flex flex-col justify-between">
-                        <!-- SVG Bar Chart with 12 Month Bars -->
+                        <!-- Dynamic SVG Bar Chart per Fakultas -->
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
                             <!-- Dashed Horizontal Guide Lines -->
-                            <line x1="25" y1="15" x2="310" y2="15" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="42" x2="310" y2="42" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="70" x2="310" y2="70" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="98" x2="310" y2="98" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="20" x2="310" y2="20" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="55" x2="310" y2="55" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="90" x2="310" y2="90" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
                             <line x1="25" y1="125" x2="310" y2="125" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
 
                             <!-- Y-Axis Labels -->
-                            <text x="20" y="19" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">800</text>
-                            <text x="20" y="46" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">600</text>
-                            <text x="20" y="74" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">400</text>
-                            <text x="20" y="102" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">200</text>
+                            <text x="20" y="24" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">{{ maxAssetInFaculty }}</text>
+                            <text x="20" y="59" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">{{ Math.round(maxAssetInFaculty * 0.66) }}</text>
+                            <text x="20" y="94" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">{{ Math.round(maxAssetInFaculty * 0.33) }}</text>
                             <text x="20" y="128" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">0</text>
 
-                            <!-- Vertical Bars (12 Months: Ja, Fe, Ma, Ap, Mai, Ju, Jul, Au, Se, Oc, No, De) -->
-                            <rect x="36" y="80" width="5" height="45" rx="2.5" fill="#ffffff" />
-                            <rect x="60" y="60" width="5" height="65" rx="2.5" fill="#ffffff" />
-                            <rect x="84" y="95" width="5" height="30" rx="2.5" fill="#ffffff" />
-                            <rect x="108" y="70" width="5" height="55" rx="2.5" fill="#ffffff" />
-                            <rect x="132" y="85" width="5" height="40" rx="2.5" fill="#ffffff" />
-                            <rect x="156" y="65" width="5" height="60" rx="2.5" fill="#ffffff" />
-                            <rect x="180" y="90" width="5" height="35" rx="2.5" fill="#ffffff" />
-                            <rect x="204" y="55" width="5" height="70" rx="2.5" fill="#ffffff" />
-                            <rect x="228" y="75" width="5" height="50" rx="2.5" fill="#ffffff" />
-                            <rect x="252" y="40" width="5" height="85" rx="2.5" fill="#ffffff" />
-                            <rect x="276" y="70" width="5" height="55" rx="2.5" fill="#ffffff" />
-                            <rect x="300" y="30" width="5" height="95" rx="2.5" fill="#ffffff" />
-
-                            <!-- X-Axis Labels -->
-                            <text x="38" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Ja</text>
-                            <text x="62" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Fe</text>
-                            <text x="86" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Ma</text>
-                            <text x="110" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Ap</text>
-                            <text x="134" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Mai</text>
-                            <text x="158" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Ju</text>
-                            <text x="182" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Jul</text>
-                            <text x="206" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Au</text>
-                            <text x="230" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Se</text>
-                            <text x="254" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">Oc</text>
-                            <text x="278" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">No</text>
-                            <text x="302" y="140" fill="rgba(255,255,255,0.85)" font-size="7.5" text-anchor="middle">De</text>
+                            <!-- Dynamic Bars per faculty -->
+                            <g v-for="(fac, idx) in facultyBars" :key="fac.id || idx">
+                                <rect 
+                                    :x="fac.x" 
+                                    :y="fac.y" 
+                                    :width="fac.width" 
+                                    :height="fac.height" 
+                                    rx="4" 
+                                    fill="#ffffff" 
+                                    :fill-opacity="fac.val > 0 ? 0.95 : 0.35"
+                                />
+                                <!-- Value above bar -->
+                                <text 
+                                    v-if="fac.val > 0"
+                                    :x="fac.x + (fac.width / 2)" 
+                                    :y="fac.y - 4" 
+                                    fill="#ffffff" 
+                                    font-size="8" 
+                                    font-weight="bold" 
+                                    text-anchor="middle"
+                                >
+                                    {{ fac.val }}
+                                </text>
+                                <!-- X-Axis Faculty Code -->
+                                <text 
+                                    :x="fac.x + (fac.width / 2)" 
+                                    y="142" 
+                                    fill="rgba(255,255,255,0.95)" 
+                                    font-size="9" 
+                                    font-weight="bold" 
+                                    text-anchor="middle"
+                                >
+                                    {{ fac.code }}
+                                </text>
+                            </g>
                         </svg>
                     </div>
                 </div>
 
                 <div class="pt-4 px-2">
-                    <h4 class="text-sm font-bold text-slate-800">Website Views</h4>
-                    <p class="text-xs text-slate-400 mt-0.5">Last Campaign Performance</p>
+                    <h4 class="text-sm font-bold text-slate-800">Sebaran Sarana per Fakultas</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Proporsi inventaris dan alat praktikum tiap fakultas</p>
                 </div>
                 <hr class="border-t border-slate-100 my-3" />
                 <div class="flex items-center gap-1.5 text-xs text-slate-400 px-2 pb-1">
                     <Clock class="w-3.5 h-3.5" />
-                    <span>updated 10 days ago</span>
+                    <span>Terdata di {{ distributionByFaculty?.length || 0 }} Fakultas & Unit (Total: {{ metrics.totalAssets || 0 }} Unit)</span>
                 </div>
             </div>
 
-            <!-- Chart Card 2: Daily Sales (Emerald Green Gradient Line Chart) -->
+            <!-- Chart Card 2: Aktivitas Peminjaman & Okupansi (Green Emerald Dynamic Smooth Line Chart) -->
             <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
-                <!-- Overhanging Negative-Margin Card Box -->
                 <div class="relative -mt-6 mx-2 rounded-xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] shadow-emerald-500/35">
                     <div class="h-44 flex flex-col justify-between">
-                        <!-- SVG Smooth Line Chart with Days M T W T F S S -->
+                        <!-- SVG Smooth Line Chart across academic weekdays (Sen - Min) -->
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
                             <!-- Dashed Horizontal Guide Lines -->
-                            <line x1="25" y1="18" x2="310" y2="18" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="45" x2="310" y2="45" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="72" x2="310" y2="72" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="99" x2="310" y2="99" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="20" x2="310" y2="20" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="55" x2="310" y2="55" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="90" x2="310" y2="90" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
                             <line x1="25" y1="125" x2="310" y2="125" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
 
                             <!-- Y-Axis Labels -->
-                            <text x="20" y="22" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">40</text>
-                            <text x="20" y="49" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">30</text>
-                            <text x="20" y="76" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">20</text>
-                            <text x="20" y="103" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">10</text>
+                            <text x="20" y="24" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">{{ maxWeeklyActivity }}</text>
+                            <text x="20" y="59" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">{{ Math.round(maxWeeklyActivity * 0.66) }}</text>
+                            <text x="20" y="94" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">{{ Math.round(maxWeeklyActivity * 0.33) }}</text>
                             <text x="20" y="128" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">0</text>
 
                             <!-- Smooth Wave Path -->
                             <path 
-                                d="M 45 110 C 70 100, 95 120, 120 90 C 145 60, 170 75, 195 55 C 220 35, 245 80, 270 60 C 285 45, 295 50, 305 40" 
+                                v-if="weeklyPathD"
+                                :d="weeklyPathD" 
                                 fill="none" 
                                 stroke="#ffffff" 
                                 stroke-width="2.5" 
@@ -347,64 +452,63 @@ const employees = ref([
                             />
 
                             <!-- Data Points -->
-                            <circle cx="45" cy="110" r="3" fill="#ffffff" />
-                            <circle cx="120" cy="90" r="3" fill="#ffffff" />
-                            <circle cx="195" cy="55" r="3" fill="#ffffff" />
-                            <circle cx="270" cy="60" r="3" fill="#ffffff" />
-                            <circle cx="305" cy="40" r="3" fill="#ffffff" />
-
-                            <!-- X-Axis Labels -->
-                            <text x="45" y="140" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">M</text>
-                            <text x="88" y="140" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">T</text>
-                            <text x="131" y="140" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">W</text>
-                            <text x="174" y="140" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">T</text>
-                            <text x="217" y="140" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">F</text>
-                            <text x="260" y="140" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">S</text>
-                            <text x="303" y="140" fill="rgba(255,255,255,0.85)" font-size="8" text-anchor="middle">S</text>
+                            <g v-for="pt in weeklyPoints" :key="pt.day">
+                                <circle :cx="pt.x" :cy="pt.y" r="3" fill="#ffffff" />
+                                <text 
+                                    v-if="pt.val > 0"
+                                    :x="pt.x" 
+                                    :y="pt.y - 6" 
+                                    fill="#ffffff" 
+                                    font-size="8" 
+                                    font-weight="bold" 
+                                    text-anchor="middle"
+                                >
+                                    {{ pt.val }}
+                                </text>
+                                <text :x="pt.x" y="142" fill="rgba(255,255,255,0.9)" font-size="8" font-weight="bold" text-anchor="middle">
+                                    {{ pt.day }}
+                                </text>
+                            </g>
                         </svg>
                     </div>
                 </div>
 
                 <div class="pt-4 px-2">
-                    <h4 class="text-sm font-bold text-slate-800">Daily Sales</h4>
+                    <h4 class="text-sm font-bold text-slate-800">Aktivitas Peminjaman & Okupansi</h4>
                     <p class="text-xs text-slate-400 mt-0.5">
-                        <span class="text-emerald-500 font-bold flex items-center inline-flex">
-                            <TrendingUp class="w-3.5 h-3.5 mr-0.5" /> ↑ 55%
+                        <span class="text-emerald-500 font-bold inline-flex items-center">
+                            <TrendingUp class="w-3.5 h-3.5 mr-0.5" /> {{ totalWeeklySessions }} Sesi
                         </span>
-                        increase in today sales.
+                        reservasi ruangan & peminjaman alat minggu ini
                     </p>
                 </div>
                 <hr class="border-t border-slate-100 my-3" />
                 <div class="flex items-center gap-1.5 text-xs text-slate-400 px-2 pb-1">
                     <Clock class="w-3.5 h-3.5" />
-                    <span>updated 4 minutes ago</span>
+                    <span>Terhubung langsung dengan jadwal perkuliahan & kegiatan kampus</span>
                 </div>
             </div>
 
-            <!-- Chart Card 3: Completed Tasks (Cyan / Sky Blue Gradient Peak Wave Chart) -->
+            <!-- Chart Card 3: Ketuntasan Servis Fasilitas (Cyan Sky Blue Gradient Dynamic Peak Wave Chart) -->
             <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
-                <!-- Overhanging Negative-Margin Card Box -->
                 <div class="relative -mt-6 mx-2 rounded-xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#00bcd4] to-[#26c6da] shadow-cyan-500/35">
                     <div class="h-44 flex flex-col justify-between">
-                        <!-- SVG Peak Wave Line Chart (12am, 3pm, 6pm, 9pm, 12pm, 3am, 6am, 9am) -->
+                        <!-- SVG Peak Wave Line Chart across Days H-6 s.d Hari Ini -->
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
                             <!-- Dashed Horizontal Guide Lines -->
-                            <line x1="25" y1="15" x2="310" y2="15" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="42" x2="310" y2="42" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="70" x2="310" y2="70" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
-                            <line x1="25" y1="98" x2="310" y2="98" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="20" x2="310" y2="20" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="55" x2="310" y2="55" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
+                            <line x1="25" y1="90" x2="310" y2="90" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3" stroke-width="1" />
                             <line x1="25" y1="125" x2="310" y2="125" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
 
                             <!-- Y-Axis Labels -->
-                            <text x="20" y="19" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">800</text>
-                            <text x="20" y="46" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">600</text>
-                            <text x="20" y="74" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">400</text>
-                            <text x="20" y="102" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">200</text>
+                            <text x="20" y="24" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">{{ maxServiceTrend }}</text>
                             <text x="20" y="128" fill="rgba(255,255,255,0.7)" font-size="8" text-anchor="end">0</text>
 
-                            <!-- Peak Line Path: rises high at 3pm, then slopes down -->
+                            <!-- Peak Line Path -->
                             <path 
-                                d="M 40 100 L 75 40 L 115 80 L 155 90 L 195 95 L 235 98 L 275 92 L 305 96" 
+                                v-if="servicePathD"
+                                :d="servicePathD" 
                                 fill="none" 
                                 stroke="#ffffff" 
                                 stroke-width="2.5" 
@@ -413,218 +517,328 @@ const employees = ref([
                             />
 
                             <!-- Data Points -->
-                            <circle cx="40" cy="100" r="3" fill="#ffffff" />
-                            <circle cx="75" cy="40" r="3" fill="#ffffff" />
-                            <circle cx="115" cy="80" r="3" fill="#ffffff" />
-                            <circle cx="155" cy="90" r="3" fill="#ffffff" />
-                            <circle cx="195" cy="95" r="3" fill="#ffffff" />
-                            <circle cx="235" cy="98" r="3" fill="#ffffff" />
-                            <circle cx="275" cy="92" r="3" fill="#ffffff" />
-                            <circle cx="305" cy="96" r="3" fill="#ffffff" />
-
-                            <!-- X-Axis Labels -->
-                            <text x="40" y="140" fill="rgba(255,255,255,0.85)" font-size="6.5" text-anchor="middle">12am</text>
-                            <text x="75" y="140" fill="rgba(255,255,255,0.85)" font-size="6.5" text-anchor="middle">3pm</text>
-                            <text x="115" y="140" fill="rgba(255,255,255,0.85)" font-size="6.5" text-anchor="middle">6pm</text>
-                            <text x="155" y="140" fill="rgba(255,255,255,0.85)" font-size="6.5" text-anchor="middle">9pm</text>
-                            <text x="195" y="140" fill="rgba(255,255,255,0.85)" font-size="6.5" text-anchor="middle">12pm</text>
-                            <text x="235" y="140" fill="rgba(255,255,255,0.85)" font-size="6.5" text-anchor="middle">3am</text>
-                            <text x="275" y="140" fill="rgba(255,255,255,0.85)" font-size="6.5" text-anchor="middle">6am</text>
-                            <text x="305" y="140" fill="rgba(255,255,255,0.85)" font-size="6.5" text-anchor="middle">9am</text>
+                            <g v-for="pt in servicePoints" :key="pt.label">
+                                <circle :cx="pt.x" :cy="pt.y" r="3" fill="#ffffff" />
+                                <text 
+                                    v-if="pt.val > 0"
+                                    :x="pt.x" 
+                                    :y="pt.y - 6" 
+                                    fill="#ffffff" 
+                                    font-size="8" 
+                                    font-weight="bold" 
+                                    text-anchor="middle"
+                                >
+                                    {{ pt.val }}
+                                </text>
+                                <text :x="pt.x" y="142" fill="rgba(255,255,255,0.85)" font-size="8" font-weight="bold" text-anchor="middle">
+                                    {{ pt.label }}
+                                </text>
+                            </g>
                         </svg>
                     </div>
                 </div>
 
                 <div class="pt-4 px-2">
-                    <h4 class="text-sm font-bold text-slate-800">Completed Tasks</h4>
-                    <p class="text-xs text-slate-400 mt-0.5">Last Campaign Performance</p>
+                    <h4 class="text-sm font-bold text-slate-800">Ketuntasan Servis Fasilitas</h4>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        <span class="text-cyan-600 font-bold">
+                            {{ metrics.activeTickets || 0 }} tiket
+                        </span>
+                        servis aktif dalam penanganan teknisi sarpras
+                    </p>
                 </div>
                 <hr class="border-t border-slate-100 my-3" />
                 <div class="flex items-center gap-1.5 text-xs text-slate-400 px-2 pb-1">
                     <Clock class="w-3.5 h-3.5" />
-                    <span>campaign sent 26 minutes ago</span>
+                    <span>Monitoring respon & kecepatan penyelesaian kerusakan</span>
                 </div>
             </div>
         </div>
 
-        <!-- 3. Bottom Row: Left Employees Stats Table & Right Tasks Card with Tabs (Exact Material Vue Spec) -->
+        <!-- 3. Bottom Row: 2 Functional Cards (Left: Sirkulasi Aset | Right: Antrean Layanan & Tugas Sarpras) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
-            <!-- Left Card: Employees Stats (Overhanging Orange Box Header) -->
-            <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
-                <!-- Overhanging Orange Box -->
-                <div class="relative -mt-6 mx-2 rounded-xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#ffa726] to-[#fb8c00] shadow-orange-500/35">
-                    <h3 class="text-base font-bold text-white leading-tight">Employees Stats</h3>
-                    <p class="text-xs text-white/80 mt-0.5">New employees on 15th September, 2016</p>
-                </div>
+            <!-- Left Card: Sirkulasi Peminjaman Aset Terkini (Overhanging Orange Box Header) -->
+            <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6 flex flex-col justify-between">
+                <div>
+                    <!-- Overhanging Orange Box -->
+                    <div class="relative -mt-6 mx-2 rounded-xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#ffa726] to-[#fb8c00] shadow-orange-500/35">
+                        <h3 class="text-base font-bold text-white leading-tight">Sirkulasi Peminjaman Aset Terkini</h3>
+                        <p class="text-xs text-white/80 mt-0.5">Data sirkulasi peminjaman alat & inventaris civitas kampus</p>
+                    </div>
 
-                <!-- Table Content -->
-                <div class="overflow-x-auto pt-4 px-2">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="border-b border-slate-100 text-xs">
-                                <th class="pb-3 text-[#fb8c00] font-bold">ID</th>
-                                <th class="pb-3 font-semibold text-slate-600">Name</th>
-                                <th class="pb-3 font-semibold text-slate-600">Salary</th>
-                                <th class="pb-3 font-semibold text-slate-600">Country</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <tr 
-                                v-for="emp in employees" 
-                                :key="emp.id" 
-                                class="hover:bg-slate-50/70 transition"
-                            >
-                                <td class="py-3.5 text-slate-500 font-medium">{{ emp.id }}</td>
-                                <td class="py-3.5">
-                                    <div class="font-medium text-slate-800">{{ emp.name }}</div>
-                                    <div class="text-[10px] text-slate-400">{{ emp.role }}</div>
-                                </td>
-                                <td class="py-3.5 font-medium text-slate-700">
-                                    {{ emp.salary }}
-                                </td>
-                                <td class="py-3.5 text-slate-600 font-medium">
-                                    {{ emp.faculty }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <!-- Table Content -->
+                    <div class="overflow-x-auto pt-4 px-2">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="border-b border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                    <th class="pb-3 text-[#fb8c00]">KODE</th>
+                                    <th class="pb-3">PEMOHON & FAKULTAS</th>
+                                    <th class="pb-3">FASILITAS / ASET</th>
+                                    <th class="pb-3 text-right">STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr 
+                                    v-if="recentCirculations && recentCirculations.length > 0"
+                                    v-for="loan in recentCirculations" 
+                                    :key="loan.id" 
+                                    class="hover:bg-slate-50/70 transition"
+                                >
+                                    <td class="py-3 font-mono font-bold text-slate-700">
+                                        <Link :href="route('loans.show', loan.id)" class="text-orange-600 hover:underline">
+                                            {{ loan.transaction_code }}
+                                        </Link>
+                                    </td>
+                                    <td class="py-3">
+                                        <div class="font-bold text-slate-800">{{ loan.borrower?.name }}</div>
+                                        <div class="text-[10px] text-slate-400">{{ loan.borrower?.department || 'Civitas Akademika' }}</div>
+                                    </td>
+                                    <td class="py-3">
+                                        <div class="font-medium text-slate-700">
+                                            {{ loan.loan_items?.[0]?.asset?.name || 'Unit Sarpras' }}
+                                        </div>
+                                        <div class="text-[10px] text-slate-400">
+                                            {{ loan.loan_items?.length || 1 }} Unit • Kembali: {{ formatDate(loan.expected_return_date) }}
+                                        </div>
+                                    </td>
+                                    <td class="py-3 text-right">
+                                        <span 
+                                            class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border"
+                                            :class="getLoanBadge(loan.status).class"
+                                        >
+                                            {{ getLoanBadge(loan.status).label }}
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr v-else>
+                                    <td colspan="4" class="py-8 text-center text-slate-400">
+                                        Belum ada data sirkulasi peminjaman.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="pt-4 pb-1 px-2 border-t border-slate-100 mt-3 flex items-center justify-between text-xs text-slate-400">
-                    <span>Sirkulasi & Staf Sarpras</span>
-                    <Link :href="route('loans.index')" class="font-semibold text-orange-600 hover:text-orange-700">
-                        Lihat Seluruh Data &rarr;
+                    <span>Sirkulasi Inventaris & Logistik</span>
+                    <Link :href="route('loans.index')" class="font-bold text-orange-600 hover:text-orange-700 flex items-center gap-1">
+                        Buka Seluruh Peminjaman
+                        <ArrowUpRight class="w-3.5 h-3.5" />
                     </Link>
                 </div>
             </div>
 
-            <!-- Right Card: Tasks with Tabs (Overhanging Hot Pink / Magenta Box Header) -->
-            <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
-                <!-- Overhanging Pink Box with Tabs -->
-                <div class="relative -mt-6 mx-2 rounded-xl p-3 sm:p-4 text-white shadow-lg bg-gradient-to-tr from-[#ec407a] to-[#d81b60] shadow-pink-500/35 flex flex-wrap items-center justify-between gap-2">
-                    <div class="font-bold text-sm sm:text-base">
-                        Tasks:
-                    </div>
+            <!-- Right Card: Antrean Layanan & Tugas Sarpras (Overhanging Pink Box with 3 Tabs) -->
+            <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6 flex flex-col justify-between">
+                <div>
+                    <!-- Overhanging Pink Box with 3 Tabs -->
+                    <div class="relative -mt-6 mx-2 rounded-xl p-3 sm:p-4 text-white shadow-lg bg-gradient-to-tr from-[#ec407a] to-[#d81b60] shadow-pink-500/35 flex flex-wrap items-center justify-between gap-2">
+                        <div class="font-bold text-sm sm:text-base">
+                            Antrean Layanan:
+                        </div>
 
-                    <!-- 3 Navigation Tabs (BUGS, WEBSITE, SERVER) -->
-                    <div class="flex items-center gap-1 text-xs">
-                        <button
-                            type="button"
-                            @click="activeTaskTab = 'bugs'"
-                            :class="[
-                                'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition',
-                                activeTaskTab === 'bugs' ? 'bg-white/20 text-white shadow-xs' : 'text-white/80 hover:bg-white/10'
-                            ]"
-                        >
-                            <Bug class="w-3.5 h-3.5" />
-                            <span>BUGS</span>
-                        </button>
-
-                        <button
-                            type="button"
-                            @click="activeTaskTab = 'website'"
-                            :class="[
-                                'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition',
-                                activeTaskTab === 'website' ? 'bg-white/25 text-white shadow-xs' : 'text-white/80 hover:bg-white/10'
-                            ]"
-                        >
-                            <Code class="w-3.5 h-3.5" />
-                            <span>WEBSITE</span>
-                        </button>
-
-                        <button
-                            type="button"
-                            @click="activeTaskTab = 'server'"
-                            :class="[
-                                'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition',
-                                activeTaskTab === 'server' ? 'bg-white/20 text-white shadow-xs' : 'text-white/80 hover:bg-white/10'
-                            ]"
-                        >
-                            <Cloud class="w-3.5 h-3.5" />
-                            <span>SERVER</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tasks Checklist Body -->
-                <div class="pt-3 px-2 divide-y divide-slate-100">
-                    <div 
-                        v-for="(task, idx) in tasks" 
-                        :key="task.id" 
-                        class="py-3 flex items-start gap-3 hover:bg-slate-50/60 p-2 rounded-xl transition group"
-                    >
-                        <!-- Checkbox -->
-                        <div class="pt-0.5">
-                            <button 
+                        <!-- 3 Functional Tabs (PEMINJAMAN, SERVIS & TIKET, LOGISTIK ATK) -->
+                        <div class="flex items-center gap-1 text-xs">
+                            <button
                                 type="button"
-                                @click="toggleTask(idx)"
+                                @click="activeTaskTab = 'loans'"
                                 :class="[
-                                    'w-4 h-4 rounded flex items-center justify-center border transition',
-                                    task.completed ? 'bg-[#9c27b0] border-[#9c27b0] text-white' : 'border-slate-300 bg-white hover:border-[#9c27b0]'
+                                    'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition',
+                                    activeTaskTab === 'loans' ? 'bg-white/25 text-white shadow-xs' : 'text-white/80 hover:bg-white/10'
                                 ]"
                             >
-                                <Check v-if="task.completed" class="w-3 h-3 stroke-[3]" />
+                                <Repeat class="w-3.5 h-3.5" />
+                                <span>PEMINJAMAN ({{ (pendingLoans?.length || 0) + (pendingBookings?.length || 0) }})</span>
                             </button>
-                        </div>
 
-                        <!-- Task Text -->
-                        <div class="flex-1 min-w-0" @click="toggleTask(idx)">
-                            <div 
+                            <button
+                                type="button"
+                                @click="activeTaskTab = 'tickets'"
                                 :class="[
-                                    'text-xs font-medium cursor-pointer transition',
-                                    task.completed ? 'line-through text-slate-400' : 'text-slate-700'
+                                    'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition',
+                                    activeTaskTab === 'tickets' ? 'bg-white/25 text-white shadow-xs' : 'text-white/80 hover:bg-white/10'
                                 ]"
                             >
-                                {{ task.title }}
+                                <Wrench class="w-3.5 h-3.5" />
+                                <span>SERVIS ({{ urgentTickets?.length || 0 }})</span>
+                            </button>
+
+                            <button
+                                type="button"
+                                @click="activeTaskTab = 'stock'"
+                                :class="[
+                                    'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition',
+                                    activeTaskTab === 'stock' ? 'bg-white/25 text-white shadow-xs' : 'text-white/80 hover:bg-white/10'
+                                ]"
+                            >
+                                <Boxes class="w-3.5 h-3.5" />
+                                <span>ATK ({{ lowStockItems?.length || 0 }})</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tab 1: Peminjaman Antrean Review -->
+                    <div v-if="activeTaskTab === 'loans'" class="pt-3 px-2 divide-y divide-slate-100">
+                        <div 
+                            v-if="pendingLoans && pendingLoans.length > 0"
+                            v-for="loan in pendingLoans" 
+                            :key="loan.id" 
+                            class="py-3 flex items-center justify-between gap-3 hover:bg-slate-50/70 p-2 rounded-xl transition"
+                        >
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center font-bold text-xs shrink-0">
+                                    <Repeat class="w-4 h-4" />
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-slate-800 truncate">
+                                        {{ loan.transaction_code }} • {{ loan.borrower?.name }}
+                                    </div>
+                                    <div class="text-[11px] text-slate-500 truncate">
+                                        {{ loan.purpose || 'Penggunaan sarana perkuliahan/riset' }}
+                                    </div>
+                                    <div class="text-[10px] text-slate-400">
+                                        {{ loan.loan_items?.[0]?.asset?.name || 'Unit Sarpras' }} ({{ loan.loan_items?.length || 1 }} Unit)
+                                    </div>
+                                </div>
                             </div>
-                            <div class="text-[10px] text-slate-400 mt-0.5">
-                                {{ task.subtitle }}
-                            </div>
+                            <Link 
+                                :href="route('loans.show', loan.id)" 
+                                class="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold shadow-xs shrink-0 transition"
+                            >
+                                Review
+                            </Link>
                         </div>
 
-                        <!-- Action Icons (Pencil purple & X red) -->
-                        <div class="flex items-center gap-2 pt-0.5 opacity-60 group-hover:opacity-100 transition">
-                            <button 
-                                type="button" 
-                                class="text-purple-600 hover:text-purple-800 transition"
-                                title="Edit Task"
+                        <!-- Pending Room Bookings -->
+                        <div 
+                            v-if="pendingBookings && pendingBookings.length > 0"
+                            v-for="booking in pendingBookings" 
+                            :key="booking.id" 
+                            class="py-3 flex items-center justify-between gap-3 hover:bg-slate-50/70 p-2 rounded-xl transition"
+                        >
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-[#1e3a8a] flex items-center justify-center font-bold text-xs shrink-0">
+                                    <DoorOpen class="w-4 h-4" />
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-slate-800 truncate">
+                                        {{ booking.booking_code }} • {{ booking.user?.name }}
+                                    </div>
+                                    <div class="text-[11px] text-slate-500 truncate">
+                                        {{ booking.room?.name }} • {{ formatDate(booking.booking_date) }} ({{ booking.start_time }}-{{ booking.end_time }})
+                                    </div>
+                                    <div class="text-[10px] text-slate-400">
+                                        {{ booking.purpose }}
+                                    </div>
+                                </div>
+                            </div>
+                            <Link 
+                                :href="route('room-bookings.show', booking.id)" 
+                                class="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold shadow-xs shrink-0 transition"
                             >
-                                <Pencil class="w-3.5 h-3.5" />
-                            </button>
-                            <button 
-                                type="button" 
-                                @click="removeTask(idx)"
-                                class="text-rose-500 hover:text-rose-700 transition"
-                                title="Hapus Task"
+                                Review
+                            </Link>
+                        </div>
+
+                        <div v-if="(!pendingLoans?.length) && (!pendingBookings?.length)" class="py-8 text-center text-slate-400">
+                            <CheckCircle2 class="w-8 h-8 text-emerald-500 mx-auto mb-2" />
+                            <div class="text-xs font-semibold text-slate-700">Semua usulan telah disetujui!</div>
+                            <div class="text-[11px] text-slate-400 mt-0.5">Tidak ada antrean persetujuan peminjaman alat atau ruangan.</div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Tiket Servis Mendesak -->
+                    <div v-else-if="activeTaskTab === 'tickets'" class="pt-3 px-2 divide-y divide-slate-100">
+                        <div 
+                            v-if="urgentTickets && urgentTickets.length > 0"
+                            v-for="ticket in urgentTickets" 
+                            :key="ticket.id" 
+                            class="py-3 flex items-center justify-between gap-3 hover:bg-slate-50/70 p-2 rounded-xl transition"
+                        >
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div 
+                                    :class="[
+                                        'w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs shrink-0',
+                                        ticket.priority === 'critical' ? 'bg-rose-50 text-rose-700' : 'bg-amber-50 text-amber-700'
+                                    ]"
+                                >
+                                    <Wrench class="w-4 h-4" />
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-slate-800 truncate">
+                                        {{ ticket.ticket_code }} • {{ ticket.asset?.name }}
+                                    </div>
+                                    <div class="text-[11px] text-slate-500 truncate">
+                                        {{ ticket.issue_description }}
+                                    </div>
+                                    <div class="text-[10px] text-slate-400">
+                                        Teknisi: {{ ticket.technician?.name || 'Belum ditugaskan' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <Link 
+                                :href="route('maintenance.show', ticket.id)" 
+                                class="px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold shadow-xs shrink-0 transition"
                             >
-                                <X class="w-3.5 h-3.5" />
-                            </button>
+                                Detail
+                            </Link>
+                        </div>
+
+                        <div v-else class="py-8 text-center text-slate-400">
+                            <CheckCircle2 class="w-8 h-8 text-emerald-500 mx-auto mb-2" />
+                            <div class="text-xs font-semibold text-slate-700">Tidak ada tiket servis mendesak</div>
+                            <div class="text-[11px] text-slate-400 mt-0.5">Seluruh laporan pemeliharaan telah ditangani teknisi.</div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Stok Logistik ATK Kritis -->
+                    <div v-else-if="activeTaskTab === 'stock'" class="pt-3 px-2 divide-y divide-slate-100">
+                        <div 
+                            v-if="lowStockItems && lowStockItems.length > 0"
+                            v-for="item in lowStockItems" 
+                            :key="item.id" 
+                            class="py-3 flex items-center justify-between gap-3 hover:bg-slate-50/70 p-2 rounded-xl transition"
+                        >
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-700 flex items-center justify-center font-bold text-xs shrink-0">
+                                    <AlertCircle class="w-4 h-4" />
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-slate-800 truncate">
+                                        {{ item.name }}
+                                    </div>
+                                    <div class="text-[11px] text-rose-600 font-semibold">
+                                        Sisa: {{ item.current_stock }} {{ item.unit }} (Batas Min: {{ item.minimum_stock }})
+                                    </div>
+                                    <div class="text-[10px] text-slate-400">
+                                        Kategori: {{ item.category?.name || 'ATK / Habis Pakai' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <Link 
+                                :href="route('consumables.index')" 
+                                class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold shadow-xs shrink-0 transition"
+                            >
+                                Restock
+                            </Link>
+                        </div>
+
+                        <div v-else class="py-8 text-center text-slate-400">
+                            <CheckCircle2 class="w-8 h-8 text-emerald-500 mx-auto mb-2" />
+                            <div class="text-xs font-semibold text-slate-700">Stok logistik aman</div>
+                            <div class="text-[11px] text-slate-400 mt-0.5">Semua barang habis pakai berada di atas kuota minimum.</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="pt-4 pb-1 px-2 border-t border-slate-100 mt-2 flex items-center justify-between text-xs text-slate-400">
-                    <span>Task Operasional Sarpras</span>
-                    <span class="text-purple-600 font-bold text-[11px]">{{ tasks.filter(t => t.completed).length }} / {{ tasks.length }} Selesai</span>
+                    <span>Operasional Fasilitas & Logistik</span>
+                    <Link :href="route('maintenance.index')" class="text-pink-600 font-bold hover:underline">
+                        Kelola Seluruh Tugas &rarr;
+                    </Link>
                 </div>
-            </div>
-        </div>
-
-        <!-- 4. Bottom Center Pill: Vue.js + Laravel Tech Stack Signature Badge (As in Image) -->
-        <div class="flex items-center justify-center pt-8 pb-4">
-            <div class="inline-flex items-center gap-3 px-6 py-2.5 bg-white rounded-full shadow-lg border border-slate-100 text-sm font-extrabold text-slate-800">
-                <!-- Vue.js Icon -->
-                <svg class="w-5 h-5" viewBox="0 0 261 226">
-                    <path d="M161.096.001l-30.225 52.351L100.647.001H-.005l130.877 226.688L261.749.001z" fill="#41B883"/>
-                    <path d="M161.096.001l-30.225 52.351L100.647.001H52.246l78.626 136.181L209.497.001z" fill="#34495E"/>
-                </svg>
-                <span>Vue.js</span>
-                <span class="text-slate-300 font-normal">+</span>
-                <!-- Laravel Icon -->
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#FF2D20">
-                    <path d="M21.5 6.5l-8.5-4.9c-.6-.3-1.4-.3-2 0L2.5 6.5c-.6.3-1 1-1 1.7v9.6c0 .7.4 1.4 1 1.7l8.5 4.9c.3.2.7.2 1 .2s.7-.1 1-.2l8.5-4.9c.6-.3 1-1 1-1.7V8.2c0-.7-.4-1.4-1-1.7zm-9.5-3.3l7 4-7 4-7-4 7-4zm-8 6l7 4v8l-7-4v-8zm9 12v-8l7-4v8l-7 4z"/>
-                </svg>
-                <span>Laravel</span>
             </div>
         </div>
     </div>
