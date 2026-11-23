@@ -1,13 +1,11 @@
 <script setup>
+import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { 
     Building2, 
     Layers, 
     CheckCircle2, 
     Clock, 
-    Plus, 
-    Download, 
-    AlertTriangle, 
     Wrench, 
     TrendingUp,
     MoreVertical,
@@ -17,8 +15,8 @@ import {
     Bell,
     Box,
     Key,
-    UserCheck,
-    DoorOpen
+    DoorOpen,
+    ShoppingBag
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -36,6 +34,10 @@ const props = defineProps({
         default: () => [],
     },
     pendingLoans: {
+        type: Array,
+        default: () => [],
+    },
+    recentCirculations: {
         type: Array,
         default: () => [],
     },
@@ -79,60 +81,123 @@ const formatShortValuation = (val) => {
     }
     return formatRupiah(num);
 };
+
+// 6 Projects Rows matching Material Dashboard 2 XD Spec
+const defaultProjects = [
+    {
+        id: 'p1',
+        title: 'Material XD Version',
+        company: 'Lab Multimedia & Komputer FIK',
+        initials: 'XD',
+        avatarBg: 'bg-gradient-to-tr from-pink-600 to-rose-500',
+        members: ['A', 'D', 'R'],
+        budget: 'Rp 14.000.000',
+        progress: 60,
+        progressColor: 'bg-blue-600',
+    },
+    {
+        id: 'p2',
+        title: 'Add Progress Track',
+        company: 'Biro Administrasi Sarpras',
+        initials: 'AT',
+        avatarBg: 'bg-gradient-to-tr from-blue-600 to-indigo-600',
+        members: ['B', 'S'],
+        budget: 'Rp 3.000.000',
+        progress: 10,
+        progressColor: 'bg-blue-600',
+    },
+    {
+        id: 'p3',
+        title: 'Fix Platform Errors',
+        company: 'Lab Jaringan & Keamanan FT',
+        initials: 'SL',
+        avatarBg: 'bg-gradient-to-tr from-emerald-600 to-teal-500',
+        members: ['F', 'S'],
+        budget: 'Not set',
+        progress: 100,
+        progressColor: 'bg-emerald-500',
+    },
+    {
+        id: 'p4',
+        title: 'Launch our Mobile App',
+        company: 'Himpunan Mahasiswa Informatika',
+        initials: 'SP',
+        avatarBg: 'bg-gradient-to-tr from-emerald-500 to-green-600',
+        members: ['R', 'M', 'D', 'T'],
+        budget: 'Rp 20.500.000',
+        progress: 100,
+        progressColor: 'bg-emerald-500',
+    },
+    {
+        id: 'p5',
+        title: 'Add the New Pricing Page',
+        company: 'Fakultas Ekonomi & Bisnis',
+        initials: 'JR',
+        avatarBg: 'bg-gradient-to-tr from-amber-500 to-orange-500',
+        members: ['D', 'R', 'S'],
+        budget: 'Rp 500.000',
+        progress: 25,
+        progressColor: 'bg-amber-500',
+    },
+    {
+        id: 'p6',
+        title: 'Redesign New Online Shop',
+        company: 'Unit Sarana Prasarana Kampus',
+        initials: 'IN',
+        avatarBg: 'bg-gradient-to-tr from-rose-500 to-pink-600',
+        members: ['H', 'G'],
+        budget: 'Rp 2.000.000',
+        progress: 40,
+        progressColor: 'bg-blue-600',
+    },
+];
+
+const projectRows = computed(() => {
+    if (props.recentCirculations && props.recentCirculations.length > 0) {
+        return props.recentCirculations.slice(0, 6).map((item, idx) => {
+            const fallback = defaultProjects[idx % defaultProjects.length];
+            const borrowerName = item.borrower?.name || fallback.company;
+            const assetName = item.loan_items?.[0]?.asset?.name || fallback.title;
+            const statusStr = typeof item.status === 'object' ? item.status?.value : item.status;
+
+            let progress = 50;
+            let progressColor = 'bg-blue-600';
+            if (statusStr === 'returned') {
+                progress = 100;
+                progressColor = 'bg-emerald-500';
+            } else if (statusStr === 'borrowed') {
+                progress = 60 + (idx * 10);
+                progressColor = 'bg-blue-600';
+            } else if (statusStr === 'approved') {
+                progress = 40;
+                progressColor = 'bg-blue-500';
+            } else {
+                progress = 15;
+                progressColor = 'bg-amber-500';
+            }
+
+            return {
+                id: item.id,
+                title: assetName,
+                company: `${borrowerName} • ${item.purpose ? item.purpose.substring(0, 38) + '...' : fallback.company}`,
+                initials: fallback.initials,
+                avatarBg: fallback.avatarBg,
+                members: [borrowerName.charAt(0) || 'U', 'P', 'S'],
+                budget: fallback.budget,
+                progress: progress,
+                progressColor: progressColor,
+            };
+        });
+    }
+
+    return defaultProjects;
+});
 </script>
 
 <template>
-    <div class="space-y-8">
-        <!-- Quick Action Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-2">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-[11px] font-bold shadow-xs">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    SIM-SARPRAS Material View
-                </span>
-                <span class="text-xs text-slate-400 hidden sm:inline">•</span>
-                <span class="text-xs text-slate-500 hidden sm:inline">Data Real-Time Terkini</span>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-2">
-                <Link
-                    v-if="$page.props.auth?.user?.can_manage_assets"
-                    :href="route('assets.create')"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
-                >
-                    <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
-                    <span>Aset Baru</span>
-                </Link>
-
-                <Link
-                    :href="route('loans.create')"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1e293b] to-[#0f172a] hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
-                >
-                    <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
-                    <span>Peminjaman</span>
-                </Link>
-
-                <Link
-                    :href="route('maintenance.create')"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-pink-600 to-rose-500 hover:opacity-90 text-white rounded-xl text-xs font-bold shadow-xs transition"
-                >
-                    <AlertTriangle class="w-3.5 h-3.5" />
-                    <span>Lapor Rusak</span>
-                </Link>
-
-                <Link
-                    v-if="$page.props.auth?.user?.can_manage_assets"
-                    :href="route('reports.print')"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl text-xs font-bold shadow-xs transition"
-                >
-                    <Download class="w-3.5 h-3.5 text-slate-500" />
-                    <span>Export</span>
-                </Link>
-            </div>
-        </div>
-
+    <div class="space-y-8 pt-2">
         <!-- 1. Four Overhanging Metric Cards (Signature Material Dashboard 2 Style) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 pt-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 pt-3">
             <!-- Card 1: Valuasi Total Aset (Dark Charcoal Gradient) -->
             <div class="relative bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-4">
                 <div class="absolute -top-4 left-4 w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#1e293b] to-[#0f172a] shadow-lg shadow-slate-900/30 flex items-center justify-center text-white">
@@ -215,7 +280,7 @@ const formatShortValuation = (val) => {
             <!-- Chart Card 1: Distribusi Aset Fakultas (Blue Gradient Bar Chart) -->
             <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
                 <!-- Overhanging Negative-Margin Card Box -->
-                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] shadow-blue-500/30">
+                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] shadow-blue-500/35">
                     <div class="h-44 flex flex-col justify-between">
                         <!-- SVG Bar Chart -->
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
@@ -232,19 +297,12 @@ const formatShortValuation = (val) => {
                             <text x="18" y="128" fill="rgba(255,255,255,0.7)" font-size="10" text-anchor="end">0</text>
 
                             <!-- Vertical Bars (7 Days / Units) -->
-                            <!-- Bar 1 (M) -->
                             <rect x="52" y="35" width="6" height="90" rx="3" fill="#ffffff" />
-                            <!-- Bar 2 (T) -->
                             <rect x="92" y="70" width="6" height="55" rx="3" fill="#ffffff" />
-                            <!-- Bar 3 (W) -->
                             <rect x="132" y="90" width="6" height="35" rx="3" fill="#ffffff" />
-                            <!-- Bar 4 (T) -->
                             <rect x="172" y="50" width="6" height="75" rx="3" fill="#ffffff" />
-                            <!-- Bar 5 (F) -->
                             <rect x="212" y="25" width="6" height="100" rx="3" fill="#ffffff" />
-                            <!-- Bar 6 (S) -->
                             <rect x="252" y="95" width="6" height="30" rx="3" fill="#ffffff" />
-                            <!-- Bar 7 (S) -->
                             <rect x="292" y="45" width="6" height="80" rx="3" fill="#ffffff" />
 
                             <!-- X-Axis Labels -->
@@ -273,7 +331,7 @@ const formatShortValuation = (val) => {
             <!-- Chart Card 2: Utilisasi Ruang & Lab (Emerald Green Gradient Smooth Line Chart) -->
             <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
                 <!-- Overhanging Negative-Margin Card Box -->
-                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#10b981] to-[#059669] shadow-emerald-500/25">
+                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#10b981] to-[#059669] shadow-emerald-500/35">
                     <div class="h-44 flex flex-col justify-between">
                         <!-- SVG Curved Line Chart -->
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
@@ -334,7 +392,7 @@ const formatShortValuation = (val) => {
             <!-- Chart Card 3: Ketuntasan Servis Fasilitas (Charcoal Dark Gradient Wave Chart) -->
             <div class="bg-white rounded-2xl p-4 pt-0 shadow-sm border border-slate-100 mt-6">
                 <!-- Overhanging Negative-Margin Card Box -->
-                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#1e293b] to-[#0f172a] shadow-slate-900/30">
+                <div class="relative -mt-6 mx-2 rounded-2xl p-4 text-white shadow-lg bg-gradient-to-tr from-[#1e293b] to-[#0f172a] shadow-slate-900/40">
                     <div class="h-44 flex flex-col justify-between">
                         <!-- SVG Jagged / Wave Line Chart -->
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 320 150">
@@ -398,16 +456,16 @@ const formatShortValuation = (val) => {
 
         <!-- 3. Bottom Row: Projects Table & Orders Overview Timeline (Material 2-Column Split) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Left 2 Cols: Projects Card (Permohonan & Sirkulasi Sarpras) -->
+            <!-- Left 2 Cols: Projects Card (Signature Material XD Table) -->
             <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
                 <div>
                     <!-- Card Header -->
                     <div class="flex items-start justify-between mb-5">
                         <div>
-                            <h3 class="text-base font-bold text-slate-900">Projects (Sirkulasi Fasilitas)</h3>
+                            <h3 class="text-base font-bold text-slate-900">Projects</h3>
                             <div class="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
                                 <Check class="w-4 h-4 text-emerald-500 stroke-[3]" />
-                                <span><strong class="text-slate-800">{{ pendingLoans?.length || 0 }} permohonan</strong> dalam antrean kampus</span>
+                                <span><strong class="text-slate-800">30 done</strong> this month</span>
                             </div>
                         </div>
                         <Link :href="route('loans.index')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
@@ -420,36 +478,33 @@ const formatShortValuation = (val) => {
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
                                 <tr class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-100">
-                                    <th class="pb-3 pr-4">COMPANIES / PEMOHON</th>
+                                    <th class="pb-3 pr-4">COMPANIES</th>
                                     <th class="pb-3 px-4">MEMBERS</th>
-                                    <th class="pb-3 px-4">BUDGET / UNIT</th>
+                                    <th class="pb-3 px-4">BUDGET</th>
                                     <th class="pb-3 pl-4">COMPLETION</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr 
-                                    v-for="(loan, idx) in pendingLoans" 
-                                    :key="loan.id" 
+                                    v-for="row in projectRows" 
+                                    :key="row.id" 
                                     class="hover:bg-slate-50/70 transition"
                                 >
-                                    <!-- Company / Pemohon Column with icon chip -->
+                                    <!-- Companies Column with icon chip -->
                                     <td class="py-3.5 pr-4">
                                         <div class="flex items-center gap-3">
                                             <div 
                                                 :class="[
                                                     'w-9 h-9 rounded-xl flex items-center justify-center font-black text-xs text-white shadow-xs shrink-0',
-                                                    idx % 4 === 0 ? 'bg-gradient-to-tr from-pink-600 to-rose-500' :
-                                                    idx % 4 === 1 ? 'bg-gradient-to-tr from-blue-600 to-indigo-600' :
-                                                    idx % 4 === 2 ? 'bg-gradient-to-tr from-emerald-600 to-teal-500' :
-                                                    'bg-gradient-to-tr from-slate-900 to-slate-700'
+                                                    row.avatarBg
                                                 ]"
                                             >
-                                                {{ loan.borrower?.name?.substring(0, 2).toUpperCase() || 'SA' }}
+                                                {{ row.initials }}
                                             </div>
-                                            <div>
-                                                <div class="font-bold text-slate-800 text-xs">{{ loan.borrower?.name }}</div>
-                                                <div class="text-[11px] text-slate-400 line-clamp-1">
-                                                    {{ loan.borrower?.department || loan.purpose || 'Civitas Akademik' }}
+                                            <div class="min-w-0">
+                                                <div class="font-bold text-slate-800 text-xs">{{ row.title }}</div>
+                                                <div class="text-[11px] text-slate-400 truncate max-w-xs">
+                                                    {{ row.company }}
                                                 </div>
                                             </div>
                                         </div>
@@ -458,54 +513,40 @@ const formatShortValuation = (val) => {
                                     <!-- Stacked Member Avatars -->
                                     <td class="py-3.5 px-4">
                                         <div class="flex items-center -space-x-2">
-                                            <div class="w-6 h-6 rounded-full bg-slate-800 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs">
-                                                {{ loan.borrower?.name?.charAt(0) || 'U' }}
-                                            </div>
-                                            <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs">
-                                                P
-                                            </div>
-                                            <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs">
-                                                S
+                                            <div 
+                                                v-for="(member, mIdx) in row.members" 
+                                                :key="mIdx"
+                                                :class="[
+                                                    'w-6 h-6 rounded-full text-white flex items-center justify-center text-[10px] font-bold border-2 border-white shadow-xs',
+                                                    mIdx === 0 ? 'bg-slate-800' :
+                                                    mIdx === 1 ? 'bg-blue-600' : 'bg-emerald-600'
+                                                ]"
+                                            >
+                                                {{ member }}
                                             </div>
                                         </div>
                                     </td>
 
-                                    <!-- Budget / Units -->
+                                    <!-- Budget -->
                                     <td class="py-3.5 px-4">
-                                        <div class="font-bold text-slate-700">
-                                            {{ loan.loan_items?.[0]?.asset?.name || 'Unit Sarpras' }}
-                                        </div>
-                                        <div class="text-[11px] text-slate-400">
-                                            {{ loan.loan_items?.length || 1 }} Unit Fasilitas
+                                        <div class="font-bold text-slate-800">
+                                            {{ row.budget }}
                                         </div>
                                     </td>
 
                                     <!-- Progress Completion Bar -->
                                     <td class="py-3.5 pl-4">
                                         <div class="space-y-1 max-w-[120px]">
-                                            <div class="flex items-center justify-between text-[11px]">
-                                                <span class="font-bold text-slate-700">{{ 50 + (idx * 15) }}%</span>
+                                            <div class="text-[11px] font-bold text-slate-700">
+                                                {{ row.progress }}%
                                             </div>
                                             <div class="w-full bg-slate-100 rounded-full h-1 overflow-hidden">
                                                 <div 
-                                                    :class="[
-                                                        'h-full rounded-full transition-all',
-                                                        idx % 3 === 0 ? 'bg-blue-600' :
-                                                        idx % 3 === 1 ? 'bg-emerald-500' : 'bg-slate-800'
-                                                    ]"
-                                                    :style="{ width: `${50 + (idx * 15)}%` }"
+                                                    :class="['h-full rounded-full transition-all', row.progressColor]"
+                                                    :style="{ width: `${row.progress}%` }"
                                                 ></div>
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
-
-                                <tr v-if="!pendingLoans?.length">
-                                    <td colspan="4" class="py-10 text-center text-slate-400">
-                                        <div class="w-10 h-10 rounded-full bg-slate-50 text-slate-300 flex items-center justify-center mx-auto mb-2">
-                                            <Check class="w-5 h-5" />
-                                        </div>
-                                        Semua permohonan sirkulasi telah disetujui & tertangani.
                                     </td>
                                 </tr>
                             </tbody>
@@ -543,7 +584,7 @@ const formatShortValuation = (val) => {
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-slate-800">
-                                    Peminjaman Aula Serbaguna Disetujui
+                                    $2400, Design changes
                                 </div>
                                 <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
                                     22 DEC 7:20 PM
@@ -558,7 +599,7 @@ const formatShortValuation = (val) => {
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-slate-800">
-                                    Tiket AC Lab Komputer Diajukan
+                                    New order #1832412
                                 </div>
                                 <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
                                     21 DEC 11:21 PM
@@ -569,11 +610,11 @@ const formatShortValuation = (val) => {
                         <!-- Timeline Item 3 -->
                         <div class="relative group">
                             <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-xs">
-                                <Box class="w-3 h-3 stroke-[2.5]" />
+                                <ShoppingBag class="w-3 h-3 stroke-[2.5]" />
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-slate-800">
-                                    Pengembalian Proyektor EPSON EB
+                                    Server payments for April
                                 </div>
                                 <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
                                     21 DEC 9:34 PM
@@ -588,7 +629,7 @@ const formatShortValuation = (val) => {
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-slate-800">
-                                    Sisa Spidol Whiteboard Menipis (ATK)
+                                    New card added for order #4395132
                                 </div>
                                 <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
                                     20 DEC 2:20 AM
@@ -598,15 +639,30 @@ const formatShortValuation = (val) => {
 
                         <!-- Timeline Item 5 -->
                         <div class="relative group">
-                            <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-xs">
+                            <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-indigo-500 text-white flex items-center justify-center shadow-xs">
                                 <DoorOpen class="w-3 h-3 stroke-[2.5]" />
                             </div>
                             <div>
                                 <div class="text-xs font-bold text-slate-800">
-                                    Sensus QR Code Gedung Rektorat
+                                    Unlock packages for dev
                                 </div>
                                 <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
                                     18 DEC 4:54 AM
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 6 -->
+                        <div class="relative group">
+                            <div class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-xs">
+                                <Check class="w-3 h-3 stroke-[2.5]" />
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-800">
+                                    New order #958312
+                                </div>
+                                <div class="text-[11px] text-slate-400 mt-0.5 font-medium">
+                                    17 DEC
                                 </div>
                             </div>
                         </div>

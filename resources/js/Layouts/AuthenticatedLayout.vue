@@ -29,7 +29,8 @@ import {
     DoorOpen,
     User,
     Home,
-    ClipboardList
+    ClipboardList,
+    Plus,
 } from 'lucide-vue-next';
 
 const showingSidebarMobile = ref(false);
@@ -291,37 +292,63 @@ const currentRouteTitle = computed(() => {
         <!-- Main Wrapper with Material Layout -->
         <div class="flex-1 flex flex-col min-w-0 md:ml-72 transition-all duration-300">
             <!-- Top Material Header Bar -->
-            <header class="sticky top-4 z-40 mx-4 sm:mx-6 lg:mx-8 mb-6 py-2.5 px-4 bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between gap-4">
+            <header class="sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-3 bg-[#f0f2f5]/90 backdrop-blur-md flex items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
                     <button 
                         @click="showingSidebarMobile = !showingSidebarMobile"
-                        class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg md:hidden"
+                        class="p-2 text-slate-600 hover:bg-slate-200/60 rounded-xl md:hidden"
                     >
                         <Menu class="w-5 h-5" />
                     </button>
 
                     <!-- Breadcrumbs & Page Title -->
                     <div>
-                        <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
+                        <div class="flex items-center gap-1.5 text-xs text-slate-400">
                             <Link :href="route('dashboard')" class="text-slate-400 hover:text-slate-700 flex items-center">
-                                <Home class="w-3.5 h-3.5" />
+                                <Home class="w-3.5 h-3.5 inline mr-1" />
                             </Link>
                             <span>/</span>
                             <span class="text-slate-600 font-medium">{{ currentRouteBreadcrumb }}</span>
                         </div>
-                        <h1 class="text-sm font-bold text-slate-900 mt-0.5 leading-tight">{{ currentRouteTitle }}</h1>
+                        <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-tight">{{ currentRouteTitle }}</h1>
                     </div>
                 </div>
 
                 <!-- Right Top Tools -->
                 <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Quick Actions Pills (Clean & Integrated) -->
+                    <div class="hidden xl:flex items-center gap-1.5 mr-1">
+                        <Link
+                            v-if="$page.props.auth?.user?.can_manage_assets"
+                            :href="route('assets.create')"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95"
+                        >
+                            <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
+                            <span>Aset Baru</span>
+                        </Link>
+                        <Link
+                            :href="route('loans.create')"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1e293b] to-[#0f172a] hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95"
+                        >
+                            <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
+                            <span>Peminjaman</span>
+                        </Link>
+                        <Link
+                            :href="route('maintenance.create')"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-pink-600 to-rose-500 hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95"
+                        >
+                            <AlertTriangle class="w-3.5 h-3.5" />
+                            <span>Lapor Rusak</span>
+                        </Link>
+                    </div>
+
                     <!-- Search Input -->
                     <div class="relative hidden sm:block">
                         <Search class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                         <input
                             type="text"
                             placeholder="Search here"
-                            class="w-40 lg:w-56 pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-[#1e3a8a] transition"
+                            class="w-36 md:w-48 lg:w-52 pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a73e8]/30 focus:border-[#1a73e8] shadow-xs transition"
                         />
                     </div>
 

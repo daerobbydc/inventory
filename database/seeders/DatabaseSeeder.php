@@ -418,6 +418,61 @@ class DatabaseSeeder extends Seeder
             'notes' => 'Lensa, baterai 2 buah, dan tas kamera lengkap',
         ]);
 
+        $loan2 = LoanTransaction::create([
+            'transaction_code' => 'LOAN/202611/0002',
+            'borrower_id' => $dosen->id,
+            'approver_id' => $superAdmin->id,
+            'loan_date' => now()->subDay()->toDateString(),
+            'expected_return_date' => now()->addDays(2)->toDateString(),
+            'status' => LoanStatus::Approved,
+            'purpose' => 'Kuliah Tamu Dosen Praktisi Industri di Ruang Kuliah Bersama',
+            'approval_notes' => 'Disetujui. Perangkat siap diambil di Biro Sarpras lantai 1.',
+        ]);
+
+        LoanItem::create([
+            'loan_transaction_id' => $loan2->id,
+            'asset_id' => $asset4->id,
+            'initial_condition' => AssetCondition::Good,
+            'notes' => 'Kabel power, remote dan tas proyektor',
+        ]);
+
+        $loan3 = LoanTransaction::create([
+            'transaction_code' => 'LOAN/202611/0003',
+            'borrower_id' => $adminFakultas->id,
+            'approver_id' => null,
+            'loan_date' => now()->toDateString(),
+            'expected_return_date' => now()->addDays(5)->toDateString(),
+            'status' => LoanStatus::Pending,
+            'purpose' => 'Uji Coba CBT Server Ujian Masuk Mahasiswa Baru Gelombang 1',
+            'approval_notes' => null,
+        ]);
+
+        LoanItem::create([
+            'loan_transaction_id' => $loan3->id,
+            'asset_id' => $asset1->id,
+            'initial_condition' => AssetCondition::Good,
+            'notes' => 'Unit PC Dell All-in-One dan kabel adaptor',
+        ]);
+
+        $loan4 = LoanTransaction::create([
+            'transaction_code' => 'LOAN/202611/0004',
+            'borrower_id' => $mahasiswa->id,
+            'approver_id' => $laboran->id,
+            'loan_date' => now()->subDays(4)->toDateString(),
+            'expected_return_date' => now()->subDay()->toDateString(),
+            'status' => LoanStatus::Returned,
+            'purpose' => 'Dokumentasi Pelantikan BEM Universitas Al-Khairiyah',
+            'approval_notes' => 'Selesai dan dikembalikan dalam kondisi baik lengkap.',
+        ]);
+
+        LoanItem::create([
+            'loan_transaction_id' => $loan4->id,
+            'asset_id' => $asset3->id,
+            'initial_condition' => AssetCondition::Good,
+            'return_condition' => AssetCondition::Good,
+            'notes' => 'Semua aksesoris lengkap dan berfungsi normal',
+        ]);
+
         // 7. Tiket Pemeliharaan Mendesak (Sesuai Referensi SIM-SARPRAS Enterprise)
         MaintenanceTicket::create([
             'ticket_code' => 'TCK/202611/0001',

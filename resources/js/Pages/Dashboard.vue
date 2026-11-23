@@ -39,6 +39,10 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    recentCirculations: {
+        type: Array,
+        default: () => [],
+    },
     urgentTickets: {
         type: Array,
         default: () => [],
@@ -90,6 +94,7 @@ const props = defineProps({
             :metrics="metrics"
             :low-stock-items="lowStockItems"
             :pending-loans="pendingLoans"
+            :recent-circulations="recentCirculations"
             :urgent-tickets="urgentTickets"
             :condition-counts="conditionCounts"
             :status-counts="statusCounts"

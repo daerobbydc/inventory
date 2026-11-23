@@ -189,6 +189,11 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $recentCirculations = LoanTransaction::with(['borrower', 'loanItems.asset.room.building'])
+            ->latest()
+            ->take(6)
+            ->get();
+
         $urgentTickets = MaintenanceTicket::whereNotIn('status', [
             MaintenanceStatus::Completed->value,
             MaintenanceStatus::Cancelled->value,
@@ -262,6 +267,7 @@ class DashboardController extends Controller
             ],
             'lowStockItems' => $lowStockConsumables,
             'pendingLoans' => $pendingLoans,
+            'recentCirculations' => $recentCirculations,
             'urgentTickets' => $urgentTickets,
             'conditionCounts' => $conditionCounts,
             'statusCounts' => $statusCounts,
