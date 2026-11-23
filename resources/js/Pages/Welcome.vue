@@ -294,7 +294,7 @@ const scrollToCatalog = () => {
                     </p>
 
                     <!-- The Distinctive Blue-Bordered Search Box Widget (Matches Reference Model) -->
-                    <div class="bg-white border-2 border-[#1d64ec] rounded-2xl p-3 sm:p-4 shadow-xl shadow-blue-500/10 space-y-3 max-w-xl">
+                    <div class="bg-white border-2 border-[#1d64ec] rounded-2xl p-3 sm:p-4 shadow-xl shadow-blue-500/10 space-y-3 max-w-xl transition-all duration-300 hover:shadow-2xl hover:border-blue-500 hover:-translate-y-1">
                         <!-- Top Row: 2 Dropdown / Select Inputs -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <div class="relative">
@@ -303,7 +303,7 @@ const scrollToCatalog = () => {
                                 </div>
                                 <select
                                     v-model="selectedBuilding"
-                                    class="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d64ec] appearance-none"
+                                    class="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d64ec] appearance-none transition-colors"
                                 >
                                     <option value="all">Semua Gedung Kampus</option>
                                     <option value="FT & FIK">Gedung FT & FIK</option>
@@ -322,7 +322,7 @@ const scrollToCatalog = () => {
                                 </div>
                                 <select
                                     v-model="selectedType"
-                                    class="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d64ec] appearance-none"
+                                    class="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d64ec] appearance-none transition-colors"
                                 >
                                     <option value="all">Semua Jenis Fasilitas</option>
                                     <option value="lab">Laboratorium & Komputer</option>
@@ -342,14 +342,14 @@ const scrollToCatalog = () => {
                                     type="text"
                                     v-model="searchQuery"
                                     placeholder="Ketik nama ruangan, lab, proyektor, atau alat..."
-                                    class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d64ec]"
+                                    class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d64ec] transition-all"
                                     @keyup.enter="scrollToCatalog"
                                 />
                             </div>
                             <button
                                 type="button"
                                 @click="scrollToCatalog"
-                                class="w-full sm:w-auto px-6 py-2.5 bg-[#ff6514] hover:bg-[#ea580c] text-white rounded-xl text-xs font-black shadow-md shadow-orange-500/25 transition whitespace-nowrap flex items-center justify-center gap-1.5"
+                                class="w-full sm:w-auto px-6 py-2.5 bg-[#ff6514] hover:bg-[#ea580c] text-white rounded-xl text-xs font-black shadow-md shadow-orange-500/25 transition-all duration-200 transform hover:scale-105 active:scale-95 whitespace-nowrap flex items-center justify-center gap-1.5"
                             >
                                 <Search class="w-3.5 h-3.5" />
                                 <span>Cari Fasilitas</span>
@@ -360,31 +360,29 @@ const scrollToCatalog = () => {
 
                 <!-- Right Column: Campus Staff/Student Visual with Rounded Arch & Floating Badges -->
                 <div class="lg:col-span-5 relative flex items-center justify-center">
-                    <!-- The Background Blue Arch (Matches Reference Model) -->
-                    <div class="relative w-72 sm:w-84 h-84 sm:h-96 rounded-t-full bg-gradient-to-b from-[#1d64ec] to-[#0d47a1] shadow-2xl flex items-end justify-center overflow-hidden">
-                        <!-- Stylized Campus Officers Illustration -->
-                        <div class="relative z-10 w-full h-full flex items-end justify-center">
-                            <!-- SVG Silhouette / Illustrative Person -->
-                            <div class="text-white/90 text-center pb-8 px-4 space-y-3">
-                                <div class="w-24 h-24 mx-auto rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-lg">
-                                    <GraduationCap class="w-12 h-12 text-white" />
-                                </div>
-                                <div class="space-y-1">
-                                    <div class="font-black text-lg text-white">Civitas Terpadu</div>
-                                    <div class="text-xs text-blue-100 max-w-[200px] mx-auto">
-                                        Pelayanan Cepat, Tepat & Bebas-Bentrok
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Ambient Glow Behind the Arch -->
+                    <div class="absolute w-80 sm:w-96 h-96 sm:h-[440px] rounded-t-full bg-blue-500/15 blur-2xl animate-pulse-slow pointer-events-none"></div>
 
-                        <!-- Inner ambient light -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+                    <!-- The Background Blue Arch with Real Generated Hero Image -->
+                    <div class="relative w-72 sm:w-88 h-96 sm:h-[430px] rounded-t-full bg-gradient-to-b from-[#1d64ec] via-[#1a56cc] to-[#0d47a1] shadow-2xl flex items-end justify-center overflow-hidden group">
+                        <!-- High-Resolution Real Generated Campus Facilities Hero Image -->
+                        <img
+                            src="/img/campus-hero.png"
+                            alt="Petugas Biro Sarana & Prasarana Kampus Terpadu Universitas Al-Khairiyah"
+                            class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                            loading="eager"
+                        />
+
+                        <!-- Gradient Bottom Overlay for Depth and Contrast -->
+                        <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0a193d]/85 via-[#0a193d]/30 to-transparent pointer-events-none"></div>
+
+                        <!-- Subtle Hover Sheen -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                     </div>
 
-                    <!-- Floating Badge Top-Left (Verified Biro Sarpras Badge) -->
-                    <div class="absolute -top-3 left-2 sm:left-4 bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200/80 shadow-lg shadow-slate-200/50 flex items-center gap-2.5 animate-bounce-slow">
-                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#1d64ec] flex items-center justify-center shrink-0">
+                    <!-- Floating Badge Top-Left (Verified Biro Sarpras Badge) with Hover Pause -->
+                    <div class="absolute -top-3 left-2 sm:left-4 bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200/80 shadow-lg shadow-slate-200/50 flex items-center gap-2.5 animate-float hover:[animation-play-state:paused] transition-transform">
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#1d64ec] flex items-center justify-center shrink-0 shadow-xs">
                             <ShieldCheck class="w-5 h-5 stroke-[2.2]" />
                         </div>
                         <div>
@@ -393,13 +391,13 @@ const scrollToCatalog = () => {
                         </div>
                     </div>
 
-                    <!-- Floating Badge Bottom-Right (Active Civitas Avatars) -->
-                    <div class="absolute -bottom-4 right-2 sm:right-4 bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200/80 shadow-lg shadow-slate-200/50 flex items-center gap-3">
+                    <!-- Floating Badge Bottom-Right (Active Civitas Avatars) with Delayed Float -->
+                    <div class="absolute -bottom-4 right-2 sm:right-4 bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200/80 shadow-lg shadow-slate-200/50 flex items-center gap-3 animate-float-delayed hover:[animation-play-state:paused] transition-transform">
                         <div class="flex -space-x-2 overflow-hidden">
-                            <span class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-blue-600 text-white text-[9px] font-black flex items-center justify-center">DS</span>
-                            <span class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-indigo-600 text-white text-[9px] font-black flex items-center justify-center">MH</span>
-                            <span class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-emerald-600 text-white text-[9px] font-black flex items-center justify-center">TK</span>
-                            <span class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-amber-600 text-white text-[9px] font-black flex items-center justify-center">LB</span>
+                            <span class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-blue-600 text-white text-[9px] font-black flex items-center justify-center shadow-xs">DS</span>
+                            <span class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-indigo-600 text-white text-[9px] font-black flex items-center justify-center shadow-xs">MH</span>
+                            <span class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-emerald-600 text-white text-[9px] font-black flex items-center justify-center shadow-xs">TK</span>
+                            <span class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-amber-600 text-white text-[9px] font-black flex items-center justify-center shadow-xs">LB</span>
                         </div>
                         <div>
                             <div class="text-[11px] font-black text-slate-900 leading-none">5.000+ Civitas</div>
@@ -447,15 +445,15 @@ const scrollToCatalog = () => {
                     <div
                         v-for="cat in popularCategories"
                         :key="cat.title"
-                        class="p-5 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-500/5 transition duration-200 bg-white group cursor-pointer"
+                        class="p-5 rounded-2xl border border-slate-100 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 transform hover:-translate-y-1.5 bg-white group cursor-pointer"
                         @click="searchQuery = cat.title.split(' ')[0]; scrollToCatalog()"
                     >
                         <div class="flex items-center gap-4">
-                            <div :class="['w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform', cat.color]">
+                            <div :class="['w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xs', cat.color]">
                                 <component :is="cat.icon" class="w-6 h-6 stroke-[2]" />
                             </div>
                             <div>
-                                <h3 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#1d64ec] transition">
+                                <h3 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#1d64ec] transition-colors">
                                     {{ cat.title }}
                                 </h3>
                                 <p class="text-[11px] text-slate-400 mt-0.5">
@@ -504,7 +502,7 @@ const scrollToCatalog = () => {
                     <!-- Right Mockup of 3 Smartphone Frames (Matches Reference) -->
                     <div class="lg:col-span-5 relative flex items-center justify-center gap-2 sm:gap-3 py-4">
                         <!-- Phone 1 (QR Scanner) -->
-                        <div class="w-28 sm:w-32 h-52 sm:h-60 rounded-2xl bg-slate-900 border-2 border-white/40 shadow-xl p-2 flex flex-col justify-between transform -rotate-3 scale-95 opacity-80 sm:opacity-90">
+                        <div class="w-28 sm:w-32 h-52 sm:h-60 rounded-2xl bg-slate-900 border-2 border-white/40 shadow-xl p-2 flex flex-col justify-between transform -rotate-3 scale-95 opacity-80 sm:opacity-90 transition-all duration-500 hover:-translate-y-2 hover:-rotate-1 hover:scale-100 hover:opacity-100 cursor-pointer">
                             <div class="w-8 h-1 bg-white/40 rounded-full mx-auto"></div>
                             <div class="bg-blue-900/60 rounded-xl p-2 text-center my-auto space-y-1">
                                 <QrCode class="w-8 h-8 text-cyan-300 mx-auto" />
@@ -514,7 +512,7 @@ const scrollToCatalog = () => {
                         </div>
 
                         <!-- Phone 2 (Center Primary Screen - Booking Dashboard) -->
-                        <div class="w-32 sm:w-36 h-60 sm:h-72 rounded-2xl bg-white text-slate-900 shadow-2xl p-2.5 flex flex-col justify-between border-2 border-white z-10 transform scale-105">
+                        <div class="w-32 sm:w-36 h-60 sm:h-72 rounded-2xl bg-white text-slate-900 shadow-2xl p-2.5 flex flex-col justify-between border-2 border-white z-10 transform scale-105 transition-all duration-500 hover:-translate-y-3 hover:scale-110 cursor-pointer">
                             <div class="flex items-center justify-between text-[8px] font-bold text-slate-400">
                                 <span>09:41</span>
                                 <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
@@ -538,7 +536,7 @@ const scrollToCatalog = () => {
                         </div>
 
                         <!-- Phone 3 (Ticket Detail) -->
-                        <div class="w-28 sm:w-32 h-52 sm:h-60 rounded-2xl bg-slate-900 border-2 border-white/40 shadow-xl p-2 flex flex-col justify-between transform rotate-3 scale-95 opacity-80 sm:opacity-90">
+                        <div class="w-28 sm:w-32 h-52 sm:h-60 rounded-2xl bg-slate-900 border-2 border-white/40 shadow-xl p-2 flex flex-col justify-between transform rotate-3 scale-95 opacity-80 sm:opacity-90 transition-all duration-500 hover:-translate-y-2 hover:rotate-1 hover:scale-100 hover:opacity-100 cursor-pointer">
                             <div class="w-8 h-1 bg-white/40 rounded-full mx-auto"></div>
                             <div class="bg-blue-900/60 rounded-xl p-2 text-center my-auto space-y-1">
                                 <CheckCircle2 class="w-8 h-8 text-emerald-400 mx-auto" />
@@ -765,15 +763,48 @@ const scrollToCatalog = () => {
 </template>
 
 <style scoped>
-@keyframes bounceSlow {
+html {
+    scroll-behavior: smooth;
+}
+
+@keyframes float {
     0%, 100% {
-        transform: translateY(0);
+        transform: translateY(0px);
     }
     50% {
-        transform: translateY(-6px);
+        transform: translateY(-8px);
     }
 }
-.animate-bounce-slow {
-    animation: bounceSlow 4s ease-in-out infinite;
+
+@keyframes floatDelayed {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(7px);
+    }
+}
+
+@keyframes pulseSlow {
+    0%, 100% {
+        opacity: 0.15;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.35;
+        transform: scale(1.06);
+    }
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: floatDelayed 5s ease-in-out 1.2s infinite;
+}
+
+.animate-pulse-slow {
+    animation: pulseSlow 5s ease-in-out infinite;
 }
 </style>
