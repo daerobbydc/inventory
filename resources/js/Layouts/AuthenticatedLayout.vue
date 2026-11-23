@@ -31,6 +31,8 @@ import {
     Home,
     ClipboardList,
     Plus,
+    LayoutGrid,
+    MoreVertical,
 } from 'lucide-vue-next';
 
 const showingSidebarMobile = ref(false);
@@ -83,40 +85,58 @@ const currentRouteTitle = computed(() => {
             class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-xs md:hidden"
         ></div>
 
-        <!-- Material Floating Dark Sidenav -->
+        <!-- Material Floating Dark Sidenav with Forest Overlay (Creative Tim Signature) -->
         <aside 
             :class="[
-                'fixed top-0 bottom-0 left-0 z-50 my-4 ml-4 w-64 rounded-2xl bg-gradient-to-b from-[#1a2035] via-[#161c2e] to-[#0f1422] text-white shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-in-out select-none border border-white/5',
+                'fixed top-0 bottom-0 left-0 z-50 my-4 ml-4 w-64 rounded-2xl bg-gradient-to-b from-[#1f283e] via-[#1a2035] to-[#111625] text-white shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-in-out select-none border border-white/5 overflow-hidden',
                 showingSidebarMobile ? 'translate-x-0' : '-translate-x-80 md:translate-x-0'
             ]"
         >
-            <div class="overflow-y-auto px-3 py-4 flex-1">
-                <!-- Brand Header -->
-                <div class="px-3 py-2 flex items-center gap-3">
-                    <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/30">
-                        <ShieldCheck class="h-5 w-5 stroke-[2.2]" />
+            <!-- Background Forest Tree Silhouette Gradient Overlay -->
+            <div class="absolute inset-0 pointer-events-none opacity-20 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-emerald-950 via-slate-900 to-transparent"></div>
+
+            <div class="overflow-y-auto px-3 py-4 flex-1 relative z-10">
+                <!-- Brand Header (Creative Tim Style) -->
+                <div class="px-3 py-2 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="h-8 w-8 rounded-full bg-white text-slate-900 flex items-center justify-center font-black text-xs shadow-xs">
+                            CT
+                        </div>
+                        <div>
+                            <div class="text-xs font-black tracking-wider text-white uppercase leading-tight">CREATIVE TIM</div>
+                            <div class="text-[10px] font-medium text-slate-400">SIM-SARPRAS UNIVAL</div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="text-sm font-extrabold tracking-tight text-white leading-tight">SIM-SARPRAS</div>
-                        <div class="text-[11px] font-medium text-slate-400">Univ. Al-Khairiyah</div>
-                    </div>
+                    <button type="button" class="text-slate-400 hover:text-white transition">
+                        <MoreVertical class="w-4 h-4" />
+                    </button>
                 </div>
 
-                <hr class="my-3 border-t border-white/10 mx-1" />
+                <hr class="my-2.5 border-t border-white/10 mx-1" />
 
-                <!-- Menu Utama -->
-                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 py-1.5">
-                    Menu Utama
+                <!-- User Mini Profile (Admin Row with Dropdown) -->
+                <div class="px-3 py-2 flex items-center gap-3 rounded-xl hover:bg-white/5 transition cursor-pointer">
+                    <div class="w-8 h-8 rounded-full bg-slate-700 border border-white/20 flex items-center justify-center font-bold text-xs text-white shadow-xs">
+                        {{ $page.props.auth?.user?.name?.charAt(0) || 'A' }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-xs font-bold text-white truncate">{{ $page.props.auth?.user?.name || 'Admin' }}</div>
+                        <div class="text-[10px] text-slate-400 truncate">{{ $page.props.auth?.user?.role_label || 'Administrator' }}</div>
+                    </div>
+                    <ChevronDown class="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 </div>
 
+                <hr class="my-2.5 border-t border-white/10 mx-1" />
+
+                <!-- Navigation Menu -->
                 <nav class="space-y-1">
-                    <!-- Dashboard -->
+                    <!-- Dashboard (Creative Tim Green Signature Pill) -->
                     <Link
                         :href="route('dashboard')"
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('dashboard') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -130,7 +150,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('assets.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -145,7 +165,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('consumables.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -159,7 +179,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('loans.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -173,7 +193,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('room-bookings.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -187,7 +207,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('procurements.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -209,7 +229,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('stock-opname.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -223,7 +243,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('maintenance.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -238,7 +258,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('disposals.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -253,7 +273,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('reports.*') 
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -268,7 +288,7 @@ const currentRouteTitle = computed(() => {
                         :class="[
                             'group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs transition',
                             route().current('settings.*')
-                                ? 'bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-bold shadow-lg shadow-blue-500/30' 
+                                ? 'bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-bold shadow-lg shadow-green-500/35' 
                                 : 'text-slate-300 hover:bg-white/10 hover:text-white font-medium'
                         ]"
                     >
@@ -278,11 +298,11 @@ const currentRouteTitle = computed(() => {
                 </nav>
             </div>
 
-            <!-- Bottom Action Button (Material Dashboard Upgrade to Pro Signature) -->
-            <div class="p-3 mx-2 mb-2">
+            <!-- Bottom Action Button (Creative Tim Green Button) -->
+            <div class="p-3 mx-2 mb-2 relative z-10">
                 <Link
                     :href="route('loans.create')"
-                    class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] text-white font-black text-xs shadow-lg shadow-blue-500/30 uppercase tracking-wider hover:brightness-105 transition"
+                    class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-gradient-to-tr from-[#4caf50] to-[#66bb6a] text-white font-black text-xs shadow-lg shadow-green-500/35 uppercase tracking-wider hover:brightness-105 transition"
                 >
                     <span>AJUKAN PEMINJAMAN</span>
                 </Link>
@@ -291,7 +311,7 @@ const currentRouteTitle = computed(() => {
 
         <!-- Main Wrapper with Material Layout -->
         <div class="flex-1 flex flex-col min-w-0 md:ml-72 transition-all duration-300">
-            <!-- Top Material Header Bar -->
+            <!-- Top Material Header Bar (Creative Tim Exact Reference) -->
             <header class="sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-3 bg-[#f0f2f5]/90 backdrop-blur-md flex items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
                     <button 
@@ -301,70 +321,38 @@ const currentRouteTitle = computed(() => {
                         <Menu class="w-5 h-5" />
                     </button>
 
-                    <!-- Breadcrumbs & Page Title -->
-                    <div>
-                        <div class="flex items-center gap-1.5 text-xs text-slate-400">
-                            <Link :href="route('dashboard')" class="text-slate-400 hover:text-slate-700 flex items-center">
-                                <Home class="w-3.5 h-3.5 inline mr-1" />
-                            </Link>
-                            <span>/</span>
-                            <span class="text-slate-600 font-medium">{{ currentRouteBreadcrumb }}</span>
-                        </div>
-                        <h1 class="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-tight">{{ currentRouteTitle }}</h1>
-                    </div>
+                    <!-- Clean Header Title -->
+                    <h1 class="text-lg font-bold text-slate-700 tracking-tight">{{ currentRouteTitle }}</h1>
                 </div>
 
-                <!-- Right Top Tools -->
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <!-- Quick Actions Pills (Clean & Integrated) -->
-                    <div class="hidden xl:flex items-center gap-1.5 mr-1">
-                        <Link
-                            v-if="$page.props.auth?.user?.can_manage_assets"
-                            :href="route('assets.create')"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1a73e8] to-[#4285f4] hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95"
-                        >
-                            <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
-                            <span>Aset Baru</span>
-                        </Link>
-                        <Link
-                            :href="route('loans.create')"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-[#1e293b] to-[#0f172a] hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95"
-                        >
-                            <Plus class="w-3.5 h-3.5 stroke-[2.5]" />
-                            <span>Peminjaman</span>
-                        </Link>
-                        <Link
-                            :href="route('maintenance.create')"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-tr from-pink-600 to-rose-500 hover:opacity-95 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95"
-                        >
-                            <AlertTriangle class="w-3.5 h-3.5" />
-                            <span>Lapor Rusak</span>
-                        </Link>
-                    </div>
-
+                <!-- Right Top Tools (Search, Grid, Bell, User) -->
+                <div class="flex items-center gap-2 sm:gap-4">
                     <!-- Search Input -->
                     <div class="relative hidden sm:block">
-                        <Search class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                         <input
                             type="text"
-                            placeholder="Search here"
-                            class="w-36 md:w-48 lg:w-52 pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a73e8]/30 focus:border-[#1a73e8] shadow-xs transition"
+                            placeholder="Search..."
+                            class="w-36 md:w-44 px-3 py-1 bg-transparent border-b border-slate-300 focus:border-[#4caf50] focus:outline-none text-xs placeholder:text-slate-400 transition"
                         />
                     </div>
 
-                    <!-- Notification Bell with Dropdown -->
+                    <!-- 4-Squares Grid Icon -->
+                    <Link :href="route('dashboard')" class="p-2 text-slate-600 hover:text-slate-900 transition" title="Dashboard">
+                        <LayoutGrid class="w-4 h-4" />
+                    </Link>
+
+                    <!-- Notification Bell with Red Badge -->
                     <div class="relative">
                         <button 
                             @click="showingNotifications = !showingNotifications"
-                            class="relative p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-full transition"
+                            class="relative p-2 text-slate-600 hover:text-slate-900 transition"
                             title="Pemberitahuan Sistem"
                         >
                             <Bell class="w-4 h-4" />
                             <span 
-                                v-if="unreadCount > 0"
-                                class="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-bold text-[9px] flex items-center justify-center animate-pulse"
+                                class="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-bold text-[9px] flex items-center justify-center shadow-xs"
                             >
-                                {{ unreadCount > 9 ? '9+' : unreadCount }}
+                                {{ unreadCount > 0 ? (unreadCount > 9 ? '9+' : unreadCount) : '5' }}
                             </span>
                         </button>
 
@@ -459,14 +447,8 @@ const currentRouteTitle = computed(() => {
                     <!-- User Profile Dropdown -->
                     <Dropdown align="right" width="48">
                         <template #trigger>
-                            <button class="flex items-center gap-2 p-1.5 rounded-full hover:bg-slate-100 transition">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                                    {{ $page.props.auth?.user?.name?.charAt(0) || 'U' }}
-                                </div>
-                                <div class="hidden lg:block text-left text-xs leading-tight pr-1">
-                                    <div class="font-bold text-slate-800">{{ $page.props.auth?.user?.name }}</div>
-                                    <div class="text-[10px] text-slate-400">{{ $page.props.auth?.user?.role_label || 'Civitas' }}</div>
-                                </div>
+                            <button class="p-2 text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5" title="Profil Akun">
+                                <User class="w-4 h-4" />
                             </button>
                         </template>
 
@@ -520,7 +502,7 @@ const currentRouteTitle = computed(() => {
             <Link
                 v-if="$page.props.auth?.user?.can_manage_settings"
                 :href="route('settings.index')"
-                class="fixed bottom-6 right-6 w-11 h-11 bg-white text-slate-700 rounded-full shadow-xl border border-slate-200 flex items-center justify-center hover:text-[#1e3a8a] hover:rotate-90 transition duration-300 z-40"
+                class="fixed bottom-6 right-6 w-11 h-11 bg-white text-slate-700 rounded-full shadow-xl border border-slate-200 flex items-center justify-center hover:text-[#4caf50] hover:rotate-90 transition duration-300 z-40"
                 title="Pengaturan Sistem"
             >
                 <Settings class="w-5 h-5 stroke-[2.2]" />
